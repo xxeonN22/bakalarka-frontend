@@ -5,7 +5,7 @@ function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("https://fullstack-bakalarka-production.up.railway.app")
+    fetch("https://fullstack-bakalarka-production.up.railway.app/players")
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error(error));
