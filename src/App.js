@@ -7,10 +7,10 @@ function App() {
   useEffect(() => {
     fetch("https://fullstack-bakalarka-production.up.railway.app")
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => setData(data))
       .catch((error) => console.error(error));
   }, []);
-
+  console.log(data);
   return <div>Hello from react</div>;
 }
 
