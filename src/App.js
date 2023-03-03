@@ -11,7 +11,7 @@ function App() {
       .catch((error) => console.error(error));
   }, []);
   console.log(data);
-  return <div>Hello from react</div>;
+  return <div>Commit in github will result into change of site appearance</div>;
 }
 
 export default App;
