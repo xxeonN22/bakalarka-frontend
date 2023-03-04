@@ -1,17 +1,26 @@
-import "./App.css";
-import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import { appTheme } from "./themes/appTheme";
+import { Matches } from "./pages/Matches";
+import { Players } from "./pages/Players";
+import { Profile } from "./pages/Profile";
+import { Tournaments } from "./pages/Tournaments";
+import { TournamentTable } from "./pages/TournamentTable";
 
 function App() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch("https://fullstack-bakalarka-production.up.railway.app/players")
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error(error));
-  }, []);
-  console.log(data);
-  return <div>Commit in github will result into change of site appearance</div>;
+  return (
+    <ThemeProvider theme={appTheme}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Tournaments />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/players" element={<Players />}></Route>
+          <Route path="/matches" element={<Matches />}></Route>
+          <Route path="/table" element={<TournamentTable />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }
 
 export default App;
