@@ -10,12 +10,17 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
+import { PlayerProfile } from "./pages/PlayerProfile";
 
 function App() {
   return (
     <ThemeProvider theme={appTheme}>
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/players/:id"
+            element={<PlayerProfile></PlayerProfile>}
+          ></Route>
           <Route path="/newpassword" element={<NewPassword />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
