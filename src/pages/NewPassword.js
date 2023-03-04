@@ -13,16 +13,12 @@ import {
   IconButton,
 } from "@mui/material";
 
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-export const Register = () => {
+export const NewPassword = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
     password: "",
     repeatPassword: "",
   });
@@ -78,57 +74,8 @@ export const Register = () => {
                   textTransform="uppercase"
                   letterSpacing="0.2rem"
                 >
-                  Registrácia používateľa
+                  Vytvorenie nového hesla
                 </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id="user-firstname"
-                  label="Zadajte meno"
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      firstName: event.target.value,
-                    })
-                  }
-                  sx={{ width: "100%" }}
-                ></TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id="user-lastname"
-                  label="Zadajte priezvisko"
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      lastName: event.target.value,
-                    })
-                  }
-                  sx={{ width: "100%" }}
-                ></TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id="user-email"
-                  label="Zadajte email"
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      email: event.target.value,
-                    })
-                  }
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailOutlinedIcon />{" "}
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{ width: "100%" }}
-                ></TextField>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -201,18 +148,6 @@ export const Register = () => {
               <Grid
                 item
                 xs={12}
-                md={12}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography>Už máte účet? Prihláste sa</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={12}
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -223,7 +158,7 @@ export const Register = () => {
                   variant="contained"
                   onClick={() => console.log(formData)}
                 >
-                  Registrovať sa
+                  Vytvoriť nové heslo
                 </Button>
               </Grid>
             </Grid>

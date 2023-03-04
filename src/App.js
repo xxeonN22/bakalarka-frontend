@@ -6,12 +6,20 @@ import { Players } from "./pages/Players";
 import { Profile } from "./pages/Profile";
 import { Tournaments } from "./pages/Tournaments";
 import { TournamentTable } from "./pages/TournamentTable";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { ResetPassword } from "./pages/ResetPassword";
+import { NewPassword } from "./pages/NewPassword";
 
 function App() {
   return (
     <ThemeProvider theme={appTheme}>
       <BrowserRouter>
         <Routes>
+          <Route path="/newpassword" element={<NewPassword />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+          <Route path="/resetpassword" element={<ResetPassword />}></Route>
           <Route path="/" element={<Tournaments />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/players" element={<Players />}></Route>
