@@ -11,6 +11,7 @@ export const MatchScore = (props) => {
     setsToRender,
     firstPlayer,
     secondPlayer,
+    handleSetScore,
   } = props;
 
   return (
@@ -71,7 +72,13 @@ export const MatchScore = (props) => {
               marginTop: "2rem",
             }}
           >
-            <Button variant="contained" onClick={() => handleDialogClose()}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                handleSetScore();
+                handleDialogClose();
+              }}
+            >
               Potvrdiť výsledok
             </Button>
           </Grid>

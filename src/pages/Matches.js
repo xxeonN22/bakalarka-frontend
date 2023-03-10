@@ -27,7 +27,7 @@ const generateMatchesGridStyle = {
 
 const generateMatches = {
   paddingBlock: "1rem",
-  width: "30%",
+  width: "32%",
   marginBlock: "2rem",
   [appTheme.breakpoints.down("md")]: {
     width: "100%",
@@ -45,6 +45,7 @@ export const Matches = () => {
   const [selectedCourts, setSelectedCourts] = useState(numberOfCourts);
   const [responseMessage, setResponseMessage] = React.useState();
   const [deleteMessage, setDeleteMessage] = React.useState();
+  const [scoreMessage, setScoreMessage] = React.useState();
   const [matches, setMatches] = React.useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -95,7 +96,7 @@ export const Matches = () => {
   }, [selectedRound]);
 
   useEffect(() => {
-    setFormValues({
+    setMatchValues({
       matchId: selectedMatchId,
       firstPlayer: firstPlayerId,
       firstPlayerElo: firstPlayerElo,
@@ -194,6 +195,31 @@ export const Matches = () => {
       });
   };
 
+  const handleSetScore = async () => {
+    const response = await fetch(
+      `http://localhost:3000/matches/${selectedMatchId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          matchValues,
+          numberOfSets,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    setScoreMessage(data.message);
+
+    fetch("http://localhost:3000/matches")
+      .then((response) => response.json())
+      .then((data) => {
+        setMatches(data.matchPair);
+      });
+  };
+
   const handleDialogOpen = () => {
     setDialogState(true);
   };
@@ -203,7 +229,7 @@ export const Matches = () => {
     setDialogState(false);
   };
 
-  const [formValues, setFormValues] = useState({
+  const [matchValues, setMatchValues] = useState({
     matchId: null,
     firstPlayer: null,
     firstPlayerElo: null,
@@ -231,12 +257,10 @@ export const Matches = () => {
     setSecondPlayerId(secondPlayerId);
   };
 
-  console.log(formValues);
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormValues(() => ({
-      ...formValues,
+    setMatchValues(() => ({
+      ...matchValues,
       [name]: value,
     }));
   };
@@ -257,7 +281,7 @@ export const Matches = () => {
         }}
       >
         <TextFieldIncrement
-          value={formValues[i]?.firstPlayerSet}
+          value={matchValues[i]?.firstPlayerSet}
           functionName={(value) =>
             handleInputChange(
               { target: { name: `firstPlayer-set${i}`, value } },
@@ -269,7 +293,7 @@ export const Matches = () => {
           max={22}
         />
         <TextFieldIncrement
-          value={formValues[i]?.firstPlayerSet}
+          value={matchValues[i]?.firstPlayerSet}
           functionName={(value) =>
             handleInputChange(
               { target: { name: `secondPlayer-set${i}`, value } },
@@ -351,6 +375,15 @@ export const Matches = () => {
             </Button>
           </Grid>
         </Grid>
+        {scoreMessage && (
+          <Alert
+            sx={{ marginBlock: "1rem" }}
+            severity={"success"}
+            onClose={() => setScoreMessage(null)}
+          >
+            {scoreMessage}
+          </Alert>
+        )}
         {deleteMessage && (
           <Alert
             sx={{ marginBlock: "1rem" }}
@@ -398,6 +431,7 @@ export const Matches = () => {
               }}
               sx={{
                 width: "35%",
+                marginBottom: "0.5rem",
                 [appTheme.breakpoints.down("md")]: {
                   width: "50%",
                 },
@@ -452,6 +486,7 @@ export const Matches = () => {
         setsToRender={setsToRender}
         firstPlayer={firstPlayer}
         secondPlayer={secondPlayer}
+        handleSetScore={handleSetScore}
       ></MatchScore>
     </>
   );

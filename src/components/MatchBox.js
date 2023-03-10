@@ -4,7 +4,7 @@ import { Box, Button, Paper, Checkbox, Typography } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 
 export const MatchBox = (props) => {
-  const isTabletSize = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const isTabletSize = useMediaQuery((theme) => theme.breakpoints.down("xl"));
   const { match, handleButtonClick, handleCheckboxClick } = props;
 
   const matchId = match[0];
@@ -46,7 +46,7 @@ export const MatchBox = (props) => {
             textAlign: "center",
             [appTheme.breakpoints.down("md")]: {
               position: "absolute",
-              top: 5,
+              top: 0,
               left: 10,
             },
           }}
