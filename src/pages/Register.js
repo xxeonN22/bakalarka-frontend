@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 import { ContentNotLogged } from "../components/ContentNotLogged";
 
@@ -33,6 +34,19 @@ export const Register = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await fetch("http://localhost:3000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    console.log(await response.json());
   };
 
   return (
@@ -208,7 +222,9 @@ export const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>Už máte účet? Prihláste sa</Typography>
+                <Typography>
+                  Už máte účet? <Link to="/login"> Prihláste sa</Link>
+                </Typography>
               </Grid>
               <Grid
                 item
@@ -219,10 +235,7 @@ export const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Button
-                  variant="contained"
-                  onClick={() => console.log(formData)}
-                >
+                <Button variant="contained" onClick={handleSubmit}>
                   Registrovať sa
                 </Button>
               </Grid>

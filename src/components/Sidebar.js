@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Box, IconButton } from "@mui/material";
 import { SideBarTooltip } from "./SideBarTooltip";
 
@@ -35,32 +35,34 @@ const linkStyles = {
 };
 
 export const SideBar = ({ screen }) => {
+  const { pathname } = useLocation();
+
   const links = [
     {
       title: "Profil",
-      to: "profile",
+      to: "/profile",
       icon: <ProfileIcon width={40} height={40} fill={"white"} />,
     },
     {
       title: "Turnaje",
-      to: "tournaments",
+      to: "/tournaments",
       icon: <HomeIcon width={40} height={40} fill={"white"} />,
     },
     {
       title: "Hráči",
-      to: "players",
+      to: "/players",
       icon: <BadmintonPlayerIcon width={40} height={40} fill={"white"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
     {
       title: "Zápasy",
-      to: "matches",
+      to: "/matches",
       icon: <MatchesIcon width={40} height={40} fill={"white"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
     {
       title: "Tabuľka",
-      to: "table",
+      to: "/table",
       icon: <TableIcon width={40} height={40} fill={"white"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
@@ -77,7 +79,7 @@ export const SideBar = ({ screen }) => {
           }}
         >
           <SideBarTooltip title={title}>
-            <Link to={to}>
+            <Link to={to} className={to === pathname ? "active" : ""}>
               <IconButton>{icon}</IconButton>
             </Link>
           </SideBarTooltip>

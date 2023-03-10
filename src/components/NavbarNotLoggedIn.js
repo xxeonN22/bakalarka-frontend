@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { appTheme } from "../themes/appTheme";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,7 +8,6 @@ import {
   Toolbar,
   AppBar,
   Grid,
-  Link,
   Box,
   IconButton,
   Typography,
@@ -83,10 +83,14 @@ export const NavbarNotLoggedIn = () => {
               }}
             >
               <Typography>
-                <Link sx={{ color: "white" }}>Prihlásiť</Link>
+                <Link to="/login" sx={{ color: "white" }}>
+                  Prihlásiť
+                </Link>
               </Typography>
               <Typography>
-                <Link sx={{ color: "white" }}>Registrovať</Link>
+                <Link to="/register" sx={{ color: "white" }}>
+                  Registrovať
+                </Link>
               </Typography>
             </Box>
           </Grid>

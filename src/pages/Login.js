@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 import { ContentNotLogged } from "../components/ContentNotLogged";
 
@@ -32,6 +33,19 @@ export const Login = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    console.log(await response.json());
   };
 
   return (
@@ -83,6 +97,7 @@ export const Login = () => {
               <Grid item xs={12}>
                 <TextField
                   required
+                  name="user-email"
                   id="user-email"
                   label="Zadajte email"
                   onChange={(event) =>
@@ -104,6 +119,7 @@ export const Login = () => {
               <Grid item xs={12}>
                 <TextField
                   required
+                  name="user-password"
                   id="user-password"
                   label="Zadajte heslo"
                   onChange={(event) =>
@@ -144,7 +160,10 @@ export const Login = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>Ešte nemáte účet? Zaregistrujte sa</Typography>
+                <Typography>
+                  Ešte nemáte účet?{" "}
+                  <Link to="/register"> Zaregistrujte sa</Link>
+                </Typography>
               </Grid>
               <Grid
                 item
@@ -176,7 +195,10 @@ export const Login = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>Zabudli ste heslo? Obnoviť heslo</Typography>
+                <Typography>
+                  Zabudli ste heslo?{" "}
+                  <Link to="/resetpassword"> Obnoviť heslo</Link>
+                </Typography>
               </Grid>
               <Grid
                 item
@@ -187,10 +209,7 @@ export const Login = () => {
                   alignItems: "center",
                 }}
               >
-                <Button
-                  variant="contained"
-                  onClick={() => console.log(formData)}
-                >
+                <Button variant="contained" onClick={handleSubmit}>
                   Prihlásiť sa
                 </Button>
               </Grid>

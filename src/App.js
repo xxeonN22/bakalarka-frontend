@@ -11,6 +11,7 @@ import { Register } from "./pages/Register";
 import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
 import { PlayerProfile } from "./pages/PlayerProfile";
+import { MatchScore } from "./components/MatchScore";
 
 function App() {
   return (
@@ -28,7 +29,9 @@ function App() {
           <Route path="/" element={<Tournaments />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/players" element={<Players />}></Route>
-          <Route path="/matches" element={<Matches />}></Route>
+          <Route path="/matches" element={<Matches />}>
+            <Route path="/matches/:matchId" element={<MatchScore />} />
+          </Route>
           <Route path="/table" element={<TournamentTable />}></Route>
         </Routes>
       </BrowserRouter>
