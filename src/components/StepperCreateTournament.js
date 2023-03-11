@@ -12,25 +12,104 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 export const StepperCreateTournament = ({ handleCloseModal }) => {
+  const numberOfSteps = 4;
+  const [activeStep, setActiveStep] = useState(1);
+
   const [newTournament, setNewTournament] = useState({
     selectedSport: "",
     selectedPairingStyle: "",
     tournamentName: "",
     maxNumberOfSets: 1,
     maxNumberOfPoints: 1,
+    numberOfCourts: 1,
     numberOfGroups: 1,
     numberOfRounds: 1,
     gameDays: [],
   });
 
-  const numberOfSteps = 4;
-  const [activeStep, setActiveStep] = useState(1);
+  const [message, setMessage] = useState({
+    selectSportMessage: "",
+    selectPairingMessage: "",
+    tournamentSettingsMessage: "",
+    gameDaysMessage: "",
+  });
+
+  const validateStep = () => {
+    switch (activeStep) {
+      case 1:
+        if (newTournament.selectedSport === "") {
+          setMessage({
+            ...message,
+            selectSportMessage:
+              "Prosím, vyberte nejaký šport predtým, ako budete pokračovať na ďalší krok!",
+          });
+          return false;
+        }
+        break;
+      case 2:
+        if (newTournament.selectedPairingStyle === "") {
+          setMessage({
+            ...message,
+            selectPairingMessage:
+              "Prosím, vyberte druh párovania hráčov v zápasoch predtým, ako budete pokračovať na ďalší krok!",
+          });
+          return false;
+        }
+        break;
+      case 3:
+        if (newTournament.tournamentName === "") {
+          setMessage({
+            ...message,
+            tournamentSettingsMessage:
+              "Prosím, názov turnaja predtým, ako budete pokračovať na ďalší krok!",
+          });
+          return false;
+        }
+        break;
+      case 4:
+        if (newTournament.gameDays.length === 0) {
+          setMessage({
+            ...message,
+            gameDaysMessage:
+              "Prosím, vytvorte aspoň jeden hrací deň predtým, ako vytvoríte turnaj!",
+          });
+          return false;
+        }
+
+        for (let i = 0; i < newTournament.gameDays.length; i++) {
+          if (newTournament.gameDays[i].groups.length === 0) {
+            setMessage({
+              ...message,
+              gameDaysMessage:
+                "Vo všetkých hracích dňoch musí byť vybratá aspoň jedna skupina!",
+            });
+            return false;
+          }
+          if (newTournament.gameDays[i].round === "") {
+            setMessage({
+              ...message,
+              gameDaysMessage:
+                "Každý hrací deň musí byť súčasťou niektorého z kôl!",
+            });
+            return false;
+          }
+        }
+        break;
+      default:
+        break;
+    }
+    return true;
+  };
 
   const handleNext = () => {
-    if (activeStep === numberOfSteps) {
-      handleCloseModal();
-    } else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (validateStep()) {
+      if (activeStep === numberOfSteps) {
+        console.log(`Turnaj bol uspesne vytvorený`);
+        console.log(newTournament);
+        handleCloseModal();
+      } else {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      }
     }
   };
 
@@ -89,6 +168,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         return (
           <>
             <ChooseSport
+              message={message}
+              setMessage={setMessage}
               newTournament={newTournament}
               handleTournamentSettingsChange={handleTournamentSettingsChange}
             ></ChooseSport>
@@ -98,6 +179,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         return (
           <>
             <ChoosePairingSystem
+              message={message}
+              setMessage={setMessage}
               newTournament={newTournament}
               handleTournamentSettingsChange={handleTournamentSettingsChange}
             ></ChoosePairingSystem>
@@ -107,6 +190,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         return (
           <>
             <SettingsTournament
+              message={message}
+              setMessage={setMessage}
               newTournament={newTournament}
               handleTournamentSettingsChange={handleTournamentSettingsChange}
             ></SettingsTournament>
@@ -116,6 +201,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         return (
           <>
             <NewDay
+              message={message}
+              setMessage={setMessage}
               newTournament={newTournament}
               handleAddGameDay={handleAddGameDay}
               handleRemoveGameDay={handleRemoveGameDay}

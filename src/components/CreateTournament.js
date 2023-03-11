@@ -1,13 +1,14 @@
-import { appTheme } from "../themes/appTheme";
 import { useState } from "react";
+import { appTheme } from "../themes/appTheme";
+
+import { StepperCreateTournament } from "./StepperCreateTournament";
+
 import { Button, IconButton } from "@mui/material";
 import { DialogWindow } from "./DialogWindow";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { StepperCreateTournament } from "./StepperCreateTournament";
-
-export const CreateTournament = ({ typeOfContent }) => {
+export const CreateTournament = () => {
   const [dialogState, setDialogState] = useState(false);
 
   const handleDialogOpen = () => {

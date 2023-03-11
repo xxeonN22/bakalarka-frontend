@@ -1,8 +1,9 @@
 import React from "react";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Alert } from "@mui/material";
 
 export const ChoosePairingSystem = (props) => {
-  const { handleTournamentSettingsChange, newTournament } = props;
+  const { message, setMessage, handleTournamentSettingsChange, newTournament } =
+    props;
 
   const pairingSystems = [
     {
@@ -35,6 +36,20 @@ export const ChoosePairingSystem = (props) => {
     : 4;
   return (
     <>
+      {message.selectPairingMessage && (
+        <Alert
+          sx={{ marginBlock: "1rem" }}
+          severity={"error"}
+          onClose={() => {
+            setMessage({
+              ...message,
+              selectPairingMessage: null,
+            });
+          }}
+        >
+          {message.selectPairingMessage}
+        </Alert>
+      )}
       <Grid container spacing={2}>
         {filteredPairingSystems.map((system) => (
           <Grid item xs={6} md={md} lg={lg} key={system.value}>

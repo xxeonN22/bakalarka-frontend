@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Alert } from "@mui/material";
 
 import BadmintonSportIcon from "../icons/BadmintonSportIcon";
 import TenisSportIcon from "../icons/TenisSportIcon";
@@ -8,6 +8,8 @@ import VolleyballSportIcon from "../icons/VolleyballSportIcon";
 import FootballSportIcon from "../icons/FootballSportIcon";
 
 export const ChooseSport = (props) => {
+  const { message, setMessage, newTournament, handleTournamentSettingsChange } =
+    props;
   const sports = [
     {
       name: "badminton",
@@ -32,70 +34,86 @@ export const ChooseSport = (props) => {
   ];
 
   return (
-    <Grid container spacing={2}>
-      {sports.map((sport) => (
-        <Grid item xs={6} md={4} key={sport.name}>
-          <Paper
-            sx={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor:
-                props.newTournament.selectedSport === sport.name
-                  ? "#3f51b5"
-                  : "inherit",
-              transition: "background-color 0.5s ease",
-            }}
-          >
-            <label
-              style={{
+    <>
+      {message.selectSportMessage && (
+        <Alert
+          sx={{ marginBlock: "1rem" }}
+          severity={"error"}
+          onClose={() => {
+            setMessage({
+              ...message,
+              selectSportMessage: null,
+            });
+          }}
+        >
+          {message.selectSportMessage}
+        </Alert>
+      )}
+      <Grid container spacing={2}>
+        {sports.map((sport) => (
+          <Grid item xs={6} md={4} key={sport.name}>
+            <Paper
+              sx={{
+                width: "100%",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                paddingBlock: "1rem",
-                paddingInline: "1rem",
+                justifyContent: "center",
+                backgroundColor:
+                  newTournament.selectedSport === sport.name
+                    ? "#3f51b5"
+                    : "inherit",
+                transition: "background-color 0.5s ease",
               }}
-              htmlFor={sport.name}
             >
-              <input
-                style={{ display: "none" }}
-                checked={props.newTournament.selectedSport === sport.name}
-                onChange={(event) =>
-                  props.handleTournamentSettingsChange(
-                    "selectedSport",
-                    event.target.value
-                  )
-                }
-                type="radio"
-                id={sport.name}
-                name="radio-buttons-sports"
-                value={sport.name}
-              />
-              {React.cloneElement(sport.icon, {
-                width: 40,
-                height: 40,
-                fill:
-                  props.newTournament.selectedSport === sport.name
-                    ? "white"
-                    : "black",
-              })}
-              <span
+              <label
                 style={{
-                  marginTop: "1rem",
-                  color:
-                    props.newTournament.selectedSport === sport.name
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  paddingBlock: "1rem",
+                  paddingInline: "1rem",
+                }}
+                htmlFor={sport.name}
+              >
+                <input
+                  style={{ display: "none" }}
+                  checked={newTournament.selectedSport === sport.name}
+                  onChange={(event) =>
+                    handleTournamentSettingsChange(
+                      "selectedSport",
+                      event.target.value
+                    )
+                  }
+                  type="radio"
+                  id={sport.name}
+                  name="radio-buttons-sports"
+                  value={sport.name}
+                />
+                {React.cloneElement(sport.icon, {
+                  width: 40,
+                  height: 40,
+                  fill:
+                    newTournament.selectedSport === sport.name
                       ? "white"
                       : "black",
-                }}
-              >
-                {sport.name.charAt(0).toUpperCase() + sport.name.slice(1)}
-              </span>
-            </label>
-          </Paper>
-        </Grid>
-      ))}
-    </Grid>
+                })}
+                <span
+                  style={{
+                    marginTop: "1rem",
+                    color:
+                      newTournament.selectedSport === sport.name
+                        ? "white"
+                        : "black",
+                  }}
+                >
+                  {sport.name.charAt(0).toUpperCase() + sport.name.slice(1)}
+                </span>
+              </label>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button, IconButton, Popover, Box } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DialogWindow } from "./DialogWindow";
-import { StepperClean } from "./StepperClean";
 import { EditTournamentSettings } from "./EditTournamentSettings";
 import { DeleteTournament } from "./DeleteTournament";
 
@@ -85,16 +84,7 @@ export const TournamentPopover = ({ tournamentId }) => {
             handleClose={handleClose}
             open={dialogState.addPlayers}
             handleCloseModal={() => handleDialogClose("addPlayers")}
-          >
-            <StepperClean
-              tournamentId={tournamentId}
-              data={addPlayersSteps}
-              numberOfSteps={2}
-              handleClose={handleClose}
-              handleCloseModal={() => handleDialogClose("addPlayers")}
-              typeOfContent={"addPlayers"}
-            ></StepperClean>
-          </DialogWindow>
+          ></DialogWindow>
           <Button sx={{ borderRadius: "0" }} variant="contained">
             Skopírovať hráčov
           </Button>

@@ -72,9 +72,7 @@ export const Tournaments = () => {
               },
             }}
           >
-            <CreateTournament
-              typeOfContent={"createTournament"}
-            ></CreateTournament>
+            <CreateTournament></CreateTournament>
           </Grid>
           <Grid
             item

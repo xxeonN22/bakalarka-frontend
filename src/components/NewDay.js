@@ -6,6 +6,7 @@ import {
   Box,
   Grid,
   Autocomplete,
+  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -19,6 +20,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 export const NewDay = (props) => {
   /* Získame pristup k objektu do ktoreho ulozime data o hracich dnoch */
   const {
+    message,
+    setMessage,
     newTournament,
     handleAddGameDay,
     handleRemoveGameDay,
@@ -48,6 +51,20 @@ export const NewDay = (props) => {
 
   return (
     <>
+      {message.gameDaysMessage && (
+        <Alert
+          sx={{ marginBlock: "1rem" }}
+          severity={"error"}
+          onClose={() => {
+            setMessage({
+              ...message,
+              gameDaysMessage: null,
+            });
+          }}
+        >
+          {message.gameDaysMessage}
+        </Alert>
+      )}
       <Grid container spacing={2}>
         {newTournament.gameDays.map((gameDay, index) => {
           const selectedGroups = gameDay.groups || [];
