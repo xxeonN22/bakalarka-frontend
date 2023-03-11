@@ -1,21 +1,14 @@
 import { appTheme } from "../themes/appTheme";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { DialogWindow } from "./DialogWindow";
-import { StepperClean } from "./StepperClean";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { StepperCreateTournament } from "./StepperCreateTournament";
 
 export const CreateTournament = ({ typeOfContent }) => {
   const [dialogState, setDialogState] = useState(false);
-
-  const createTournamentSteps = [
-    "Vyberte šport",
-    "Vyberte párovací systém",
-    "Zadajte údaje o turnaji",
-    "Zvoľte dátum konania turnaja",
-  ];
 
   const handleDialogOpen = () => {
     setDialogState(true);
@@ -45,11 +38,14 @@ export const CreateTournament = ({ typeOfContent }) => {
       </Button>
 
       <DialogWindow open={dialogState} handleCloseModal={handleDialogClose}>
+        <IconButton
+          sx={{ position: "absolute", top: 0, right: 0 }}
+          onClick={handleDialogClose}
+        >
+          <CloseIcon></CloseIcon>
+        </IconButton>
         <StepperCreateTournament
-          data={createTournamentSteps}
-          numberOfSteps={4}
           handleCloseModal={handleDialogClose}
-          typeOfContent={"createTournament"}
         ></StepperCreateTournament>
       </DialogWindow>
     </>

@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import DoneIcon from "@mui/icons-material/Done";
-import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { useState } from "react";
 import { nanoid } from "nanoid";
+
 import { ChoosePairingSystem } from "./ChoosePairingSystem";
 import { ChooseSport } from "./ChooseSport";
 import { SettingsTournament } from "./SettingsTournament";
 import { NewDay } from "./NewDay";
 
 import { Stepper, Step, StepLabel, Button, Box } from "@mui/material";
+import DoneIcon from "@mui/icons-material/Done";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
-export const StepperCreateTournament = (props) => {
+export const StepperCreateTournament = ({ handleCloseModal }) => {
   const [newTournament, setNewTournament] = useState({
     selectedSport: "",
     selectedPairingStyle: "",
@@ -22,18 +23,12 @@ export const StepperCreateTournament = (props) => {
     gameDays: [],
   });
 
-  useEffect(() => {
-    console.log(newTournament);
-  });
-
-  const [activeStep, setActiveStep] = useState(0);
+  const numberOfSteps = 4;
+  const [activeStep, setActiveStep] = useState(1);
 
   const handleNext = () => {
-    if (activeStep === props.numberOfSteps - 1) {
-      if (props.typeOfContent === "createTournament") {
-        console.log(newTournament);
-      }
-      props.handleCloseModal();
+    if (activeStep === numberOfSteps) {
+      handleCloseModal();
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -90,7 +85,7 @@ export const StepperCreateTournament = (props) => {
 
   const getStepContent = (step) => {
     switch (step) {
-      case 0:
+      case 1:
         return (
           <>
             <ChooseSport
@@ -99,7 +94,7 @@ export const StepperCreateTournament = (props) => {
             ></ChooseSport>
           </>
         );
-      case 1:
+      case 2:
         return (
           <>
             <ChoosePairingSystem
@@ -108,7 +103,7 @@ export const StepperCreateTournament = (props) => {
             ></ChoosePairingSystem>
           </>
         );
-      case 2:
+      case 3:
         return (
           <>
             <SettingsTournament
@@ -117,7 +112,7 @@ export const StepperCreateTournament = (props) => {
             ></SettingsTournament>
           </>
         );
-      case 3:
+      case 4:
         return (
           <>
             <NewDay
@@ -133,14 +128,21 @@ export const StepperCreateTournament = (props) => {
     }
   };
 
+  const createTournamentSteps = [
+    "Vyberte šport",
+    "Vyberte párovací systém",
+    "Zadajte údaje o turnaji",
+    "Zvoľte dátum konania turnaja",
+  ];
+
   return (
     <>
       <Stepper
-        activeStep={activeStep}
+        activeStep={activeStep - 1}
         alternativeLabel
-        sx={{ marginBottom: "1rem" }}
+        sx={{ marginBlock: "1rem" }}
       >
-        {props.data.map((label, index) => (
+        {createTournamentSteps.map((label, index) => (
           <Step key={index}>
             <StepLabel>{label}</StepLabel>
           </Step>
@@ -157,7 +159,7 @@ export const StepperCreateTournament = (props) => {
         >
           <Button
             variant="contained"
-            disabled={activeStep === 0}
+            disabled={activeStep === 1}
             onClick={handleBack}
             startIcon={<NavigateBeforeIcon></NavigateBeforeIcon>}
           >
@@ -165,7 +167,7 @@ export const StepperCreateTournament = (props) => {
           </Button>
           <Button
             endIcon={
-              activeStep === props.numberOfSteps - 1 ? (
+              activeStep === numberOfSteps ? (
                 <DoneIcon />
               ) : (
                 <KeyboardArrowRightIcon></KeyboardArrowRightIcon>
@@ -174,9 +176,7 @@ export const StepperCreateTournament = (props) => {
             variant="contained"
             onClick={handleNext}
           >
-            {activeStep === props.numberOfSteps - 1
-              ? "Potvrdiť pridanie"
-              : "Ďalej"}
+            {activeStep === numberOfSteps ? "Potvrdiť pridanie" : "Ďalej"}
           </Button>
         </Box>
       </Box>
