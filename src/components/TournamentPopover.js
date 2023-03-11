@@ -5,20 +5,23 @@ import { DialogWindow } from "./DialogWindow";
 import { EditTournamentSettings } from "./EditTournamentSettings";
 import { DeleteTournament } from "./DeleteTournament";
 
-export const TournamentPopover = ({ tournamentId }) => {
+export const TournamentPopover = ({
+  tournamentId,
+  tournamentName,
+  sportType,
+}) => {
   const [dialogState, setDialogState] = useState({
     addPlayers: false,
     editSettings: false,
     deleteTournament: false,
   });
 
-  const addPlayersSteps = ["Vyberte spôsob pridania hráčov", "Zadajte údaje"];
-
   const handleDialogOpen = (dialogName) => {
     setDialogState((prevState) => ({ ...prevState, [dialogName]: true }));
   };
 
   const handleDialogClose = (dialogName) => {
+    window.history.back();
     setDialogState((prevState) => ({ ...prevState, [dialogName]: false }));
   };
 
@@ -58,7 +61,14 @@ export const TournamentPopover = ({ tournamentId }) => {
       >
         <Box display="flex" flexDirection="column">
           <Button
-            onClick={() => handleDialogOpen("editSettings")}
+            onClick={() => {
+              window.history.pushState(
+                {},
+                "",
+                `/eddittournament/${tournamentId}`
+              );
+              handleDialogOpen("editSettings");
+            }}
             sx={{ borderRadius: "0" }}
             variant="contained"
           >
@@ -70,11 +80,17 @@ export const TournamentPopover = ({ tournamentId }) => {
             handleCloseModal={() => handleDialogClose("editSettings")}
           >
             <EditTournamentSettings
+              handleClose={handleClose}
+              handleCloseModal={() => handleDialogClose("editSettings")}
               tournamentId={tournamentId}
+              sportType={sportType}
             ></EditTournamentSettings>
           </DialogWindow>
           <Button
-            onClick={() => handleDialogOpen("addPlayers")}
+            onClick={() => {
+              window.history.pushState({}, "", `/addplayers/${tournamentId}`);
+              handleDialogOpen("addPlayers");
+            }}
             sx={{ borderRadius: "0" }}
             variant="contained"
           >
@@ -89,7 +105,14 @@ export const TournamentPopover = ({ tournamentId }) => {
             Skopírovať hráčov
           </Button>
           <Button
-            onClick={() => handleDialogOpen("deleteTournament")}
+            onClick={() => {
+              window.history.pushState(
+                {},
+                "",
+                `/deletetournament/${tournamentId}`
+              );
+              handleDialogOpen("deleteTournament");
+            }}
             color="error"
             sx={{ borderRadius: "0" }}
             variant="contained"
@@ -103,6 +126,7 @@ export const TournamentPopover = ({ tournamentId }) => {
           >
             <DeleteTournament
               tournamentId={tournamentId}
+              tournamentName={tournamentName}
               handleClose={handleClose}
               handleCloseModal={() => handleDialogClose("deleteTournament")}
             ></DeleteTournament>

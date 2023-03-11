@@ -1,19 +1,19 @@
 import { Dialog, DialogContent } from "@mui/material";
 
 export const DialogWindow = (props) => {
+  const { open, handleCloseModal, handleClose, children } = props;
   return (
     <div>
       <Dialog
-        open={props.open}
+        open={open}
         onClose={() => {
-          props.handleCloseModal();
-          if (props.handleClose) {
-            props.handleClose();
+          handleCloseModal();
+          if (handleClose) {
+            handleClose();
           }
         }}
-        aria-labelledby="custom-dialog-title"
       >
-        <DialogContent>{props.children}</DialogContent>
+        <DialogContent>{children}</DialogContent>
       </Dialog>
     </div>
   );

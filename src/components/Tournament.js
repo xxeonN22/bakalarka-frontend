@@ -2,7 +2,12 @@ import { Paper, Button, Typography, Grid } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { TournamentPopover } from "./TournamentPopover";
 
-export const Tournament = ({ tournamentId, name, playersNumber }) => {
+export const Tournament = ({
+  tournamentId,
+  name,
+  sportType,
+  playersNumber,
+}) => {
   return (
     <Grid item xs={12} sm={6} lg={4}>
       <Paper
@@ -30,7 +35,11 @@ export const Tournament = ({ tournamentId, name, playersNumber }) => {
         >
           Vstúpiť do turnaja
         </Button>
-        <TournamentPopover tournamentId={tournamentId}></TournamentPopover>
+        <TournamentPopover
+          tournamentId={tournamentId}
+          sportType={sportType}
+          tournamentName={name}
+        ></TournamentPopover>
       </Paper>
     </Grid>
   );

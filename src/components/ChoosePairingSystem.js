@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid, Paper, Alert } from "@mui/material";
 
 export const ChoosePairingSystem = (props) => {

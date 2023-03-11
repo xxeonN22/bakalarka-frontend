@@ -19,9 +19,11 @@ export const Tournaments = () => {
   const [tournamentData, setTournamentData] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000")
-      .then((response) => response.json())
-      .then((data) => setTournamentData(data));
+    (async () => {
+      const response = await fetch("http://localhost:3000");
+      const data = await response.json();
+      setTournamentData(data);
+    })();
   }, []);
 
   const [searchText, setSearchText] = useState("");
@@ -147,6 +149,7 @@ export const Tournaments = () => {
               key={data.id_tournament}
               tournamentId={data.id_tournament}
               name={data.name}
+              sportType={data.sport_type}
               playersNumber={data.players_count}
             />
           ))}

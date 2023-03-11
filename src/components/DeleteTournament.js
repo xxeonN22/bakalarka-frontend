@@ -4,7 +4,7 @@ import { Alert, Button, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 export const DeleteTournament = (props) => {
-  const { tournamentId, handleCloseModal, handleClose } = props;
+  const { tournamentName, handleCloseModal, handleClose } = props;
   return (
     <>
       <Alert
@@ -16,7 +16,8 @@ export const DeleteTournament = (props) => {
           lineHeight: "1.6rem",
         }}
       >
-        Naozaj chcete zrušiť tento turnaj? Tento krok sa nebude dať vrátiť späť!
+        Naozaj chcete vymazať turnaj {tournamentName}? Tento krok sa nebude dať
+        vrátiť späť a zmeny budú trvalé!
       </Alert>
       <Box
         sx={{
