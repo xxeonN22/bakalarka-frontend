@@ -7,7 +7,57 @@ export const Tournament = ({
   name,
   sportType,
   playersNumber,
+  setTournamentData,
+  tournamentData,
+  setMessage,
+  message,
 }) => {
+  const handleDeleteTournament = async () => {
+    const response = await fetch(
+      `http://localhost:3000/deletetournament/${tournamentId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const data = await response.json();
+    setMessage({
+      ...message,
+      deleteTournamentMessage: data.message,
+    });
+
+    const updatedTournaments = tournamentData.filter(
+      (tournament) => tournament.id_tournament !== tournamentId
+    );
+    setTournamentData(updatedTournaments);
+  };
+
+  const handleEditTournament = async (newSettings) => {
+    const response = await fetch(
+      `http://localhost:3000/eddittournament/${tournamentId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          newSettings,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    setMessage({
+      ...message,
+      edditTournamentMessage: data.message,
+    });
+    console.log(data);
+
+    const fetchTournaments = await fetch("http://localhost:3000");
+    const fetchedTournaments = await fetchTournaments.json();
+    setTournamentData(fetchedTournaments);
+  };
+
   return (
     <Grid item xs={12} sm={6} lg={4}>
       <Paper
@@ -39,6 +89,8 @@ export const Tournament = ({
           tournamentId={tournamentId}
           sportType={sportType}
           tournamentName={name}
+          handleDeleteTournament={handleDeleteTournament}
+          handleEditTournament={handleEditTournament}
         ></TournamentPopover>
       </Paper>
     </Grid>

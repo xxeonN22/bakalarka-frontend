@@ -9,6 +9,8 @@ export const TournamentPopover = ({
   tournamentId,
   tournamentName,
   sportType,
+  handleDeleteTournament,
+  handleEditTournament,
 }) => {
   const [dialogState, setDialogState] = useState({
     addPlayers: false,
@@ -84,6 +86,7 @@ export const TournamentPopover = ({
               handleCloseModal={() => handleDialogClose("editSettings")}
               tournamentId={tournamentId}
               sportType={sportType}
+              handleEditTournament={handleEditTournament}
             ></EditTournamentSettings>
           </DialogWindow>
           <Button
@@ -129,6 +132,7 @@ export const TournamentPopover = ({
               tournamentName={tournamentName}
               handleClose={handleClose}
               handleCloseModal={() => handleDialogClose("deleteTournament")}
+              handleDeleteTournament={handleDeleteTournament}
             ></DeleteTournament>
           </DialogWindow>
         </Box>

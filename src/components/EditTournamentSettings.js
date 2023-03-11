@@ -16,6 +16,7 @@ export const EditTournamentSettings = ({
   sportType,
   handleClose,
   handleCloseModal,
+  handleEditTournament,
 }) => {
   const [loading, setLoading] = useState(true);
   const sportsWithSets = ["badminton", "volejbal", "tenis", "stolny-tenis"];
@@ -175,7 +176,11 @@ export const EditTournamentSettings = ({
         <Button
           startIcon={<EditIcon></EditIcon>}
           variant="contained"
-          onClick={() => console.log(tournamentData)}
+          onClick={() => {
+            handleEditTournament(tournamentData);
+            handleCloseModal();
+            handleClose();
+          }}
         >
           Potvrdiť úpravu údajov
         </Button>

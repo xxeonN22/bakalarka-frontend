@@ -4,7 +4,12 @@ import { Alert, Button, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 export const DeleteTournament = (props) => {
-  const { tournamentName, handleCloseModal, handleClose } = props;
+  const {
+    tournamentName,
+    handleCloseModal,
+    handleClose,
+    handleDeleteTournament,
+  } = props;
   return (
     <>
       <Alert
@@ -26,7 +31,15 @@ export const DeleteTournament = (props) => {
           marginBlock: "1.5rem",
         }}
       >
-        <Button variant="contained" color="error">
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => {
+            handleDeleteTournament();
+            handleCloseModal();
+            handleClose();
+          }}
+        >
           Vymazať turnaj
         </Button>
       </Box>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { ContentLayout } from "../components/ContentLayout";
 import { appTheme } from "../themes/appTheme";
+import { ContentLayout } from "../components/ContentLayout";
+import { Tournament } from "../components/Tournament";
+import { CreateTournament } from "../components/CreateTournament";
 
 import {
   Grid,
@@ -8,15 +10,19 @@ import {
   Autocomplete,
   TextField,
   InputAdornment,
+  Alert,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
-import { Tournament } from "../components/Tournament";
-import { CreateTournament } from "../components/CreateTournament";
-
 export const Tournaments = () => {
   const [tournamentData, setTournamentData] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [message, setMessage] = useState({
+    deleteTournamentMessage: "",
+    addPlayersMessage: "",
+    edditTournamentMessage: "",
+  });
 
   useEffect(() => {
     (async () => {
@@ -26,7 +32,6 @@ export const Tournaments = () => {
     })();
   }, []);
 
-  const [searchText, setSearchText] = useState("");
   const filteredData = tournamentData.filter((data) =>
     data.name.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -143,6 +148,48 @@ export const Tournaments = () => {
             />
           </Grid>
         </Grid>
+        {message.deleteTournamentMessage && (
+          <Alert
+            sx={{ marginBlock: "1rem" }}
+            severity={"success"}
+            onClose={() => {
+              setMessage({
+                ...message,
+                deleteTournamentMessage: null,
+              });
+            }}
+          >
+            {message.deleteTournamentMessage}
+          </Alert>
+        )}
+        {message.addPlayersMessage && (
+          <Alert
+            sx={{ marginBlock: "1rem" }}
+            severity={"success"}
+            onClose={() => {
+              setMessage({
+                ...message,
+                addPlayersMessage: null,
+              });
+            }}
+          >
+            {message.addPlayersMessage}
+          </Alert>
+        )}
+        {message.edditTournamentMessage && (
+          <Alert
+            sx={{ marginBlock: "1rem" }}
+            severity={"success"}
+            onClose={() => {
+              setMessage({
+                ...message,
+                edditTournamentMessage: null,
+              });
+            }}
+          >
+            {message.edditTournamentMessage}
+          </Alert>
+        )}
         <Grid container sx={{ marginTop: "5rem" }} spacing={2}>
           {filteredData.map((data) => (
             <Tournament
@@ -151,6 +198,10 @@ export const Tournaments = () => {
               name={data.name}
               sportType={data.sport_type}
               playersNumber={data.players_count}
+              setTournamentData={setTournamentData}
+              tournamentData={tournamentData}
+              setMessage={setMessage}
+              message={message}
             />
           ))}
         </Grid>
