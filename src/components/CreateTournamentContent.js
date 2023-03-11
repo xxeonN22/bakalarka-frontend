@@ -62,8 +62,8 @@ export const CreateTournamentContent = (
           id: nanoid(),
           groups: [],
           round: "",
-          date: "",
-          time: "",
+          date: null,
+          time: null,
         },
       ],
     }));

@@ -111,7 +111,11 @@ export const TournamentPopover = ({ tournamentId }) => {
             open={dialogState.deleteTournament}
             handleCloseModal={() => handleDialogClose("deleteTournament")}
           >
-            <DeleteTournament></DeleteTournament>
+            <DeleteTournament
+              tournamentId={tournamentId}
+              handleClose={handleClose}
+              handleCloseModal={() => handleDialogClose("deleteTournament")}
+            ></DeleteTournament>
           </DialogWindow>
         </Box>
       </Popover>

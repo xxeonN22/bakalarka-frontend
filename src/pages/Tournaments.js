@@ -35,7 +35,7 @@ export const Tournaments = () => {
 
   return (
     <>
-      <ContentLayout backGround={"#252E42"} screen={"tournaments"}>
+      <ContentLayout screen={"tournaments"}>
         <Grid container rowGap={10}>
           <Grid item xs={12} lg={8}>
             <Typography
@@ -43,7 +43,6 @@ export const Tournaments = () => {
               fontSize="1.5rem"
               sx={{
                 width: "60%",
-                color: "white",
                 [appTheme.breakpoints.down("lg")]: {
                   textAlign: "center",
                   width: "100%",

@@ -4,7 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 export const TextFieldIncrement = (props) => {
-  const { value, functionName, label, id, max, min } = props;
+  const { value, functionName, label, id, max, min, isRequired } = props;
 
   const [currentValue, setCurrentValue] = useState(value ?? 0);
 
@@ -32,7 +32,10 @@ export const TextFieldIncrement = (props) => {
 
   const handleInputChange = (event) => {
     const newValue = parseInt(event.target.value) || 0;
-    if (max && newValue > max) {
+    if (!event.target.value) {
+      setCurrentValue(0);
+      functionName(0);
+    } else if (max && newValue > max) {
       setCurrentValue(max);
       functionName(max);
     } else if (min && newValue < min) {
@@ -47,6 +50,7 @@ export const TextFieldIncrement = (props) => {
   return (
     <FormControl fullWidth>
       <TextField
+        required={isRequired}
         label={label}
         id={id}
         value={currentValue}

@@ -31,7 +31,6 @@ export const NewDay = (props) => {
   for (let i = 0; i < numberOfGroups; i++) {
     const letter = String.fromCharCode(65 + i);
     const group = {
-      value: `skupina-${letter}`,
       label: `Skupina - ${letter}`,
     };
     groups = [...groups, group];
@@ -42,7 +41,6 @@ export const NewDay = (props) => {
   let rounds = [];
   for (let i = 0; i < numberOfRounds; i++) {
     const round = {
-      value: `kolo ${i + 1}`,
       label: `Kolo ${i + 1}`,
     };
     rounds = [...rounds, round];
@@ -113,7 +111,7 @@ export const NewDay = (props) => {
                     sx={{ width: "100%", marginBottom: "1rem" }}
                     label="Vyberte dátum"
                     format="DD/MM/YYYY"
-                    value={dayjs(gameDay.date) || dayjs(new Date())}
+                    value={dayjs(gameDay.date || new Date())}
                     minDate={dayjs(new Date())}
                     onChange={(newValue) => {
                       handleGameDayChange(gameDay.id, "date", newValue);
@@ -126,7 +124,7 @@ export const NewDay = (props) => {
                     label="Vyberte čas"
                     format="HH:mm"
                     ampm={false}
-                    value={dayjs(gameDay.time) || dayjs(new Date())}
+                    value={dayjs(gameDay.time || new Date())}
                     onChange={(newValue) => {
                       handleGameDayChange(gameDay.id, "time", newValue);
                     }}

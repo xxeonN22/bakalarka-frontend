@@ -15,10 +15,10 @@ export const StepperCreateTournament = (props) => {
     selectedSport: "",
     selectedPairingStyle: "",
     tournamentName: "",
-    maxNumberOfSets: "",
-    maxNumberOfPoints: "",
-    numberOfGroups: "",
-    numberOfRounds: "",
+    maxNumberOfSets: 1,
+    maxNumberOfPoints: 1,
+    numberOfGroups: 1,
+    numberOfRounds: 1,
     gameDays: [],
   });
 
@@ -41,39 +41,6 @@ export const StepperCreateTournament = (props) => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleInput = (e) => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, "");
-  };
-
-  const incrementValue = (fieldName) => {
-    setNewTournament((prevState) => {
-      const fieldValue =
-        prevState[fieldName] === ""
-          ? prevState[fieldName]
-          : parseInt(prevState[fieldName], 10);
-      return {
-        ...prevState,
-        [fieldName]: parseInt(fieldValue + 1, 10),
-      };
-    });
-  };
-
-  const decrementValue = (fieldName) => {
-    setNewTournament((prevState) => {
-      const fieldValue =
-        prevState[fieldName] === ""
-          ? prevState[fieldName]
-          : parseInt(prevState[fieldName], 10);
-      if (fieldValue > 0) {
-        return {
-          ...prevState,
-          [fieldName]: fieldValue - 1,
-        };
-      }
-      return prevState;
-    });
   };
 
   const handleTournamentSettingsChange = (name, value) => {
@@ -145,9 +112,6 @@ export const StepperCreateTournament = (props) => {
         return (
           <>
             <SettingsTournament
-              handleInput={handleInput}
-              incrementValue={incrementValue}
-              decrementValue={decrementValue}
               newTournament={newTournament}
               handleTournamentSettingsChange={handleTournamentSettingsChange}
             ></SettingsTournament>

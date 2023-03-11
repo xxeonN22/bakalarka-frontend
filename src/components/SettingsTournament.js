@@ -1,10 +1,10 @@
-import React from "react";
-import { TextField, Grid, Box, IconButton } from "@mui/material";
-
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import { TextField, Grid } from "@mui/material";
+import { TextFieldIncrement } from "../components/TextFieldIncrement";
 
 export const SettingsTournament = (props) => {
+  const sportsWithSets = ["badminton", "volejbal", "tenis", "stolny-tenis"];
+  const maxNumberPointsSports = ["badminton", "volejbal"];
+
   const { handleTournamentSettingsChange, newTournament } = props;
   return (
     <Grid container spacing={2}>
@@ -19,163 +19,65 @@ export const SettingsTournament = (props) => {
           }
         ></TextField>
       </Grid>
-      {(newTournament.selectedSport === "badminton" ||
-        newTournament.selectedSport === "tenis" ||
-        newTournament.selectedSport === "stolny-tenis" ||
-        newTournament.selectedSport === "volejbal") && (
+      {sportsWithSets.includes(newTournament.selectedSport) && (
         <>
           <Grid item xs={12} md={6}>
-            <TextField
-              required
-              fullWidth
-              label="Počet setov v zápase"
-              value={newTournament?.maxNumberOfSets}
-              onChange={(e) =>
-                handleTournamentSettingsChange(
-                  "maxNumberOfSets",
-                  e.target.value
-                )
+            <TextFieldIncrement
+              isRequired={true}
+              value={newTournament.maxNumberOfSets}
+              functionName={(value) =>
+                handleTournamentSettingsChange("maxNumberOfSets", value)
               }
-              InputProps={{
-                inputProps: {
-                  maxLength: 10, // optional: set a maximum length for the input
-                  onInput: props.handleInput,
-                },
-                endAdornment: (
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <IconButton
-                      sx={{ padding: 0 }}
-                      onClick={() =>
-                        newTournament.maxNumberOfSets < 10
-                          ? props.incrementValue("maxNumberOfSets")
-                          : ""
-                      }
-                    >
-                      <AddIcon />
-                    </IconButton>
-                    <IconButton
-                      sx={{ padding: 0 }}
-                      onClick={() => props.decrementValue("maxNumberOfSets")}
-                    >
-                      <RemoveIcon />
-                    </IconButton>
-                  </Box>
-                ),
-              }}
-            ></TextField>
+              label={`Počet setov v zápase`}
+              id={`max-sets`}
+              min={1}
+              max={10}
+            ></TextFieldIncrement>
           </Grid>
         </>
       )}
-      {(newTournament.selectedSport === "badminton" ||
-        newTournament.selectedSport === "volejbal") && (
+      {maxNumberPointsSports.includes(newTournament.selectedSport) && (
         <>
           <Grid item xs={12} md={6}>
-            <TextField
-              required
-              fullWidth
-              label="Počet bodov v sete"
-              value={newTournament?.maxNumberOfPoints}
-              onChange={(e) =>
-                handleTournamentSettingsChange(
-                  "maxNumberOfPoints",
-                  e.target.value
-                )
+            <TextFieldIncrement
+              isRequired={true}
+              value={newTournament.maxNumberOfPoints}
+              functionName={(value) =>
+                handleTournamentSettingsChange("maxNumberOfPoints", value)
               }
-              InputProps={{
-                inputProps: {
-                  maxLength: 10, // optional: set a maximum length for the input
-                  onInput: props.handleInput,
-                },
-                endAdornment: (
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <IconButton
-                      sx={{ padding: 0 }}
-                      onClick={() =>
-                        newTournament.maxNumberOfPoints < 100
-                          ? props.incrementValue("maxNumberOfPoints")
-                          : ""
-                      }
-                    >
-                      <AddIcon />
-                    </IconButton>
-                    <IconButton
-                      sx={{ padding: 0 }}
-                      onClick={() => props.decrementValue("maxNumberOfPoints")}
-                    >
-                      <RemoveIcon />
-                    </IconButton>
-                  </Box>
-                ),
-              }}
-            ></TextField>
+              label={`Počet bodov v sete`}
+              id={`max-points`}
+              min={1}
+              max={100}
+            ></TextFieldIncrement>
           </Grid>
         </>
       )}
       <Grid item xs={12} md={6}>
-        <TextField
-          required
-          fullWidth
-          label="Počet skupín"
-          value={newTournament?.numberOfGroups}
-          onChange={(e) =>
-            handleTournamentSettingsChange("numberOfGroups", e.target.value)
+        <TextFieldIncrement
+          isRequired={true}
+          value={newTournament.numberOfGroups}
+          functionName={(value) =>
+            handleTournamentSettingsChange("numberOfGroups", value)
           }
-          InputProps={{
-            inputProps: {
-              maxLength: 10, // optional: set a maximum length for the input
-              onInput: props.handleInput,
-            },
-            endAdornment: (
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <IconButton
-                  sx={{ padding: 0 }}
-                  onClick={() => props.incrementValue("numberOfGroups")}
-                >
-                  <AddIcon />
-                </IconButton>
-                <IconButton
-                  sx={{ padding: 0 }}
-                  onClick={() => props.decrementValue("numberOfGroups")}
-                >
-                  <RemoveIcon />
-                </IconButton>
-              </Box>
-            ),
-          }}
-        ></TextField>
+          label={`Počet skupín`}
+          id={`tournament-groups`}
+          min={1}
+          max={10}
+        ></TextFieldIncrement>
       </Grid>
       <Grid item xs={12} md={6}>
-        <TextField
-          required
-          fullWidth
-          label="Počet kôl"
-          value={newTournament?.numberOfRounds}
-          onChange={(e) =>
-            handleTournamentSettingsChange("numberOfRounds", e.target.value)
+        <TextFieldIncrement
+          isRequired={true}
+          value={newTournament.numberOfRounds}
+          functionName={(value) =>
+            handleTournamentSettingsChange("numberOfRounds", value)
           }
-          InputProps={{
-            inputProps: {
-              maxLength: 10, // optional: set a maximum length for the input
-              onInput: props.handleInput,
-            },
-            endAdornment: (
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <IconButton
-                  sx={{ padding: 0 }}
-                  onClick={() => props.incrementValue("numberOfRounds")}
-                >
-                  <AddIcon />
-                </IconButton>
-                <IconButton
-                  sx={{ padding: 0 }}
-                  onClick={() => props.decrementValue("numberOfRounds")}
-                >
-                  <RemoveIcon />
-                </IconButton>
-              </Box>
-            ),
-          }}
-        ></TextField>
+          label={`Počet kôl`}
+          id={`tournament-rounds`}
+          min={1}
+          max={10}
+        ></TextFieldIncrement>
       </Grid>
     </Grid>
   );

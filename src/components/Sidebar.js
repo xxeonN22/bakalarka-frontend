@@ -45,7 +45,7 @@ export const SideBar = ({ screen }) => {
     },
     {
       title: "Turnaje",
-      to: "/tournaments",
+      to: "/",
       icon: <HomeIcon width={40} height={40} fill={"white"} />,
     },
     {
