@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, useNavigate, Route } from "react-router-dom";
 
 import { MatchScore } from "../components/MatchScore";
 import { MatchBox } from "../components/MatchBox";
 import { TextFieldIncrement } from "../components/TextFieldIncrement";
 import { SelectBox } from "../components/SelectBox";
-
 import { ContentLayout } from "../components/ContentLayout";
 import { appTheme } from "../themes/appTheme";
 
 import { Grid, Box, Button, TextField, Alert } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+
+const MATCHES_ENDPOINT = "http://localhost:3000/matches";
 
 const roundCourtsGridStyle = {
   display: "flex",
@@ -35,81 +36,93 @@ const generateMatches = {
 };
 
 export const Matches = () => {
-  const [groups, setGroups] = React.useState([]);
-  const [selectedGroup, setSelectedGroup] = React.useState("");
-  const [rounds, setRounds] = React.useState([]);
-  const [selectedRound, setSelectedRound] = React.useState("");
-  const [gameDays, setGameDays] = React.useState([]);
-  const [selectedGameDay, setSelectedGameDay] = React.useState("");
-  const [numberOfCourts, setNumberOfCourts] = React.useState(1);
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("");
+  const [rounds, setRounds] = useState([]);
+  const [selectedRound, setSelectedRound] = useState("");
+  const [gameDays, setGameDays] = useState([]);
+  const [selectedGameDay, setSelectedGameDay] = useState("");
+  const [numberOfCourts, setNumberOfCourts] = useState(1);
   const [selectedCourts, setSelectedCourts] = useState(numberOfCourts);
-  const [responseMessage, setResponseMessage] = React.useState();
-  const [deleteMessage, setDeleteMessage] = React.useState();
-  const [scoreMessage, setScoreMessage] = React.useState();
-  const [matches, setMatches] = React.useState([]);
+  const [matches, setMatches] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMatches, setSelectedMatches] = useState([]);
   const [dialogState, setDialogState] = useState(false);
   const [numberOfSets, setNumberOfSets] = useState("");
+  const [maxPoints, setMaxPoints] = useState("");
 
-  const [selectedMatchId, setSelectedMatchId] = useState("");
-  const [firstPlayer, setFirstPlayer] = useState("");
-  const [firstPlayerElo, setFirstPlayerElo] = useState("");
-  const [secondPlayer, setSecondPlayer] = useState("");
-  const [secondPlayerElo, setSecondPlayerElo] = useState("");
-  const [firstPlayerId, setFirstPlayerId] = useState("");
-  const [secondPlayerId, setSecondPlayerId] = useState("");
+  const [match, setMatch] = useState({
+    selectedMatchId: "",
+    firstPlayer: "",
+    firstPlayerElo: "",
+    secondPlayer: "",
+    secondPlayerElo: "",
+    firstPlayerId: "",
+    secondPlayerId: "",
+  });
+
+  const [messageState, setMessageState] = useState({
+    responseMessage: "",
+    deleteMessage: "",
+    scoreMessage: "",
+  });
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/matches")
-      .then((response) => response.json())
-      .then((data) => {
-        setGroups(data.groups);
-        setSelectedGroup(data.groups[0].group_name);
-        setRounds(data.rounds);
-        setSelectedRound(data.rounds[0].round_number);
-        setNumberOfCourts(data.courts[0]["count(id_location)"]);
-        setSelectedCourts(data.courts[0]["count(id_location)"]);
-        setMatches(data.matchPair);
-        setNumberOfSets(data.numberOfSets[0].max_sets);
-      });
+    (async () => {
+      const response = await fetch("http://localhost:3000/matches");
+      const data = await response.json();
+      setGroups(data.groups);
+      setSelectedGroup(data.groups[0].group_name);
+      setRounds(data.rounds);
+      setSelectedRound(data.rounds[0].round_number);
+      setNumberOfCourts(data.courts[0]["count(id_location)"]);
+      setMatches(data.matchPair);
+      setNumberOfSets(data.numberOfSets[0].max_sets);
+      setMaxPoints(data.maxPoints[0].max_points);
+    })();
   }, []);
 
   useEffect(() => {
-    if (selectedRound) {
-      fetch("http://localhost:3000/gameDays", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ selectedRound }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setGameDays(data);
-          setSelectedGameDay(data[0]);
+    (async () => {
+      if (selectedRound) {
+        const response = await fetch("http://localhost:3000/gameDays", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ selectedRound }),
         });
-    }
+        const data = await response.json();
+        setGameDays(data);
+        setSelectedGameDay(data[0]);
+      }
+    })();
   }, [selectedRound]);
 
   useEffect(() => {
     setMatchValues({
-      matchId: selectedMatchId,
-      firstPlayer: firstPlayerId,
-      firstPlayerElo: firstPlayerElo,
-      secondPlayer: secondPlayerId,
-      secondPlayerElo: secondPlayerElo,
+      matchId: match.selectedMatchId,
+      firstPlayer: match.firstPlayerId,
+      firstPlayerElo: match.firstPlayerElo,
+      secondPlayer: match.secondPlayerId,
+      secondPlayerElo: match.secondPlayerElo,
     });
   }, [
-    selectedMatchId,
-    firstPlayerId,
-    secondPlayerId,
-    firstPlayerElo,
-    secondPlayerElo,
+    match.selectedMatchId,
+    match.firstPlayerId,
+    match.secondPlayerId,
+    match.firstPlayerElo,
+    match.secondPlayerElo,
   ]);
+
+  const updateMatches = async () => {
+    const response = await fetch(MATCHES_ENDPOINT);
+    const data = await response.json();
+    setMatches(data.matchPair);
+  };
 
   const handleGenerateClick = async () => {
     const response = await fetch("http://localhost:3000/matches", {
@@ -126,13 +139,12 @@ export const Matches = () => {
     });
     const data = await response.json();
 
-    setResponseMessage(data.message);
+    setMessageState({
+      ...messageState,
+      responseMessage: data.message,
+    });
 
-    fetch("http://localhost:3000/matches")
-      .then((response) => response.json())
-      .then((data) => {
-        setMatches(data.matchPair);
-      });
+    updateMatches();
   };
 
   const handleGroupChange = (event) => {
@@ -163,10 +175,8 @@ export const Matches = () => {
   const handleCheckboxClick = (key) => {
     setSelectedMatches((prevSelectedMatches) => {
       if (prevSelectedMatches.includes(key)) {
-        // If the key is already in the array, remove it
         return prevSelectedMatches.filter((matchKey) => matchKey !== key);
       } else {
-        // If the key is not in the array, add it
         return [...prevSelectedMatches, key];
       }
     });
@@ -185,19 +195,17 @@ export const Matches = () => {
 
     const data = await response.json();
 
-    setDeleteMessage(data.message);
-
+    setMessageState({
+      ...messageState,
+      deleteMessage: data.message,
+    });
     setSelectedMatches([]);
-    fetch("http://localhost:3000/matches")
-      .then((response) => response.json())
-      .then((data) => {
-        setMatches(data.matchPair);
-      });
+    updateMatches();
   };
 
   const handleSetScore = async () => {
     const response = await fetch(
-      `http://localhost:3000/matches/${selectedMatchId}`,
+      `http://localhost:3000/matches/${match.selectedMatchId}`,
       {
         method: "PUT",
         headers: {
@@ -211,13 +219,12 @@ export const Matches = () => {
     );
 
     const data = await response.json();
-    setScoreMessage(data.message);
+    setMessageState({
+      ...messageState,
+      scoreMessage: data.message,
+    });
 
-    fetch("http://localhost:3000/matches")
-      .then((response) => response.json())
-      .then((data) => {
-        setMatches(data.matchPair);
-      });
+    updateMatches();
   };
 
   const handleDialogOpen = () => {
@@ -248,13 +255,16 @@ export const Matches = () => {
   ) => {
     handleDialogOpen();
     navigate(`/matches/${matchId}`);
-    setSelectedMatchId(matchId);
-    setFirstPlayer(firstPlayer);
-    setFirstPlayerElo(firstPlayerElo);
-    setSecondPlayer(secondPlayer);
-    setSecondPlayerElo(secondPlayerElo);
-    setFirstPlayerId(firstPlayerId);
-    setSecondPlayerId(secondPlayerId);
+    setMatch({
+      ...match,
+      selectedMatchId: matchId,
+      firstPlayer: firstPlayer,
+      firstPlayerElo: firstPlayerElo,
+      secondPlayer: secondPlayer,
+      secondPlayerElo: secondPlayerElo,
+      firstPlayerId: firstPlayerId,
+      secondPlayerId: secondPlayerId,
+    });
   };
 
   const handleInputChange = (event) => {
@@ -290,7 +300,7 @@ export const Matches = () => {
           }
           label={`Set ${i}`}
           id={`firstPlayer-set${i}`}
-          max={22}
+          max={maxPoints}
         />
         <TextFieldIncrement
           value={matchValues[i]?.firstPlayerSet}
@@ -302,7 +312,7 @@ export const Matches = () => {
           }
           label={`Set ${i}`}
           id={`secondPlayer-set${i}`}
-          max={22}
+          max={maxPoints}
         />
       </Grid>
     );
@@ -355,7 +365,7 @@ export const Matches = () => {
             </Grid>
             <Grid item xs={6} lg={3}>
               <TextFieldIncrement
-                value={selectedCourts}
+                value={1}
                 functionName={setSelectedCourts}
                 label="Počet kurtov"
                 id="number-of-courts"
@@ -375,35 +385,50 @@ export const Matches = () => {
             </Button>
           </Grid>
         </Grid>
-        {scoreMessage && (
+        {messageState.scoreMessage && (
           <Alert
             sx={{ marginBlock: "1rem" }}
             severity={"success"}
-            onClose={() => setScoreMessage(null)}
+            onClose={() => {
+              setMessageState({
+                ...messageState,
+                scoreMessage: null,
+              });
+            }}
           >
-            {scoreMessage}
+            {messageState.scoreMessage}
           </Alert>
         )}
-        {deleteMessage && (
+        {messageState.deleteMessage && (
           <Alert
             sx={{ marginBlock: "1rem" }}
             severity={"success"}
-            onClose={() => setDeleteMessage(null)}
+            onClose={() => {
+              setMessageState({
+                ...messageState,
+                deleteMessage: null,
+              });
+            }}
           >
-            {deleteMessage}
+            {messageState.deleteMessage}
           </Alert>
         )}
-        {responseMessage && (
+        {messageState.responseMessage && (
           <Alert
             sx={{ marginBlock: "1rem" }}
             severity={
-              responseMessage === "Generovanie prebehlo úspešne"
+              messageState.responseMessage === "Generovanie prebehlo úspešne"
                 ? "success"
                 : "error"
             }
-            onClose={() => setResponseMessage(null)}
+            onClose={() => {
+              setMessageState({
+                ...messageState,
+                responseMessage: null,
+              });
+            }}
           >
-            {responseMessage}
+            {messageState.responseMessage}
           </Alert>
         )}
         {matches.length > 0 && (
@@ -484,8 +509,8 @@ export const Matches = () => {
         dialogState={dialogState}
         handleDialogClose={handleDialogClose}
         setsToRender={setsToRender}
-        firstPlayer={firstPlayer}
-        secondPlayer={secondPlayer}
+        firstPlayer={match.firstPlayer}
+        secondPlayer={match.secondPlayer}
         handleSetScore={handleSetScore}
       ></MatchScore>
     </>

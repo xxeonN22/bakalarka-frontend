@@ -6,7 +6,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 export const TextFieldIncrement = (props) => {
   const { value, functionName, label, id, max, min } = props;
 
-  const [currentValue, setCurrentValue] = useState(value);
+  const [currentValue, setCurrentValue] = useState(value ?? 0);
 
   const handleIncrement = () => {
     const newValue = currentValue + 1;
