@@ -33,6 +33,31 @@ export const Tournament = ({
   };
 
   const handleEditTournament = async (newSettings) => {
+    console.log(newSettings);
+    if (newSettings.tournamentName === "") {
+      setMessage({
+        ...message,
+        errorMessage:
+          "Názov turnaja musí byť vyplnený! Nastavenia neboli zmenené!",
+      });
+      return;
+    }
+
+    if (
+      newSettings.maxSets === 0 ||
+      newSettings.maxPoints === 0 ||
+      newSettings.numberOfCourts === 0 ||
+      newSettings.numberOfGroups === 0 ||
+      newSettings.numberOfRounds === 0
+    ) {
+      setMessage({
+        ...message,
+        errorMessage:
+          "Každá hodnota musí byť väčšia alebo rovná 1! Nastavenia neboli zmenené!",
+      });
+      return;
+    }
+
     const response = await fetch(
       `http://localhost:3000/eddittournament/${tournamentId}`,
       {

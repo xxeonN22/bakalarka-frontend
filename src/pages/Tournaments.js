@@ -22,6 +22,7 @@ export const Tournaments = () => {
     deleteTournamentMessage: "",
     addPlayersMessage: "",
     edditTournamentMessage: "",
+    errorMessage: "",
   });
 
   useEffect(() => {
@@ -148,6 +149,20 @@ export const Tournaments = () => {
             />
           </Grid>
         </Grid>
+        {message.errorMessage && (
+          <Alert
+            sx={{ marginBlock: "1rem" }}
+            severity={"error"}
+            onClose={() => {
+              setMessage({
+                ...message,
+                errorMessage: null,
+              });
+            }}
+          >
+            {message.errorMessage}
+          </Alert>
+        )}
         {message.deleteTournamentMessage && (
           <Alert
             sx={{ marginBlock: "1rem" }}
