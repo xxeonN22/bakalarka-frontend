@@ -23,6 +23,7 @@ export const Tournaments = () => {
     addPlayersMessage: "",
     edditTournamentMessage: "",
     errorMessage: "",
+    createdTournamentMessage: "",
   });
 
   useEffect(() => {
@@ -39,6 +40,29 @@ export const Tournaments = () => {
 
   const handleClearClick = () => {
     setSearchText("");
+  };
+
+  const createAlert = (messageType, severity, onClose) => {
+    const messageText = message[messageType];
+    if (messageText && messageText !== "") {
+      return (
+        <Alert
+          sx={{ marginBlock: "1rem" }}
+          severity={severity}
+          onClose={() => {
+            setMessage({
+              ...message,
+              [messageType]: null,
+            });
+            onClose && onClose();
+          }}
+        >
+          {messageText}
+        </Alert>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -80,7 +104,10 @@ export const Tournaments = () => {
               },
             }}
           >
-            <CreateTournament></CreateTournament>
+            <CreateTournament
+              setMessage={setMessage}
+              message={message}
+            ></CreateTournament>
           </Grid>
           <Grid
             item
@@ -149,62 +176,11 @@ export const Tournaments = () => {
             />
           </Grid>
         </Grid>
-        {message.errorMessage && (
-          <Alert
-            sx={{ marginBlock: "1rem" }}
-            severity={"error"}
-            onClose={() => {
-              setMessage({
-                ...message,
-                errorMessage: null,
-              });
-            }}
-          >
-            {message.errorMessage}
-          </Alert>
-        )}
-        {message.deleteTournamentMessage && (
-          <Alert
-            sx={{ marginBlock: "1rem" }}
-            severity={"success"}
-            onClose={() => {
-              setMessage({
-                ...message,
-                deleteTournamentMessage: null,
-              });
-            }}
-          >
-            {message.deleteTournamentMessage}
-          </Alert>
-        )}
-        {message.addPlayersMessage && (
-          <Alert
-            sx={{ marginBlock: "1rem" }}
-            severity={"success"}
-            onClose={() => {
-              setMessage({
-                ...message,
-                addPlayersMessage: null,
-              });
-            }}
-          >
-            {message.addPlayersMessage}
-          </Alert>
-        )}
-        {message.edditTournamentMessage && (
-          <Alert
-            sx={{ marginBlock: "1rem" }}
-            severity={"success"}
-            onClose={() => {
-              setMessage({
-                ...message,
-                edditTournamentMessage: null,
-              });
-            }}
-          >
-            {message.edditTournamentMessage}
-          </Alert>
-        )}
+        {createAlert("createdTournamentMessage", "success")}
+        {createAlert("errorMessage", "error")}
+        {createAlert("deleteTournamentMessage", "success")}
+        {createAlert("addPlayersMessage", "success")}
+        {createAlert("edditTournamentMessage", "success")}
         <Grid container sx={{ marginTop: "5rem" }} spacing={2}>
           {filteredData.map((data) => (
             <Tournament

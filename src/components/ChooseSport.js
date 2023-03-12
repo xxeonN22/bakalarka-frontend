@@ -8,8 +8,12 @@ import VolleyballSportIcon from "../icons/VolleyballSportIcon";
 import FootballSportIcon from "../icons/FootballSportIcon";
 
 export const ChooseSport = (props) => {
-  const { message, setMessage, newTournament, handleTournamentSettingsChange } =
-    props;
+  const {
+    stepperMessage,
+    setStepperMessage,
+    newTournament,
+    handleTournamentSettingsChange,
+  } = props;
   const sports = [
     {
       name: "badminton",
@@ -35,18 +39,18 @@ export const ChooseSport = (props) => {
 
   return (
     <>
-      {message.selectSportMessage && (
+      {stepperMessage.selectSportMessage && (
         <Alert
           sx={{ marginBlock: "1rem" }}
           severity={"error"}
           onClose={() => {
-            setMessage({
-              ...message,
+            setStepperMessage({
+              ...stepperMessage,
               selectSportMessage: null,
             });
           }}
         >
-          {message.selectSportMessage}
+          {stepperMessage.selectSportMessage}
         </Alert>
       )}
       <Grid container spacing={2}>

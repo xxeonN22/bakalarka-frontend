@@ -8,7 +8,8 @@ import { DialogWindow } from "./DialogWindow";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 
-export const CreateTournament = () => {
+export const CreateTournament = (props) => {
+  const { setMessage, message } = props;
   const [dialogState, setDialogState] = useState(false);
 
   const handleDialogOpen = () => {
@@ -46,6 +47,8 @@ export const CreateTournament = () => {
           <CloseIcon></CloseIcon>
         </IconButton>
         <StepperCreateTournament
+          setMessage={setMessage}
+          message={message}
           handleCloseModal={handleDialogClose}
         ></StepperCreateTournament>
       </DialogWindow>

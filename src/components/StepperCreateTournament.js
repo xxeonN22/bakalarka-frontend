@@ -11,7 +11,11 @@ import DoneIcon from "@mui/icons-material/Done";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
-export const StepperCreateTournament = ({ handleCloseModal }) => {
+export const StepperCreateTournament = ({
+  handleCloseModal,
+  setMessage,
+  message,
+}) => {
   const numberOfSteps = 4;
   const [activeStep, setActiveStep] = useState(1);
 
@@ -27,7 +31,7 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
     gameDays: [],
   });
 
-  const [message, setMessage] = useState({
+  const [stepperMessage, setStepperMessage] = useState({
     selectSportMessage: "",
     selectPairingMessage: "",
     tournamentSettingsMessage: "",
@@ -38,8 +42,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
     switch (activeStep) {
       case 1:
         if (newTournament.selectedSport === "") {
-          setMessage({
-            ...message,
+          setStepperMessage({
+            ...stepperMessage,
             selectSportMessage:
               "Prosím, vyberte nejaký šport predtým, ako budete pokračovať na ďalší krok!",
           });
@@ -48,8 +52,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         break;
       case 2:
         if (newTournament.selectedPairingStyle === "") {
-          setMessage({
-            ...message,
+          setStepperMessage({
+            ...stepperMessage,
             selectPairingMessage:
               "Prosím, vyberte druh párovania hráčov v zápasoch predtým, ako budete pokračovať na ďalší krok!",
           });
@@ -58,8 +62,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         break;
       case 3:
         if (newTournament.tournamentName === "") {
-          setMessage({
-            ...message,
+          setStepperMessage({
+            ...stepperMessage,
             tournamentSettingsMessage:
               "Prosím, názov turnaja predtým, ako budete pokračovať na ďalší krok!",
           });
@@ -68,8 +72,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         break;
       case 4:
         if (newTournament.gameDays.length === 0) {
-          setMessage({
-            ...message,
+          setStepperMessage({
+            ...stepperMessage,
             gameDaysMessage:
               "Prosím, vytvorte aspoň jeden hrací deň predtým, ako vytvoríte turnaj!",
           });
@@ -78,16 +82,16 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
 
         for (let i = 0; i < newTournament.gameDays.length; i++) {
           if (newTournament.gameDays[i].groups.length === 0) {
-            setMessage({
-              ...message,
+            setStepperMessage({
+              ...stepperMessage,
               gameDaysMessage:
                 "Vo všetkých hracích dňoch musí byť vybratá aspoň jedna skupina!",
             });
             return false;
           }
           if (newTournament.gameDays[i].round === "") {
-            setMessage({
-              ...message,
+            setStepperMessage({
+              ...stepperMessage,
               gameDaysMessage:
                 "Každý hrací deň musí byť súčasťou niektorého z kôl!",
             });
@@ -101,10 +105,28 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
     return true;
   };
 
+  const handleCreateTournamet = async () => {
+    const response = await fetch(`http://localhost:3000/createtournament`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        newTournament,
+      }),
+    });
+
+    const data = await response.json();
+  };
+
   const handleNext = () => {
     if (validateStep()) {
       if (activeStep === numberOfSteps) {
-        console.log(`Turnaj bol uspesne vytvorený`);
+        handleCreateTournamet();
+        setMessage({
+          ...message,
+          createdTournamentMessage: `Turnaj bol úspešne vytvorený`,
+        });
         console.log(newTournament);
         handleCloseModal();
       } else {
@@ -133,8 +155,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
           id: nanoid(),
           groups: [],
           round: "",
-          date: "",
-          time: "",
+          date: new Date(),
+          time: new Date(),
         },
       ],
     }));
@@ -168,8 +190,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         return (
           <>
             <ChooseSport
-              message={message}
-              setMessage={setMessage}
+              stepperMessage={stepperMessage}
+              setStepperMessage={setStepperMessage}
               newTournament={newTournament}
               handleTournamentSettingsChange={handleTournamentSettingsChange}
             ></ChooseSport>
@@ -179,8 +201,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         return (
           <>
             <ChoosePairingSystem
-              message={message}
-              setMessage={setMessage}
+              stepperMessage={stepperMessage}
+              setStepperMessage={setStepperMessage}
               newTournament={newTournament}
               handleTournamentSettingsChange={handleTournamentSettingsChange}
             ></ChoosePairingSystem>
@@ -190,8 +212,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         return (
           <>
             <SettingsTournament
-              message={message}
-              setMessage={setMessage}
+              stepperMessage={stepperMessage}
+              setStepperMessage={setStepperMessage}
               newTournament={newTournament}
               handleTournamentSettingsChange={handleTournamentSettingsChange}
             ></SettingsTournament>
@@ -201,8 +223,8 @@ export const StepperCreateTournament = ({ handleCloseModal }) => {
         return (
           <>
             <NewDay
-              message={message}
-              setMessage={setMessage}
+              stepperMessage={stepperMessage}
+              setStepperMessage={setStepperMessage}
               newTournament={newTournament}
               handleAddGameDay={handleAddGameDay}
               handleRemoveGameDay={handleRemoveGameDay}

@@ -1,8 +1,12 @@
 import { Grid, Paper, Alert } from "@mui/material";
 
 export const ChoosePairingSystem = (props) => {
-  const { message, setMessage, handleTournamentSettingsChange, newTournament } =
-    props;
+  const {
+    stepperMessage,
+    setStepperMessage,
+    handleTournamentSettingsChange,
+    newTournament,
+  } = props;
 
   const pairingSystems = [
     {
@@ -35,18 +39,18 @@ export const ChoosePairingSystem = (props) => {
     : 4;
   return (
     <>
-      {message.selectPairingMessage && (
+      {stepperMessage.selectPairingMessage && (
         <Alert
           sx={{ marginBlock: "1rem" }}
           severity={"error"}
           onClose={() => {
-            setMessage({
-              ...message,
+            setStepperMessage({
+              ...stepperMessage,
               selectPairingMessage: null,
             });
           }}
         >
-          {message.selectPairingMessage}
+          {stepperMessage.selectPairingMessage}
         </Alert>
       )}
       <Grid container spacing={2}>

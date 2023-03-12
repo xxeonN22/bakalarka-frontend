@@ -2,25 +2,29 @@ import { TextField, Grid, Alert } from "@mui/material";
 import { TextFieldIncrement } from "../components/TextFieldIncrement";
 
 export const SettingsTournament = (props) => {
-  const { message, setMessage, handleTournamentSettingsChange, newTournament } =
-    props;
+  const {
+    stepperMessage,
+    setStepperMessage,
+    handleTournamentSettingsChange,
+    newTournament,
+  } = props;
 
   const sportsWithSets = ["badminton", "volejbal", "tenis", "stolny-tenis"];
   const maxNumberPointsSports = ["badminton", "volejbal"];
   return (
     <>
-      {message.tournamentSettingsMessage && (
+      {stepperMessage.tournamentSettingsMessage && (
         <Alert
           sx={{ marginBlock: "1rem" }}
           severity={"error"}
           onClose={() => {
-            setMessage({
-              ...message,
+            setStepperMessage({
+              ...stepperMessage,
               tournamentSettingsMessage: null,
             });
           }}
         >
-          {message.tournamentSettingsMessage}
+          {stepperMessage.tournamentSettingsMessage}
         </Alert>
       )}
       <Grid container spacing={2}>

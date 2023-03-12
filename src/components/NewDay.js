@@ -20,8 +20,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 export const NewDay = (props) => {
   /* Získame pristup k objektu do ktoreho ulozime data o hracich dnoch */
   const {
-    message,
-    setMessage,
+    stepperMessage,
+    setStepperMessage,
     newTournament,
     handleAddGameDay,
     handleRemoveGameDay,
@@ -51,18 +51,18 @@ export const NewDay = (props) => {
 
   return (
     <>
-      {message.gameDaysMessage && (
+      {stepperMessage.gameDaysMessage && (
         <Alert
           sx={{ marginBlock: "1rem" }}
           severity={"error"}
           onClose={() => {
-            setMessage({
-              ...message,
+            setStepperMessage({
+              ...stepperMessage,
               gameDaysMessage: null,
             });
           }}
         >
-          {message.gameDaysMessage}
+          {stepperMessage.gameDaysMessage}
         </Alert>
       )}
       <Grid container spacing={2}>
