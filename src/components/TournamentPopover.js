@@ -4,6 +4,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { DialogWindow } from "./DialogWindow";
 import { EditTournamentSettings } from "./EditTournamentSettings";
 import { DeleteTournament } from "./DeleteTournament";
+import { StepperAddPlayer } from "./StepperAddPlayer";
 
 export const TournamentPopover = ({
   tournamentId,
@@ -11,6 +12,7 @@ export const TournamentPopover = ({
   sportType,
   handleDeleteTournament,
   handleEditTournament,
+  handleAddPlayers,
 }) => {
   const [dialogState, setDialogState] = useState({
     addPlayers: false,
@@ -89,6 +91,7 @@ export const TournamentPopover = ({
               handleEditTournament={handleEditTournament}
             ></EditTournamentSettings>
           </DialogWindow>
+
           <Button
             onClick={() => {
               window.history.pushState({}, "", `/addplayers/${tournamentId}`);
@@ -103,7 +106,15 @@ export const TournamentPopover = ({
             handleClose={handleClose}
             open={dialogState.addPlayers}
             handleCloseModal={() => handleDialogClose("addPlayers")}
-          ></DialogWindow>
+          >
+            <StepperAddPlayer
+              tournamentId={tournamentId}
+              handleClose={handleClose}
+              handleCloseModal={() => handleDialogClose("addPlayers")}
+              handleAddPlayers={handleAddPlayers}
+            ></StepperAddPlayer>
+          </DialogWindow>
+
           <Button sx={{ borderRadius: "0" }} variant="contained">
             Skopírovať hráčov
           </Button>

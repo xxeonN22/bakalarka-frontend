@@ -1,11 +1,16 @@
 import React from "react";
-import { Grid, Paper, Tooltip } from "@mui/material";
+import { Grid, Paper, Tooltip, Alert } from "@mui/material";
 import AddOnePlayerIcon from "../icons/AddOnePlayerIcon";
 import AddMultiplePlayersIcon from "../icons/AddMultiplePlayersIcon";
 import ImportPlayersIcon from "../icons/ImportPlayersIcon";
 
 export const ChooseAddingStyle = (props) => {
-  const { selectedStyle, handleStyleChange } = props;
+  const {
+    selectedStyle,
+    handleStyleChange,
+    stepperMessage,
+    setStepperMessage,
+  } = props;
   const addingStyles = [
     {
       name: "Pridať jedného hráča",
@@ -30,69 +35,88 @@ export const ChooseAddingStyle = (props) => {
     },
   ];
   return (
-    <Grid container spacing={2} justifyContent="center">
-      {addingStyles.map((addingStyle) => (
-        <Grid item xs={12} md={6} key={addingStyle.value}>
-          <Tooltip
-            arrow
-            title={addingStyle.tooltip}
-            placement={addingStyle.tooltipPlacement}
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  bgcolor: "#3f51b5",
-                  "& .MuiTooltip-arrow": {
-                    color: "#3f51b5",
+    <>
+      {stepperMessage.selectAddMethodMessage && (
+        <Alert
+          sx={{ marginBlock: "1rem" }}
+          severity={"error"}
+          onClose={() => {
+            setStepperMessage({
+              ...stepperMessage,
+              selectAddMethodMessage: null,
+            });
+          }}
+        >
+          {stepperMessage.selectAddMethodMessage}
+        </Alert>
+      )}
+      <Grid container spacing={2} justifyContent="center">
+        {addingStyles.map((addingStyle) => (
+          <Grid item xs={12} md={6} key={addingStyle.value}>
+            <Tooltip
+              arrow
+              title={addingStyle.tooltip}
+              placement={addingStyle.tooltipPlacement}
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: "#3f51b5",
+                    "& .MuiTooltip-arrow": {
+                      color: "#3f51b5",
+                    },
                   },
                 },
-              },
-            }}
-          >
-            <Paper
-              sx={{
-                paddingBlock: "1rem",
-                paddingInline: "1rem",
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor:
-                  selectedStyle === addingStyle.value ? "#3f51b5" : "inherit",
-                transition: "background-color 0.5s ease",
-                color:
-                  selectedStyle === addingStyle.value ? "white" : "inherit",
               }}
             >
-              <label
-                className="chooseAddingStyle"
-                style={{
+              <Paper
+                sx={{
+                  paddingBlock: "1rem",
+                  paddingInline: "1rem",
+                  width: "100%",
                   display: "flex",
-                  flexDirection: "column",
                   alignItems: "center",
-                  padding: "1rem",
+                  justifyContent: "center",
+                  backgroundColor:
+                    selectedStyle === addingStyle.value ? "#3f51b5" : "inherit",
+                  transition: "background-color 0.5s ease",
+                  color:
+                    selectedStyle === addingStyle.value ? "white" : "inherit",
                 }}
-                htmlFor={addingStyle.value}
               >
-                <input
-                  style={{ display: "none" }}
-                  checked={selectedStyle === addingStyle.value}
-                  onChange={handleStyleChange}
-                  type="radio"
-                  id={addingStyle.value}
-                  name="radio-buttons-add-style"
-                  value={addingStyle.value}
-                />
-                {React.cloneElement(addingStyle.icon, {
-                  width: 40,
-                  height: 40,
-                  fill: selectedStyle === addingStyle.value ? "white" : "black",
-                })}
-                <span style={{ marginTop: "0.5rem" }}>{addingStyle.name}</span>
-              </label>
-            </Paper>
-          </Tooltip>
-        </Grid>
-      ))}
-    </Grid>
+                <label
+                  className="chooseAddingStyle"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                  htmlFor={addingStyle.value}
+                >
+                  <input
+                    style={{ display: "none" }}
+                    checked={selectedStyle === addingStyle.value}
+                    onChange={handleStyleChange}
+                    type="radio"
+                    id={addingStyle.value}
+                    name="radio-buttons-add-style"
+                    value={addingStyle.value}
+                  />
+                  {React.cloneElement(addingStyle.icon, {
+                    width: 40,
+                    height: 40,
+                    fill:
+                      selectedStyle === addingStyle.value ? "white" : "black",
+                  })}
+                  <span style={{ marginTop: "0.5rem" }}>
+                    {addingStyle.name}
+                  </span>
+                </label>
+              </Paper>
+            </Tooltip>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };

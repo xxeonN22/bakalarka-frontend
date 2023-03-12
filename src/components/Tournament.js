@@ -76,7 +76,41 @@ export const Tournament = ({
       ...message,
       edditTournamentMessage: data.message,
     });
-    console.log(data);
+
+    const fetchTournaments = await fetch("http://localhost:3000");
+    const fetchedTournaments = await fetchTournaments.json();
+    setTournamentData(fetchedTournaments);
+  };
+
+  const handleAddPlayers = async (
+    selectedStyle,
+    newPlayerData,
+    newPlayersData,
+    selectedFile
+  ) => {
+    const response = await fetch(
+      `http://localhost:3000/addplayers/${tournamentId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          selectedStyle,
+          newPlayerData,
+          newPlayersData,
+          selectedFile,
+        }),
+      }
+    );
+    const data = await response.json();
+
+    console.log(data.message);
+
+    setMessage({
+      ...message,
+      addPlayerMessage: `${data.message}`,
+    });
 
     const fetchTournaments = await fetch("http://localhost:3000");
     const fetchedTournaments = await fetchTournaments.json();
@@ -116,6 +150,7 @@ export const Tournament = ({
           tournamentName={name}
           handleDeleteTournament={handleDeleteTournament}
           handleEditTournament={handleEditTournament}
+          handleAddPlayers={handleAddPlayers}
         ></TournamentPopover>
       </Paper>
     </Grid>

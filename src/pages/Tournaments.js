@@ -24,6 +24,7 @@ export const Tournaments = () => {
     edditTournamentMessage: "",
     errorMessage: "",
     createdTournamentMessage: "",
+    addPlayerMessage: "",
   });
 
   useEffect(() => {
@@ -107,6 +108,7 @@ export const Tournaments = () => {
             <CreateTournament
               setMessage={setMessage}
               message={message}
+              setTournamentData={setTournamentData}
             ></CreateTournament>
           </Grid>
           <Grid
@@ -181,6 +183,7 @@ export const Tournaments = () => {
         {createAlert("deleteTournamentMessage", "success")}
         {createAlert("addPlayersMessage", "success")}
         {createAlert("edditTournamentMessage", "success")}
+        {createAlert("addPlayerMessage", "success")}
         <Grid container sx={{ marginTop: "5rem" }} spacing={2}>
           {filteredData.map((data) => (
             <Tournament

@@ -9,8 +9,31 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 
 export const CreateTournament = (props) => {
-  const { setMessage, message } = props;
+  const { setMessage, message, setTournamentData } = props;
   const [dialogState, setDialogState] = useState(false);
+
+  const handleCreateTournamet = async (newTournament) => {
+    const response = await fetch(`http://localhost:3000/createtournament`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        newTournament,
+      }),
+    });
+
+    const data = await response.json();
+
+    setMessage({
+      ...message,
+      createdTournamentMessage: data.message,
+    });
+
+    const fetchMatches = await fetch("http://localhost:3000");
+    const fetchedMatches = await fetchMatches.json();
+    setTournamentData(fetchedMatches);
+  };
 
   const handleDialogOpen = () => {
     setDialogState(true);
@@ -50,6 +73,7 @@ export const CreateTournament = (props) => {
           setMessage={setMessage}
           message={message}
           handleCloseModal={handleDialogClose}
+          handleCreateTournamet={handleCreateTournamet}
         ></StepperCreateTournament>
       </DialogWindow>
     </>

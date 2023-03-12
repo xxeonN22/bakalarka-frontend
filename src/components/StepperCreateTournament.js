@@ -15,6 +15,7 @@ export const StepperCreateTournament = ({
   handleCloseModal,
   setMessage,
   message,
+  handleCreateTournamet,
 }) => {
   const numberOfSteps = 4;
   const [activeStep, setActiveStep] = useState(1);
@@ -105,29 +106,10 @@ export const StepperCreateTournament = ({
     return true;
   };
 
-  const handleCreateTournamet = async () => {
-    const response = await fetch(`http://localhost:3000/createtournament`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        newTournament,
-      }),
-    });
-
-    const data = await response.json();
-  };
-
   const handleNext = () => {
     if (validateStep()) {
       if (activeStep === numberOfSteps) {
-        handleCreateTournamet();
-        setMessage({
-          ...message,
-          createdTournamentMessage: `Turnaj bol úspešne vytvorený`,
-        });
-        console.log(newTournament);
+        handleCreateTournamet(newTournament);
         handleCloseModal();
       } else {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);

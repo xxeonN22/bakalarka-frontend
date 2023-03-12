@@ -1,69 +1,63 @@
-import React, { useState, useEffect } from "react";
-import { Box, Input, Grid, TextField, MenuItem } from "@mui/material";
+import { useEffect, useState } from "react";
+import {
+  Box,
+  Input,
+  Grid,
+  TextField,
+  MenuItem,
+  Alert,
+  Typography,
+  Paper,
+} from "@mui/material";
 
 export const NewPlayerData = (props) => {
-  const [playerInfo, setPlayerInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    group: "",
-    elo: "",
-  });
+  const {
+    tournamentId,
+    selectedStyle,
+    stepperMessage,
+    setStepperMessage,
+    newPlayerData,
+    handleSinglePlayerChange,
+    handleMultiplePlayersChange,
+    handleFileChange,
+  } = props;
 
-  const groups = [
-    {
-      id: 1,
-      value: "SKUPINA - A",
-    },
-    {
-      id: 2,
-      value: "SKUPINA - B",
-    },
-    {
-      id: 3,
-      value: "SKUPINA - C",
-    },
-  ];
-
-  const handleFirstNameChange = (event) => {
-    setPlayerInfo({ ...playerInfo, firstName: event.target.value });
-  };
-
-  const handleLastNameChange = (event) => {
-    setPlayerInfo({ ...playerInfo, lastName: event.target.value });
-  };
-
-  const handleEmailChange = (event) => {
-    setPlayerInfo({ ...playerInfo, email: event.target.value });
-  };
-
-  const handleGroupChange = (event) => {
-    setPlayerInfo({ ...playerInfo, group: event.target.value });
-  };
-
-  const handleEloChange = (event) => {
-    setPlayerInfo({ ...playerInfo, elo: event.target.value });
-  };
+  const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    console.log(playerInfo);
-  });
+    (async () => {
+      const response = await fetch(
+        `http://localhost:3000/addplayers/${tournamentId}`
+      );
+      const data = await response.json();
+      setGroups(data);
+    })();
+  }, [tournamentId]);
 
-  const [selectedFile, setSelectedFile] = useState(null);
-  const { selectedStyle } = props;
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  console.log(selectedFile);
   return (
     <>
+      {stepperMessage.playersCredentialsMessage && (
+        <Alert
+          sx={{ marginBlock: "1rem" }}
+          severity={"error"}
+          onClose={() => {
+            setStepperMessage({
+              ...stepperMessage,
+              playersCredentialsMessage: null,
+            });
+          }}
+        >
+          {stepperMessage.playersCredentialsMessage}
+        </Alert>
+      )}
       {selectedStyle === "add-single-player" && (
         <Grid container columnSpacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
-              onChange={handleFirstNameChange}
-              value={playerInfo.firstName}
+              onChange={(e) =>
+                handleSinglePlayerChange("firstName", e.target.value)
+              }
+              value={newPlayerData.firstName}
               label="Zadajte krstné meno"
               fullWidth
               margin="normal"
@@ -79,8 +73,10 @@ export const NewPlayerData = (props) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              onChange={handleLastNameChange}
-              value={playerInfo.lastName}
+              onChange={(e) =>
+                handleSinglePlayerChange("lastName", e.target.value)
+              }
+              value={newPlayerData.lastName}
               label="Zadajte priezvisko"
               fullWidth
               margin="normal"
@@ -96,8 +92,10 @@ export const NewPlayerData = (props) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              onChange={handleEmailChange}
-              value={playerInfo.email}
+              onChange={(e) =>
+                handleSinglePlayerChange("email", e.target.value)
+              }
+              value={newPlayerData.email}
               label="Zadajte email"
               fullWidth
               margin="normal"
@@ -115,24 +113,26 @@ export const NewPlayerData = (props) => {
             <TextField
               select
               label="Vyberte skupinu"
-              value={playerInfo.group}
-              onChange={handleGroupChange}
+              value={newPlayerData.group}
+              onChange={(e) =>
+                handleSinglePlayerChange("group", e.target.value)
+              }
               multiple // Add the multiple prop
               fullWidth
               margin="normal"
               required
             >
               {groups.map((group) => (
-                <MenuItem key={group.id} value={group.value}>
-                  {group.value}
+                <MenuItem key={group.group_name} value={group.group_name}>
+                  {group.group_name}
                 </MenuItem>
               ))}
             </TextField>
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              onChange={handleEloChange}
-              value={playerInfo.elo}
+              onChange={(e) => handleSinglePlayerChange("elo", e.target.value)}
+              value={newPlayerData.elo}
               label="Zadajte hodnotu ELO"
               fullWidth
               margin="normal"
@@ -149,15 +149,56 @@ export const NewPlayerData = (props) => {
         </Grid>
       )}
       {selectedStyle === "add-multiple-players" && (
-        <TextField
-          fullWidth
-          id="outlined-multiline-static"
-          label="Pridať viacero hráčov"
-          multiline
-          rows={15}
-          inputProps={{ cols: 50 }}
-          placeholder="meno;priezvisko;email;skupina;elo;"
-        />
+        <>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              textAlign="center"
+              sx={{ marginBottom: "0.4rem" }}
+            >
+              Zoznam vaších skupín
+            </Grid>
+            <Grid
+              container
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "1rem",
+              }}
+              spacing={2}
+            >
+              {groups.map((group) => (
+                <Grid key={group.group_name} item xs={4}>
+                  <Paper sx={{ padding: "0.3rem" }}>
+                    <Typography sx={{ textAlign: "center" }}>
+                      {group.group_name}
+                    </Typography>
+                  </Paper>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+          <Typography textAlign="center" sx={{ marginBottom: "0.5rem" }}>
+            Každý hráč musí byť zadaný v nasledujúcom tvare:
+          </Typography>
+          <Typography textAlign="center" sx={{ marginBottom: "0.5rem" }}>
+            Meno, Priezvisko, email, SKUPINA - ?, elo;
+          </Typography>
+          <TextField
+            onChange={(e) => handleMultiplePlayersChange(e)}
+            fullWidth
+            id="outlined-multiline-static"
+            label="Pridať viacero hráčov"
+            multiline
+            rows={15}
+            inputProps={{ cols: 50 }}
+            placeholder="Meno,Priezvisko,email,SKUPINA - ?,elo;"
+          />
+        </>
       )}
       {selectedStyle === "import-players-from-file" && (
         <Box
@@ -167,7 +208,7 @@ export const NewPlayerData = (props) => {
             alignItems: "center",
           }}
         >
-          <Input type="file" onChange={handleFileChange} />
+          <Input type="file" onChange={(e) => handleFileChange(e)} />
         </Box>
       )}
     </>
