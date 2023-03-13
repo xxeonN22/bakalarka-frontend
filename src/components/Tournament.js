@@ -82,11 +82,33 @@ export const Tournament = ({
     setTournamentData(fetchedTournaments);
   };
 
+  const handleImportPlayers = async (selectedStyle, selectedFile) => {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("tournamentId", tournamentId);
+
+    const response = await fetch("http://localhost:3000/importplayers", {
+      method: "PUT",
+      body: formData,
+    });
+
+    const data = await response.json();
+    console.log(data.message);
+
+    setMessage({
+      ...message,
+      addPlayerMessage: `${data.message}`,
+    });
+
+    const fetchTournaments = await fetch("http://localhost:3000");
+    const fetchedTournaments = await fetchTournaments.json();
+    setTournamentData(fetchedTournaments);
+  };
+
   const handleAddPlayers = async (
     selectedStyle,
     newPlayerData,
-    newPlayersData,
-    selectedFile
+    newPlayersData
   ) => {
     const response = await fetch(
       `http://localhost:3000/addplayers/${tournamentId}`,
@@ -99,7 +121,6 @@ export const Tournament = ({
           selectedStyle,
           newPlayerData,
           newPlayersData,
-          selectedFile,
         }),
       }
     );
@@ -180,6 +201,7 @@ export const Tournament = ({
           handleEditTournament={handleEditTournament}
           handleAddPlayers={handleAddPlayers}
           handleCopyPlayers={handleCopyPlayers}
+          handleImportPlayers={handleImportPlayers}
         ></TournamentPopover>
       </Paper>
     </Grid>

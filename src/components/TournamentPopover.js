@@ -14,6 +14,7 @@ export const TournamentPopover = ({
   handleEditTournament,
   handleAddPlayers,
   handleCopyPlayers,
+  handleImportPlayers,
 }) => {
   const [dialogState, setDialogState] = useState({
     addPlayers: false,
@@ -113,6 +114,7 @@ export const TournamentPopover = ({
               handleClose={handleClose}
               handleCloseModal={() => handleDialogClose("addPlayers")}
               handleAddPlayers={handleAddPlayers}
+              handleImportPlayers={handleImportPlayers}
             ></StepperAddPlayer>
           </DialogWindow>
 

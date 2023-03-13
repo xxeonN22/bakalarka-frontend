@@ -8,8 +8,13 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 export const StepperAddPlayer = (props) => {
-  const { handleCloseModal, handleClose, tournamentId, handleAddPlayers } =
-    props;
+  const {
+    handleCloseModal,
+    handleClose,
+    tournamentId,
+    handleAddPlayers,
+    handleImportPlayers,
+  } = props;
 
   const numberOfSteps = 2;
   const [stepperMessage, setStepperMessage] = useState({
@@ -104,12 +109,11 @@ export const StepperAddPlayer = (props) => {
   const handleNext = () => {
     if (validateStep()) {
       if (activeStep === numberOfSteps) {
-        handleAddPlayers(
-          selectedStyle,
-          newPlayerData,
-          newPlayersData,
-          selectedFile
-        );
+        if (selectedStyle === "import-players-from-file") {
+          handleImportPlayers(selectedStyle, selectedFile);
+        } else {
+          handleAddPlayers(selectedStyle, newPlayerData, newPlayersData);
+        }
         handleClose();
         handleCloseModal();
       } else {
