@@ -26,7 +26,8 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/resetpassword" element={<ResetPassword />}></Route>
-          <Route path="/" element={<Tournaments />}></Route>
+          <Route path="/" element={<Login />}></Route>
+          <Route path="/tournaments" element={<Tournaments />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/players" element={<Players />}></Route>
           <Route path="/matches" element={<Matches />}>
