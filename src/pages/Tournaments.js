@@ -25,6 +25,7 @@ export const Tournaments = () => {
     errorMessage: "",
     createdTournamentMessage: "",
     addPlayerMessage: "",
+    copyPlayersMessage: "",
   });
 
   useEffect(() => {
@@ -184,6 +185,7 @@ export const Tournaments = () => {
         {createAlert("addPlayersMessage", "success")}
         {createAlert("edditTournamentMessage", "success")}
         {createAlert("addPlayerMessage", "success")}
+        {createAlert("copyPlayersMessage", "success")}
         <Grid container sx={{ marginTop: "5rem" }} spacing={2}>
           {filteredData.map((data) => (
             <Tournament

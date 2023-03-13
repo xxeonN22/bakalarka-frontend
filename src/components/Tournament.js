@@ -117,6 +117,34 @@ export const Tournament = ({
     setTournamentData(fetchedTournaments);
   };
 
+  const handleCopyPlayers = async () => {
+    const response = await fetch("http://localhost:3000/copyplayers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tournamentId,
+      }),
+    });
+    const data = await response.json();
+
+    let stringToSave = "";
+
+    for (let i = 0; i < data.length; i++) {
+      let player = data[i];
+      let playerString = `${player.first_name}, ${player.last_name}, ${player.email}, ${player.elo}; `;
+      stringToSave += playerString;
+    }
+
+    navigator.clipboard.writeText(stringToSave);
+
+    setMessage({
+      ...message,
+      copyPlayersMessage: `Hráči boli úspešne skopírovaní`,
+    });
+  };
+
   return (
     <Grid item xs={12} sm={6} lg={4}>
       <Paper
@@ -151,6 +179,7 @@ export const Tournament = ({
           handleDeleteTournament={handleDeleteTournament}
           handleEditTournament={handleEditTournament}
           handleAddPlayers={handleAddPlayers}
+          handleCopyPlayers={handleCopyPlayers}
         ></TournamentPopover>
       </Paper>
     </Grid>

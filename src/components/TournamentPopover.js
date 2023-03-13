@@ -13,6 +13,7 @@ export const TournamentPopover = ({
   handleDeleteTournament,
   handleEditTournament,
   handleAddPlayers,
+  handleCopyPlayers,
 }) => {
   const [dialogState, setDialogState] = useState({
     addPlayers: false,
@@ -115,7 +116,14 @@ export const TournamentPopover = ({
             ></StepperAddPlayer>
           </DialogWindow>
 
-          <Button sx={{ borderRadius: "0" }} variant="contained">
+          <Button
+            sx={{ borderRadius: "0" }}
+            variant="contained"
+            onClick={() => {
+              handleCopyPlayers();
+              handleClose();
+            }}
+          >
             Skopírovať hráčov
           </Button>
           <Button
