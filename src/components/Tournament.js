@@ -17,7 +17,7 @@ export const Tournament = ({
 
   const handleDeleteTournament = async () => {
     const response = await fetch(
-      `http://localhost:3000/deletetournament/${tournamentId}`,
+      `http://localhost:3000/tournaments/deletetournament/${tournamentId}`,
       {
         method: "DELETE",
       }
@@ -62,7 +62,7 @@ export const Tournament = ({
     }
 
     const response = await fetch(
-      `http://localhost:3000/eddittournament/${tournamentId}`,
+      `http://localhost:3000/tournaments/eddittournament/${tournamentId}`,
       {
         method: "PUT",
         headers: {
@@ -80,7 +80,7 @@ export const Tournament = ({
       edditTournamentMessage: data.message,
     });
 
-    const fetchTournaments = await fetch("http://localhost:3000");
+    const fetchTournaments = await fetch("http://localhost:3000/tournaments");
     const fetchedTournaments = await fetchTournaments.json();
     setTournamentData(fetchedTournaments);
   };
@@ -88,12 +88,14 @@ export const Tournament = ({
   const handleImportPlayers = async (selectedStyle, selectedFile) => {
     const formData = new FormData();
     formData.append("file", selectedFile);
-    formData.append("tournamentId", tournamentId);
 
-    const response = await fetch("http://localhost:3000/importplayers", {
-      method: "PUT",
-      body: formData,
-    });
+    const response = await fetch(
+      `http://localhost:3000/tournaments/importplayers/${tournamentId}`,
+      {
+        method: "PUT",
+        body: formData,
+      }
+    );
 
     const data = await response.json();
     console.log(data.message);
@@ -103,7 +105,7 @@ export const Tournament = ({
       addPlayerMessage: `${data.message}`,
     });
 
-    const fetchTournaments = await fetch("http://localhost:3000");
+    const fetchTournaments = await fetch("http://localhost:3000/tournaments");
     const fetchedTournaments = await fetchTournaments.json();
     setTournamentData(fetchedTournaments);
   };
@@ -114,7 +116,7 @@ export const Tournament = ({
     newPlayersData
   ) => {
     const response = await fetch(
-      `http://localhost:3000/addplayers/${tournamentId}`,
+      `http://localhost:3000/tournaments/addplayers/${tournamentId}`,
       {
         method: "PUT",
         headers: {
@@ -136,21 +138,21 @@ export const Tournament = ({
       addPlayerMessage: `${data.message}`,
     });
 
-    const fetchTournaments = await fetch("http://localhost:3000");
+    const fetchTournaments = await fetch("http://localhost:3000/tournaments");
     const fetchedTournaments = await fetchTournaments.json();
     setTournamentData(fetchedTournaments);
   };
 
   const handleCopyPlayers = async () => {
-    const response = await fetch("http://localhost:3000/copyplayers", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        tournamentId,
-      }),
-    });
+    const response = await fetch(
+      `http://localhost:3000/tournaments/copyplayers/${tournamentId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
 
     let stringToSave = "";

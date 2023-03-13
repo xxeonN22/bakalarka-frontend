@@ -27,7 +27,7 @@ export const NewPlayerData = (props) => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/addplayers/${tournamentId}`
+        `http://localhost:3000/tournaments/addplayers/${tournamentId}`
       );
       const data = await response.json();
       setGroups(data);

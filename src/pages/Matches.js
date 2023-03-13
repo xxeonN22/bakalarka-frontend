@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Outlet, useNavigate, Route } from "react-router-dom";
+import { Outlet, useNavigate, Route, useParams } from "react-router-dom";
 
 import { MatchScore } from "../components/MatchScore";
 import { MatchBox } from "../components/MatchBox";
@@ -10,8 +10,6 @@ import { appTheme } from "../themes/appTheme";
 
 import { Grid, Box, Button, TextField, Alert } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
-const MATCHES_ENDPOINT = "http://localhost:3000/matches";
 
 const roundCourtsGridStyle = {
   display: "flex",
@@ -52,6 +50,10 @@ export const Matches = () => {
   const [numberOfSets, setNumberOfSets] = useState("");
   const [maxPoints, setMaxPoints] = useState("");
 
+  const { tournamentId, matchId } = useParams();
+  const params = useParams();
+  console.log(params);
+
   const [match, setMatch] = useState({
     selectedMatchId: "",
     firstPlayer: "",
@@ -72,7 +74,9 @@ export const Matches = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://localhost:3000/matches");
+      const response = await fetch(
+        `http://localhost:3000/tournaments/${tournamentId}/matches`
+      );
       const data = await response.json();
       setGroups(data.groups);
       setSelectedGroup(data.groups[0].group_name);
@@ -88,13 +92,16 @@ export const Matches = () => {
   useEffect(() => {
     (async () => {
       if (selectedRound) {
-        const response = await fetch("http://localhost:3000/gameDays", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ selectedRound }),
-        });
+        const response = await fetch(
+          `http://localhost:3000/tournaments/${tournamentId}/matches/gameDays`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ selectedRound }),
+          }
+        );
         const data = await response.json();
         setGameDays(data);
         setSelectedGameDay(data[0]);
@@ -119,24 +126,29 @@ export const Matches = () => {
   ]);
 
   const updateMatches = async () => {
-    const response = await fetch(MATCHES_ENDPOINT);
+    const response = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/matches`
+    );
     const data = await response.json();
     setMatches(data.matchPair);
   };
 
   const handleGenerateClick = async () => {
-    const response = await fetch("http://localhost:3000/matches", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        selectedGroup,
-        selectedCourts,
-        selectedRound,
-        selectedGameDay,
-      }),
-    });
+    const response = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/matches`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          selectedGroup,
+          selectedCourts,
+          selectedRound,
+          selectedGameDay,
+        }),
+      }
+    );
     const data = await response.json();
 
     setMessageState({
@@ -183,15 +195,19 @@ export const Matches = () => {
   };
 
   const handleDeleteButtonClick = async () => {
-    const response = await fetch("http://localhost:3000/matches", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        selectedMatches,
-      }),
-    });
+    console.log("clicked");
+    const response = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/matches`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          selectedMatches,
+        }),
+      }
+    );
 
     const data = await response.json();
 
@@ -205,7 +221,7 @@ export const Matches = () => {
 
   const handleSetScore = async () => {
     const response = await fetch(
-      `http://localhost:3000/matches/${match.selectedMatchId}`,
+      `http://localhost:3000/tournaments/${tournamentId}/matches/${matchId}`,
       {
         method: "PUT",
         headers: {
@@ -232,7 +248,7 @@ export const Matches = () => {
   };
 
   const handleDialogClose = () => {
-    navigate(`/matches`);
+    navigate(`/tournaments/${tournamentId}/matches`);
     setDialogState(false);
   };
 
@@ -254,7 +270,7 @@ export const Matches = () => {
     secondPlayerId
   ) => {
     handleDialogOpen();
-    navigate(`/matches/${matchId}`);
+    navigate(`/tournaments/${tournamentId}/matches/${matchId}`);
     setMatch({
       ...match,
       selectedMatchId: matchId,
@@ -321,7 +337,10 @@ export const Matches = () => {
   return (
     <>
       <Outlet>
-        <Route path="/matches/:matchId" element={<MatchScore></MatchScore>} />
+        <Route
+          path={`/tournaments/${tournamentId}/matches/:matchId`}
+          element={<MatchScore></MatchScore>}
+        />
       </Outlet>
       <ContentLayout>
         <Grid

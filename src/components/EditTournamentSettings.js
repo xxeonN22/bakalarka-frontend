@@ -36,7 +36,7 @@ export const EditTournamentSettings = ({
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:3000/eddittournament/${tournamentId}`
+        `http://localhost:3000/tournaments/eddittournament/${tournamentId}`
       );
       const data = await response.json();
       setTournamentData({

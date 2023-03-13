@@ -71,7 +71,7 @@ export const TournamentPopover = ({
               window.history.pushState(
                 {},
                 "",
-                `/eddittournament/${tournamentId}`
+                `/tournaments/eddittournament/${tournamentId}`
               );
               handleDialogOpen("editSettings");
             }}
@@ -96,7 +96,11 @@ export const TournamentPopover = ({
 
           <Button
             onClick={() => {
-              window.history.pushState({}, "", `/addplayers/${tournamentId}`);
+              window.history.pushState(
+                {},
+                "",
+                `/tournaments/addplayers/${tournamentId}`
+              );
               handleDialogOpen("addPlayers");
             }}
             sx={{ borderRadius: "0" }}
@@ -133,7 +137,7 @@ export const TournamentPopover = ({
               window.history.pushState(
                 {},
                 "",
-                `/deletetournament/${tournamentId}`
+                `/tournaments/deletetournament/${tournamentId}`
               );
               handleDialogOpen("deleteTournament");
             }}

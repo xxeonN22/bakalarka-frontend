@@ -13,15 +13,18 @@ export const CreateTournament = (props) => {
   const [dialogState, setDialogState] = useState(false);
 
   const handleCreateTournamet = async (newTournament) => {
-    const response = await fetch(`http://localhost:3000/createtournament`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        newTournament,
-      }),
-    });
+    const response = await fetch(
+      `http://localhost:3000/tournaments/createtournament`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          newTournament,
+        }),
+      }
+    );
 
     const data = await response.json();
 
@@ -30,7 +33,7 @@ export const CreateTournament = (props) => {
       createdTournamentMessage: data.message,
     });
 
-    const fetchMatches = await fetch("http://localhost:3000");
+    const fetchMatches = await fetch("http://localhost:3000/tournaments");
     const fetchedMatches = await fetchMatches.json();
     setTournamentData(fetchedMatches);
   };
@@ -49,7 +52,7 @@ export const CreateTournament = (props) => {
         startIcon={<AddIcon></AddIcon>}
         onClick={() => {
           handleDialogOpen();
-          window.history.pushState({}, "", "/createtournament");
+          window.history.pushState({}, "", "/tournaments/createtournament");
         }}
         sx={{
           paddingBlock: "1rem",
