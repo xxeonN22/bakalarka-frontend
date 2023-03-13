@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Box, IconButton } from "@mui/material";
 import { SideBarTooltip } from "./SideBarTooltip";
 
@@ -36,6 +37,7 @@ const linkStyles = {
 
 export const SideBar = ({ screen }) => {
   const { pathname } = useLocation();
+  const { tournamentId } = useParams();
 
   const links = [
     {
@@ -45,24 +47,24 @@ export const SideBar = ({ screen }) => {
     },
     {
       title: "Turnaje",
-      to: "/",
+      to: `/tournaments`,
       icon: <HomeIcon width={40} height={40} fill={"white"} />,
     },
     {
       title: "Hráči",
-      to: "/players",
+      to: `/tournaments/${tournamentId}`,
       icon: <BadmintonPlayerIcon width={40} height={40} fill={"white"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
     {
       title: "Zápasy",
-      to: "/matches",
+      to: `/tournaments/${tournamentId}/matches`,
       icon: <MatchesIcon width={40} height={40} fill={"white"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
     {
       title: "Tabuľka",
-      to: "/table",
+      to: `/tournaments/${tournamentId}/table`,
       icon: <TableIcon width={40} height={40} fill={"white"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },

@@ -1,5 +1,9 @@
-import React from "react";
+import { ContentLayout } from "../components/ContentLayout";
 
 export const Profile = () => {
-  return <div>Profile</div>;
+  return (
+    <>
+      <ContentLayout screen={"profile"}></ContentLayout>
+    </>
+  );
 };

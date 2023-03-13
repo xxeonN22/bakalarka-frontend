@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Paper, Button, Typography, Grid } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { TournamentPopover } from "./TournamentPopover";
@@ -12,6 +13,8 @@ export const Tournament = ({
   setMessage,
   message,
 }) => {
+  const navigate = useNavigate();
+
   const handleDeleteTournament = async () => {
     const response = await fetch(
       `http://localhost:3000/deletetournament/${tournamentId}`,
@@ -190,6 +193,7 @@ export const Tournament = ({
           sx={{ paddingBlock: "0.5rem" }}
           variant="contained"
           endIcon={<ArrowForwardIcon />}
+          onClick={() => navigate(`/tournaments/${tournamentId}`)}
         >
           Vstúpiť do turnaja
         </Button>

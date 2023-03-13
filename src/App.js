@@ -27,13 +27,27 @@ function App() {
           <Route path="/register" element={<Register />}></Route>
           <Route path="/resetpassword" element={<ResetPassword />}></Route>
           <Route path="/" element={<Login />}></Route>
-          <Route path="/tournaments" element={<Tournaments />}></Route>
+          <Route exact path="/tournaments" element={<Tournaments />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
-          <Route path="/players" element={<Players />}></Route>
-          <Route path="/matches" element={<Matches />}>
-            <Route path="/matches/:matchId" element={<MatchScore />} />
+          <Route
+            path="/tournaments/:tournamentId"
+            element={<Players />}
+          ></Route>
+          <Route
+            exact
+            path="/tournaments/:tournamentId/matches"
+            element={<Matches />}
+          >
+            <Route
+              exact
+              path="/tournaments/:tournamentId/matches/:matchId"
+              element={<MatchScore />}
+            />
           </Route>
-          <Route path="/table" element={<TournamentTable />}></Route>
+          <Route
+            path="/tournaments/:tournamentId/table"
+            element={<TournamentTable />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
