@@ -1,23 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
-import { Link } from "react-router-dom";
 import {
   Box,
   Drawer,
   IconButton,
   Toolbar,
   AppBar,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Switch,
+  Typography,
 } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from "@mui/icons-material/Logout";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import UserIcon from "../icons/UserIcon";
+import LogoutIcon from "../icons/LogoutIcon";
+import ProfileIcon from "../icons/ProfileIcon";
+import BadmintonPlayerIcon from "../icons/BadmintonPlayerIcon";
+import MatchesIcon from "../icons/MatchesIcon";
+import TableIcon from "../icons/TableIcon";
+import HomeIcon from "../icons/HomeIcon";
 
 const navbarStyle = {
   display: "none",
@@ -27,8 +26,70 @@ const navbarStyle = {
   },
 };
 
-export const Navbar = () => {
+const boxStyle = {
+  display: "flex",
+  marginBottom: "2rem",
+  alignItems: "center",
+  position: "relative",
+  paddingBottom: "0.5rem",
+  "&::before, &::after": {
+    content: "''",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    height: "1px",
+    backgroundColor: "white",
+    transition: "width 0.5s ease",
+    width: 0,
+  },
+  "&:hover::before, &:hover::after": {
+    width: "100%",
+  },
+};
+
+export const Navbar = ({ screen }) => {
+  const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
   const [isOpened, setIsOpened] = useState(false);
+  const { pathname } = useLocation();
+  const { tournamentId } = useParams();
+
+  useEffect(() => {
+    if (!isTabletSize) {
+      setIsOpened(false);
+    }
+  }, [isTabletSize]);
+
+  const links = [
+    {
+      title: "Profil",
+      to: "/profile",
+      icon: <ProfileIcon width={25} height={25} fill={"white"} />,
+    },
+    {
+      title: "Turnaje",
+      to: `/tournaments`,
+      icon: <HomeIcon width={25} height={25} fill={"white"} />,
+    },
+    {
+      title: "Hráči",
+      to: `/tournaments/${tournamentId}`,
+      icon: <BadmintonPlayerIcon width={25} height={25} fill={"white"} />,
+      hidden: screen === "tournaments" || screen === "profile",
+    },
+    {
+      title: "Zápasy",
+      to: `/tournaments/${tournamentId}/matches`,
+      icon: <MatchesIcon width={25} height={25} fill={"white"} />,
+      hidden: screen === "tournaments" || screen === "profile",
+    },
+    {
+      title: "Tabuľka",
+      to: `/tournaments/${tournamentId}/table`,
+      icon: <TableIcon width={25} height={25} fill={"white"} />,
+      hidden: screen === "tournaments" || screen === "profile",
+    },
+  ];
+
   return (
     <AppBar position="fixed">
       <Toolbar sx={navbarStyle}>
@@ -52,93 +113,65 @@ export const Navbar = () => {
           open={isOpened}
           onClose={() => setIsOpened(false)}
         >
-          <Box role="presentation" textAlign="center">
-            <List
-              sx={{
+          <Box
+            sx={{
+              backgroundColor: "#1f2736",
+              width: "250px",
+              paddingTop: "2rem",
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {links.map(({ title, to, icon, hidden }) => (
+              <Link
+                style={{
+                  textDecoration: "none",
+                  width: "100%",
+                  justifyContent: "center",
+                  display: hidden ? "none" : "flex",
+                  color: "inherit",
+                  alignItems: "center",
+                }}
+                to={to}
+                className={to === pathname ? "active" : ""}
+              >
+                <Box key={title} sx={boxStyle}>
+                  <IconButton sx={{ marginRight: "0.5rem", padding: "0px" }}>
+                    {icon}
+                  </IconButton>
+                  <Typography variant="h2" fontSize="1.15rem" color="white">
+                    {title}
+                  </Typography>
+                </Box>
+              </Link>
+            ))}
+            <Link
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                justifyContent: "center",
+                color: "inherit",
+                marginTop: "auto",
                 display: "flex",
-                flexDirection: "column",
-                height: "100vh",
-                paddingBlock: "2rem",
-                paddingInline: "1rem",
-                gap: "1rem",
+                alignItems: "center",
               }}
+              to="/"
+              className={"/" === pathname ? "active" : ""}
             >
-              <ListItem
-                disablePadding
-                sx={{ borderBottom: "1px solid grey" }}
-                onClick={() => setIsOpened(false)}
-              >
-                <Link to="profile">
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <UserIcon width={24} height={24} fill="black" />
-                    </ListItemIcon>
-                    <ListItemText primary="Profile" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <ListItem
-                disablePadding
-                sx={{ borderBottom: "1px solid grey" }}
-                onClick={() => setIsOpened(false)}
-              >
-                <Link to="tournaments">
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <DraftsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Tournaments" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <ListItem
-                disablePadding
-                sx={{ borderBottom: "1px solid grey" }}
-                onClick={() => setIsOpened(false)}
-              >
-                <Link to="players">
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <DraftsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Hráči" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <ListItem
-                disablePadding
-                sx={{ borderBottom: "1px solid grey" }}
-                onClick={() => setIsOpened(false)}
-              >
-                <Link to="matches">
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <DraftsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Zápasy" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <ListItem disablePadding onClick={() => setIsOpened(false)}>
-                <Link to="table">
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <DraftsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Tabuľka" />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-              <ListItem disablePadding sx={{ marginTop: "auto" }}>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <DraftsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Zmeniť tému" />
-                  <Switch sx={{ marginLeft: "2rem" }} edge="end" />
-                </ListItemButton>
-              </ListItem>
-            </List>
+              <Box sx={boxStyle}>
+                <LogoutIcon width={25} height={25} fill={"white"}></LogoutIcon>
+                <Typography
+                  sx={{ marginLeft: "0.5rem" }}
+                  variant="h2"
+                  fontSize="1.15rem"
+                  color="white"
+                >
+                  Odhlásiť sa
+                </Typography>
+              </Box>
+            </Link>
           </Box>
         </Drawer>
       </Toolbar>

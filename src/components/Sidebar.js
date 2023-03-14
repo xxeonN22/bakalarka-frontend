@@ -1,5 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { Box, IconButton } from "@mui/material";
 import { SideBarTooltip } from "./SideBarTooltip";
 

@@ -25,7 +25,7 @@ export const ContentLayout = ({ screen, children, backGround }) => {
   return (
     <>
       <SideBar screen={screen}></SideBar>
-      <Navbar></Navbar>
+      <Navbar screen={screen}></Navbar>
       <Box sx={boxStyle}>{children}</Box>
     </>
   );
