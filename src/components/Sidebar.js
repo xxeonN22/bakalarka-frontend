@@ -87,6 +87,7 @@ export const SideBar = ({ screen }) => {
         </Box>
       ))}
       <Box
+        key="Odhlásiťsa"
         sx={{
           ...linkStyles,
           marginTop: "auto",

@@ -88,9 +88,14 @@ export const Register = () => {
               >
                 <Typography
                   variant="h2"
-                  fontSize="1.5rem"
                   textTransform="uppercase"
                   letterSpacing="0.2rem"
+                  sx={{
+                    fontSize: "1.5rem",
+                    [appTheme.breakpoints.down("md")]: {
+                      fontSize: "1.25rem",
+                    },
+                  }}
                 >
                   Registrácia používateľa
                 </Typography>
@@ -223,7 +228,18 @@ export const Register = () => {
                 }}
               >
                 <Typography>
-                  Už máte účet? <Link to="/login"> Prihláste sa</Link>
+                  Už máte účet?{" "}
+                  <Link
+                    style={{
+                      color: "black",
+                      fontWeight: "700",
+                      textDecoration: "none",
+                    }}
+                    to="/login"
+                  >
+                    {" "}
+                    Prihláste sa
+                  </Link>
                 </Typography>
               </Grid>
               <Grid
@@ -235,7 +251,11 @@ export const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Button variant="contained" onClick={handleSubmit}>
+                <Button
+                  sx={{ paddingInline: "2rem", paddingBlock: "1rem" }}
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
                   Registrovať sa
                 </Button>
               </Grid>

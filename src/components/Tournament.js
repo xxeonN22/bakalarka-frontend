@@ -159,7 +159,7 @@ export const Tournament = ({
 
     for (let i = 0; i < data.length; i++) {
       let player = data[i];
-      let playerString = `${player.first_name}, ${player.last_name}, ${player.email}, ${player.elo}; `;
+      let playerString = `${player.first_name}, ${player.last_name}, ${player.email}, ${player.group_name}, ${player.elo}; `;
       stringToSave += playerString;
     }
 

@@ -12,6 +12,7 @@ import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
 import { PlayerProfile } from "./pages/PlayerProfile";
 import { MatchScore } from "./components/MatchScore";
+import { Confirmation } from "./pages/Confirmation";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             path="/players/:id"
             element={<PlayerProfile></PlayerProfile>}
           ></Route>
+          <Route path="/:hash/confirmation" element={<Confirmation />}></Route>
           <Route path="/newpassword" element={<NewPassword />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>

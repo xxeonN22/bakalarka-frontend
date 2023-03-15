@@ -87,7 +87,7 @@ export const Matches = () => {
       setNumberOfSets(data.numberOfSets[0].max_sets);
       setMaxPoints(data.maxPoints[0].max_points);
     })();
-  }, []);
+  }, [tournamentId]);
 
   useEffect(() => {
     (async () => {
@@ -103,11 +103,16 @@ export const Matches = () => {
           }
         );
         const data = await response.json();
+        if (data.length === 0) {
+          setGameDays([]);
+          setSelectedGameDay("");
+          return;
+        }
         setGameDays(data);
         setSelectedGameDay(data[0]);
       }
     })();
-  }, [selectedRound]);
+  }, [selectedRound, tournamentId]);
 
   useEffect(() => {
     setMatchValues({

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { appTheme } from "../themes/appTheme";
 import SearchIcon from "@mui/icons-material/Search";
+import LoginIcon from "../icons/LoginIcon";
+import RegisterIcon from "../icons/RegisterIcon";
 
 import {
   Toolbar,
@@ -18,6 +20,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 export const NavbarNotLoggedIn = () => {
   const [isOpened, setIsOpened] = useState(false);
+  const { pathname } = useLocation();
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -83,15 +86,41 @@ export const NavbarNotLoggedIn = () => {
               }}
             >
               <Typography>
-                <Link to="/login" sx={{ color: "white" }}>
+                <Link
+                  to="/login"
+                  style={{ color: "white", textDecoration: "none" }}
+                >
                   Prihlásiť
                 </Link>
               </Typography>
-              <Typography>
-                <Link to="/register" sx={{ color: "white" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                  paddingBottom: "0.5rem",
+                  "&::before, &::after": {
+                    content: "''",
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    height: "1px",
+                    backgroundColor: "white",
+                    transition: "width 0.5s ease",
+                    width: 0,
+                  },
+                  "&:hover::before, &:hover::after": {
+                    width: "100%",
+                  },
+                }}
+              >
+                <Link
+                  to="/register"
+                  style={{ color: "white", textDecoration: "none" }}
+                >
                   Registrovať
                 </Link>
-              </Typography>
+              </Box>
             </Box>
           </Grid>
         </Grid>
@@ -100,8 +129,111 @@ export const NavbarNotLoggedIn = () => {
           open={isOpened}
           onClose={() => setIsOpened(false)}
         >
-          <Box role="presentation" textAlign="center">
-            <h1>ahoj</h1>
+          <Box
+            sx={{
+              backgroundColor: "#1f2736",
+              width: "250px",
+              paddingTop: "2rem",
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Link
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                justifyContent: "center",
+                color: "inherit",
+                display: "flex",
+                alignItems: "center",
+              }}
+              to="/login"
+              className={"/login" === pathname ? "active" : ""}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  marginBottom: "2rem",
+                  alignItems: "center",
+                  position: "relative",
+                  paddingBottom: "0.5rem",
+                  "&::before, &::after": {
+                    content: "''",
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    height: "1px",
+                    backgroundColor: "white",
+                    transition: "width 0.5s ease",
+                    width: 0,
+                  },
+                  "&:hover::before, &:hover::after": {
+                    width: "100%",
+                  },
+                }}
+              >
+                <LoginIcon width={25} height={25} fill={"white"}></LoginIcon>
+                <Typography
+                  sx={{ marginLeft: "0.5rem" }}
+                  variant="h2"
+                  fontSize="1.15rem"
+                  color="white"
+                >
+                  Prihlásiť sa
+                </Typography>
+              </Box>
+            </Link>
+            <Link
+              style={{
+                textDecoration: "none",
+                width: "100%",
+                justifyContent: "center",
+                color: "inherit",
+                display: "flex",
+                alignItems: "center",
+              }}
+              to="/register"
+              className={"/register" === pathname ? "active" : ""}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  marginBottom: "2rem",
+                  alignItems: "center",
+                  position: "relative",
+                  paddingBottom: "0.5rem",
+                  "&::before, &::after": {
+                    content: "''",
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    height: "1px",
+                    backgroundColor: "white",
+                    transition: "width 0.5s ease",
+                    width: 0,
+                  },
+                  "&:hover::before, &:hover::after": {
+                    width: "100%",
+                  },
+                }}
+              >
+                <RegisterIcon
+                  width={25}
+                  height={25}
+                  fill={"white"}
+                ></RegisterIcon>
+                <Typography
+                  sx={{ marginLeft: "0.5rem" }}
+                  variant="h2"
+                  fontSize="1.15rem"
+                  color="white"
+                >
+                  Registrovať sa
+                </Typography>
+              </Box>
+            </Link>
           </Box>
         </Drawer>
       </Toolbar>

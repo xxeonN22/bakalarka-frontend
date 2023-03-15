@@ -126,6 +126,7 @@ export const Navbar = ({ screen }) => {
           >
             {links.map(({ title, to, icon, hidden }) => (
               <Link
+                key={title}
                 style={{
                   textDecoration: "none",
                   width: "100%",
@@ -148,6 +149,7 @@ export const Navbar = ({ screen }) => {
               </Link>
             ))}
             <Link
+              key="Odhlasitsa"
               style={{
                 textDecoration: "none",
                 width: "100%",
