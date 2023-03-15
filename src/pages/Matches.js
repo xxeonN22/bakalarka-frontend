@@ -93,14 +93,7 @@ export const Matches = () => {
     (async () => {
       if (selectedRound) {
         const response = await fetch(
-          `http://localhost:3000/tournaments/${tournamentId}/matches/gameDays`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ selectedRound }),
-          }
+          `http://localhost:3000/tournaments/${tournamentId}/matches/${selectedRound}`
         );
         const data = await response.json();
         if (data.length === 0) {
@@ -140,19 +133,7 @@ export const Matches = () => {
 
   const handleGenerateClick = async () => {
     const response = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/matches`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          selectedGroup,
-          selectedCourts,
-          selectedRound,
-          selectedGameDay,
-        }),
-      }
+      `http://localhost:3000/tournaments/${tournamentId}/matches/${selectedGroup}/${selectedCourts}/${selectedRound}/${selectedGameDay}`
     );
     const data = await response.json();
 

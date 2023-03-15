@@ -3,9 +3,18 @@ import { useState, useEffect } from "react";
 import { ContentNotLogged } from "../components/ContentNotLogged";
 import { appTheme } from "../themes/appTheme";
 
-import { Paper, Box, Typography, Grid, Button, Alert } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Typography,
+  Grid,
+  Button,
+  Alert,
+  Popover,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export const Confirmation = () => {
   const params = useParams();
@@ -15,10 +24,13 @@ export const Confirmation = () => {
   const [organizer, setOrganizer] = useState("");
   const [tournamentName, setTournamentName] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
+  const [confirmationChanges, setConfirmationChanges] = useState([]);
+
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const fetchConfirmations = async (playerHash) => {
     try {
-      fetch(`http://localhost:3000/${playerHash}/confirmation`)
+      fetch(`http://localhost:3000/${playerHash}/confirmations`)
         .then((response) => response.json())
         .then((data) => {
           setConfirmations(data.confirmations);
@@ -55,7 +67,7 @@ export const Confirmation = () => {
 
   const handleConfirmationChange = async (idConfirmation, idGameDay) => {
     const response = await fetch(
-      `http://localhost:3000/${playerHash}/confirmation`,
+      `http://localhost:3000/${playerHash}/confirmations`,
       {
         method: "PUT",
         headers: {
@@ -69,7 +81,28 @@ export const Confirmation = () => {
     fetchConfirmations(playerHash);
   };
 
-  console.log(confirmations);
+  const handleInfoClick = async (idGameDay, event) => {
+    event.stopPropagation();
+    const response = await fetch(
+      `http://localhost:3000/${playerHash}/confirmations/${idGameDay}`
+    );
+    const data = await response.json();
+    setConfirmationChanges(data);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event) => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  console.log(confirmationChanges);
 
   return (
     <ContentNotLogged>
@@ -148,7 +181,9 @@ export const Confirmation = () => {
                       paddingBlock: "1rem",
                     }}
                   >
-                    <Typography sx={{ textTransform: "none" }}>
+                    <Typography
+                      sx={{ textTransform: "none", marginTop: "1rem" }}
+                    >
                       {" "}
                       Dátum konania: {transformDate(confirmation.date)}
                     </Typography>
@@ -165,6 +200,46 @@ export const Confirmation = () => {
                         <CheckIcon sx={{ color: "green", fontSize: "3rem" }} />
                       )}
                     </Box>
+                    <InfoOutlinedIcon
+                      onClick={(e) => {
+                        handleInfoClick(confirmation.id_game_day, e);
+                        handleClick(e);
+                      }}
+                      sx={{ position: "absolute", top: 5, right: 5 }}
+                    ></InfoOutlinedIcon>
+                    <Popover
+                      id={id}
+                      open={open}
+                      anchorEl={anchorEl}
+                      onClose={(e) => handleClose(e)}
+                      anchorOrigin={{
+                        vertical: "center",
+                        horizontal: "center",
+                      }}
+                      transformOrigin={{
+                        vertical: "center",
+                        horizontal: "center",
+                      }}
+                    >
+                      <Paper sx={{ padding: "1rem" }}>
+                        <Typography>Posledné zmeny</Typography>
+                        {confirmationChanges.map((change) => {
+                          const date = transformDate(
+                            change.date_time.substring(0, 10)
+                          );
+                          const time = change.date_time.substring(11, 16);
+
+                          return (
+                            <Box
+                              sx={{ textAlign: "center" }}
+                              key={change.date_time}
+                            >
+                              {date} {time}
+                            </Box>
+                          );
+                        })}
+                      </Paper>
+                    </Popover>
                   </Box>
                 </Button>
               </Grid>
