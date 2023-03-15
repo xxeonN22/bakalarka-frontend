@@ -43,35 +43,43 @@ export const SideBar = ({ screen }) => {
       title: "Profil",
       to: "/profile",
       icon: <ProfileIcon width={40} height={40} fill={"white"} />,
+      activeIcon: <ProfileIcon width={40} height={40} fill={"#415375"} />,
     },
     {
       title: "Turnaje",
       to: `/tournaments`,
       icon: <HomeIcon width={40} height={40} fill={"white"} />,
+      activeIcon: <HomeIcon width={40} height={40} fill={"#415375"} />,
     },
     {
       title: "Hráči",
       to: `/tournaments/${tournamentId}`,
       icon: <BadmintonPlayerIcon width={40} height={40} fill={"white"} />,
+      activeIcon: (
+        <BadmintonPlayerIcon width={40} height={40} fill={"#415375"} />
+      ),
       hidden: screen === "tournaments" || screen === "profile",
     },
     {
       title: "Zápasy",
       to: `/tournaments/${tournamentId}/matches`,
       icon: <MatchesIcon width={40} height={40} fill={"white"} />,
+      activeIcon: <MatchesIcon width={40} height={40} fill={"#415375"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
     {
       title: "Tabuľka",
       to: `/tournaments/${tournamentId}/table`,
       icon: <TableIcon width={40} height={40} fill={"white"} />,
+      activeIcon: <TableIcon width={40} height={40} fill={"#415375"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
   ];
 
+  let isActive = false;
   return (
     <Box sx={sidebarStyles}>
-      {links.map(({ title, to, icon, hidden }) => (
+      {links.map(({ title, to, icon, activeIcon, hidden }) => (
         <Box
           key={title}
           sx={{
@@ -80,8 +88,13 @@ export const SideBar = ({ screen }) => {
           }}
         >
           <SideBarTooltip title={title}>
-            <Link to={to} className={to === pathname ? "active" : ""}>
-              <IconButton>{icon}</IconButton>
+            <Link
+              to={to}
+              className={
+                to === pathname ? (isActive = true) : (isActive = false)
+              }
+            >
+              <IconButton>{isActive ? activeIcon : icon}</IconButton>
             </Link>
           </SideBarTooltip>
         </Box>
@@ -94,9 +107,11 @@ export const SideBar = ({ screen }) => {
         }}
       >
         <SideBarTooltip title={"Odhlásiť sa"}>
-          <IconButton>
-            <LogoutIcon width={40} height={40} fill={"white"}></LogoutIcon>
-          </IconButton>
+          <Link to="/login">
+            <IconButton>
+              <LogoutIcon width={40} height={40} fill={"white"}></LogoutIcon>
+            </IconButton>
+          </Link>
         </SideBarTooltip>
       </Box>
     </Box>

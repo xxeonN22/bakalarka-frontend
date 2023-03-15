@@ -18,6 +18,30 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
+const underlineEffect = {
+  display: "flex",
+  alignItems: "center",
+  position: "relative",
+  paddingBottom: "0.5rem",
+  color: "white",
+  "&:hover": {
+    color: "#4d80e8",
+  },
+  "&::before, &::after": {
+    content: "''",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    height: "1px",
+    backgroundColor: "#4d80e8",
+    transition: "width 0.5s ease",
+    width: 0,
+  },
+  "&:hover::before, &:hover::after": {
+    width: "100%",
+  },
+};
+
 export const NavbarNotLoggedIn = () => {
   const [isOpened, setIsOpened] = useState(false);
   const { pathname } = useLocation();
@@ -85,38 +109,18 @@ export const NavbarNotLoggedIn = () => {
                 },
               }}
             >
-              <Typography>
+              <Box sx={underlineEffect}>
                 <Link
                   to="/login"
-                  style={{ color: "white", textDecoration: "none" }}
+                  style={{ color: "inherit", textDecoration: "none" }}
                 >
                   Prihlásiť
                 </Link>
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  position: "relative",
-                  paddingBottom: "0.5rem",
-                  "&::before, &::after": {
-                    content: "''",
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    height: "1px",
-                    backgroundColor: "white",
-                    transition: "width 0.5s ease",
-                    width: 0,
-                  },
-                  "&:hover::before, &:hover::after": {
-                    width: "100%",
-                  },
-                }}
-              >
+              </Box>
+              <Box sx={underlineEffect}>
                 <Link
                   to="/register"
-                  style={{ color: "white", textDecoration: "none" }}
+                  style={{ color: "inherit", textDecoration: "none" }}
                 >
                   Registrovať
                 </Link>
@@ -152,28 +156,7 @@ export const NavbarNotLoggedIn = () => {
               to="/login"
               className={"/login" === pathname ? "active" : ""}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  marginBottom: "2rem",
-                  alignItems: "center",
-                  position: "relative",
-                  paddingBottom: "0.5rem",
-                  "&::before, &::after": {
-                    content: "''",
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    height: "1px",
-                    backgroundColor: "white",
-                    transition: "width 0.5s ease",
-                    width: 0,
-                  },
-                  "&:hover::before, &:hover::after": {
-                    width: "100%",
-                  },
-                }}
-              >
+              <Box sx={underlineEffect}>
                 <LoginIcon width={25} height={25} fill={"white"}></LoginIcon>
                 <Typography
                   sx={{ marginLeft: "0.5rem" }}
@@ -197,28 +180,7 @@ export const NavbarNotLoggedIn = () => {
               to="/register"
               className={"/register" === pathname ? "active" : ""}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  marginBottom: "2rem",
-                  alignItems: "center",
-                  position: "relative",
-                  paddingBottom: "0.5rem",
-                  "&::before, &::after": {
-                    content: "''",
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    height: "1px",
-                    backgroundColor: "white",
-                    transition: "width 0.5s ease",
-                    width: 0,
-                  },
-                  "&:hover::before, &:hover::after": {
-                    width: "100%",
-                  },
-                }}
-              >
+              <Box sx={underlineEffect}>
                 <RegisterIcon
                   width={25}
                   height={25}

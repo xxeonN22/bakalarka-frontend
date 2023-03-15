@@ -160,9 +160,19 @@ export const Login = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>
+                <Typography variant="h2" fontSize="0.875rem">
                   Ešte nemáte účet?{" "}
-                  <Link to="/register"> Zaregistrujte sa</Link>
+                  <Link
+                    to="/register"
+                    style={{
+                      textDecoration: "none",
+                      fontWeight: "500",
+                      color: "inherit",
+                    }}
+                  >
+                    {" "}
+                    Zaregistrujte sa
+                  </Link>
                 </Typography>
               </Grid>
               <Grid
@@ -183,7 +193,9 @@ export const Login = () => {
                     })
                   }
                 ></Checkbox>
-                <Typography>Zapamätať prihlásenie</Typography>
+                <Typography variant="h2" fontSize="0.875rem">
+                  Zapamätať prihlásenie
+                </Typography>
               </Grid>
               <Grid
                 item
@@ -195,9 +207,19 @@ export const Login = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>
+                <Typography variant="h2" fontSize="0.875rem">
                   Zabudli ste heslo?{" "}
-                  <Link to="/resetpassword"> Obnoviť heslo</Link>
+                  <Link
+                    to="/resetpassword"
+                    style={{
+                      textDecoration: "none",
+                      fontWeight: "500",
+                      color: "inherit",
+                    }}
+                  >
+                    {" "}
+                    Obnoviť heslo
+                  </Link>
                 </Typography>
               </Grid>
               <Grid
@@ -209,7 +231,11 @@ export const Login = () => {
                   alignItems: "center",
                 }}
               >
-                <Button variant="contained" onClick={handleSubmit}>
+                <Button
+                  sx={{ padding: "1rem" }}
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
                   Prihlásiť sa
                 </Button>
               </Grid>

@@ -77,7 +77,7 @@ export const Register = () => {
                   paddingInline: "10rem",
                 },
                 [appTheme.breakpoints.up("xs")]: {
-                  paddingInline: "2rem",
+                  paddingInline: "1rem",
                 },
               }}
             >
@@ -89,11 +89,12 @@ export const Register = () => {
                 <Typography
                   variant="h2"
                   textTransform="uppercase"
-                  letterSpacing="0.2rem"
                   sx={{
                     fontSize: "1.5rem",
+                    letterSpacing: "0.2rem",
                     [appTheme.breakpoints.down("md")]: {
-                      fontSize: "1.25rem",
+                      fontSize: "1.1rem",
+                      letterSpacing: "0.1rem",
                     },
                   }}
                 >
@@ -227,13 +228,13 @@ export const Register = () => {
                   alignItems: "center",
                 }}
               >
-                <Typography>
+                <Typography variant="h2" fontSize="0.875rem">
                   Už máte účet?{" "}
                   <Link
                     style={{
-                      color: "black",
-                      fontWeight: "700",
                       textDecoration: "none",
+                      fontWeight: "500",
+                      color: "inherit",
                     }}
                     to="/login"
                   >
@@ -252,7 +253,7 @@ export const Register = () => {
                 }}
               >
                 <Button
-                  sx={{ paddingInline: "2rem", paddingBlock: "1rem" }}
+                  sx={{ padding: "1rem" }}
                   variant="contained"
                   onClick={handleSubmit}
                 >
