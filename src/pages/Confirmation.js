@@ -207,39 +207,40 @@ export const Confirmation = () => {
                       }}
                       sx={{ position: "absolute", top: 5, right: 5 }}
                     ></InfoOutlinedIcon>
-                    <Popover
-                      id={id}
-                      open={open}
-                      anchorEl={anchorEl}
-                      onClose={(e) => handleClose(e)}
-                      anchorOrigin={{
-                        vertical: "center",
-                        horizontal: "center",
-                      }}
-                      transformOrigin={{
-                        vertical: "center",
-                        horizontal: "center",
-                      }}
-                    >
-                      <Paper sx={{ padding: "1rem" }}>
-                        <Typography>Posledné zmeny</Typography>
-                        {confirmationChanges.map((change) => {
-                          const date = transformDate(
-                            change.date_time.substring(0, 10)
-                          );
-                          const time = change.date_time.substring(11, 16);
-
-                          return (
-                            <Box
-                              sx={{ textAlign: "center" }}
-                              key={change.date_time}
-                            >
-                              {date} {time}
-                            </Box>
-                          );
-                        })}
-                      </Paper>
-                    </Popover>
+                    {confirmationChanges.length > 0 && (
+                      <Popover
+                        id={id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={(e) => handleClose(e)}
+                        anchorOrigin={{
+                          vertical: "center",
+                          horizontal: "center",
+                        }}
+                        transformOrigin={{
+                          vertical: "center",
+                          horizontal: "center",
+                        }}
+                      >
+                        <Paper sx={{ padding: "1rem" }}>
+                          <Typography>Posledné zmeny</Typography>
+                          {confirmationChanges.map((change) => {
+                            const date = transformDate(
+                              change.date_time.substring(0, 10)
+                            );
+                            const time = change.date_time.substring(11, 16);
+                            return (
+                              <Box
+                                sx={{ textAlign: "center" }}
+                                key={change.date_time}
+                              >
+                                {date} {time}
+                              </Box>
+                            );
+                          })}
+                        </Paper>
+                      </Popover>
+                    )}
                   </Box>
                 </Button>
               </Grid>
