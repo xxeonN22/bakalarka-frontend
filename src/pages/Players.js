@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { appTheme } from "../themes/appTheme";
+
+import { ChooseGroup } from "../components/ChooseGroup";
 import { ContentLayout } from "../components/ContentLayout";
 import { SelectBox } from "../components/SelectBox";
 import {
@@ -13,7 +16,6 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
-import { appTheme } from "../themes/appTheme";
 
 export const Players = () => {
   const { tournamentId } = useParams();
@@ -21,50 +23,14 @@ export const Players = () => {
   const [selectedRound, setSelectedRound] = useState("");
   const [gameDays, setGameDays] = useState([]);
   const [selectedGameDay, setSelectedGameDay] = useState("");
-  const [value, setValue] = useState(0);
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("");
   const [playersData, setPlayersData] = useState([]);
-
-  const [searchTermGroup, setSearchTermGroup] = useState("");
-  const handleSearchGroup = (event) => {
-    setSearchTermGroup(event.target.value);
-  };
-
-  const [searchName, setSearchName] = useState("");
-  const handleSearchName = (event) => {
-    setSearchName(event.target.value);
-  };
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const [checkedBoxes, setCheckedBoxes] = useState([]);
-
-  console.log(checkedBoxes);
-
-  // Function to handle checking/unchecking a checkbox
-  const handleCheck = (id) => {
-    const index = checkedBoxes.indexOf(id);
-    if (index === -1) {
-      setCheckedBoxes([...checkedBoxes, id]);
-    } else {
-      setCheckedBoxes(checkedBoxes.filter((box) => box !== id));
-    }
-  };
-
+  const [value, setValue] = useState(0);
   const [allChecked, setAllChecked] = useState(false);
-
-  // Function to handle checking all checkboxes
-  const handleCheckAll = () => {
-    if (!allChecked) {
-      const ids = playersData.map((player) => player.id_player);
-      setCheckedBoxes(ids);
-      setAllChecked(true);
-    } else {
-      setCheckedBoxes([]);
-      setAllChecked(false);
-    }
-  };
+  const [checkedBoxes, setCheckedBoxes] = useState([]);
+  const [searchName, setSearchName] = useState("");
+  const [searchGroup, setSearchGroup] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -72,9 +38,10 @@ export const Players = () => {
         `http://localhost:3000/tournaments/${tournamentId}`
       );
       const data = await response.json();
-      console.log(data);
       setRounds(data.rounds);
       setSelectedRound(data.rounds[0].round_number);
+      setGroups(data.groups);
+      setSelectedGroup(data.groups[0].group_name);
     })();
   }, [tournamentId]);
 
@@ -103,6 +70,42 @@ export const Players = () => {
     })();
   }, [selectedGameDay, selectedRound, tournamentId]);
 
+  const handleSearchGroup = (event) => {
+    setSearchGroup(event.target.value);
+  };
+
+  const handleSearchName = (event) => {
+    setSearchName(event.target.value);
+  };
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleCheck = (id) => {
+    const index = checkedBoxes.indexOf(id);
+    if (index === -1) {
+      setCheckedBoxes([...checkedBoxes, id]);
+    } else {
+      setCheckedBoxes(checkedBoxes.filter((box) => box !== id));
+    }
+  };
+
+  const handleCheckAll = () => {
+    if (!allChecked) {
+      const ids = playersData.map((player) => player.id_player);
+      setCheckedBoxes(ids);
+      setAllChecked(true);
+    } else {
+      setCheckedBoxes([]);
+      setAllChecked(false);
+    }
+  };
+
+  const handleGroupChange = (event) => {
+    setSelectedGroup(event.target.value);
+  };
+
   const handleRoundChange = (event) => {
     setSelectedRound(event.target.value);
   };
@@ -117,8 +120,6 @@ export const Players = () => {
     selectedRound,
     selectedGameDay
   ) => {
-    console.log(`${playerId} ${status} ${selectedRound} ${selectedGameDay}`);
-
     const response = await fetch(
       `http://localhost:3000/tournaments/${tournamentId}/changeStatus`,
       {
@@ -143,6 +144,57 @@ export const Players = () => {
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
     setPlayersData(fetchedData);
+  };
+
+  const handleDeletePlayers = async () => {
+    const response = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/deletePlayers`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          checkedBoxes,
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+
+    const fetchData = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/${selectedGameDay}/${selectedRound}`
+    );
+    const fetchedData = await fetchData.json();
+    console.log(fetchedData);
+    setPlayersData(fetchedData);
+  };
+
+  const handleMovePlayers = async () => {
+    const response = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/movePlayers`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          checkedBoxes,
+          selectedGroup,
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+
+    const fetchData = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/${selectedGameDay}/${selectedRound}`
+    );
+    const fetchedData = await fetchData.json();
+    console.log(fetchedData);
+    setPlayersData(fetchedData);
+    setCheckedBoxes([]);
+    setAllChecked(false);
   };
 
   return (
@@ -195,10 +247,13 @@ export const Players = () => {
             </Button>
           </Grid>
           <Grid item xs={6} md={4} lg={2.5}>
-            <Button
-              variant="contained"
-              sx={{ width: "100%", padding: "1rem" }}
-            >{`Presunúť hráč${checkedBoxes.length > 1 ? "ov" : "a"}`}</Button>
+            <ChooseGroup
+              checkedBoxes={checkedBoxes}
+              groups={groups}
+              selectedGroup={selectedGroup}
+              handleGroupChange={handleGroupChange}
+              handleMovePlayers={handleMovePlayers}
+            ></ChooseGroup>
           </Grid>
           <Grid
             item
@@ -217,6 +272,7 @@ export const Players = () => {
                 width: "100%",
                 padding: "1rem",
               }}
+              onClick={() => handleDeletePlayers()}
             >{`Odstrániť hráč${checkedBoxes.length > 1 ? "ov" : "a"}`}</Button>
           </Grid>
         </Grid>
@@ -316,7 +372,7 @@ export const Players = () => {
               label="Vyhľadať skupinu"
               variant="outlined"
               size="small"
-              value={searchTermGroup}
+              value={searchGroup}
               onChange={handleSearchGroup}
             />
           </Box>
@@ -339,7 +395,7 @@ export const Players = () => {
                 player.group_name
                   .substring(player.group_name.length - 1)
                   .toLowerCase()
-                  .includes(searchTermGroup.toLowerCase())
+                  .includes(searchGroup.toLowerCase())
               )
               .map((player, index) => (
                 <Grid
