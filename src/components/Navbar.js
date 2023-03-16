@@ -1,23 +1,18 @@
-import { useState, useEffect } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { appTheme } from "../themes/appTheme";
 import {
   Box,
-  Drawer,
   IconButton,
   Toolbar,
   AppBar,
-  Typography,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import MenuIcon from "@mui/icons-material/Menu";
-import LogoutIcon from "../icons/LogoutIcon";
-import ProfileIcon from "../icons/ProfileIcon";
-import BadmintonPlayerIcon from "../icons/BadmintonPlayerIcon";
-import MatchesIcon from "../icons/MatchesIcon";
-import TableIcon from "../icons/TableIcon";
-import HomeIcon from "../icons/HomeIcon";
-
+import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 const navbarStyle = {
   display: "none",
   width: "100%",
@@ -26,69 +21,23 @@ const navbarStyle = {
   },
 };
 
-const boxStyle = {
-  display: "flex",
-  marginBottom: "2rem",
-  alignItems: "center",
-  position: "relative",
-  paddingBottom: "0.5rem",
-  "&::before, &::after": {
-    content: "''",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    height: "1px",
-    backgroundColor: "white",
-    transition: "width 0.5s ease",
-    width: 0,
-  },
-  "&:hover::before, &:hover::after": {
-    width: "100%",
-  },
-};
-
 export const Navbar = ({ screen }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
   const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
-  const [isOpened, setIsOpened] = useState(false);
-  const { pathname } = useLocation();
-  const { tournamentId } = useParams();
 
   useEffect(() => {
     if (!isTabletSize) {
-      setIsOpened(false);
+      handleClose();
     }
-  }, [isTabletSize]);
+  });
 
-  const links = [
-    {
-      title: "Profil",
-      to: "/profile",
-      icon: <ProfileIcon width={25} height={25} fill={"white"} />,
-    },
-    {
-      title: "Turnaje",
-      to: `/tournaments`,
-      icon: <HomeIcon width={25} height={25} fill={"white"} />,
-    },
-    {
-      title: "Hráči",
-      to: `/tournaments/${tournamentId}`,
-      icon: <BadmintonPlayerIcon width={25} height={25} fill={"white"} />,
-      hidden: screen === "tournaments" || screen === "profile",
-    },
-    {
-      title: "Zápasy",
-      to: `/tournaments/${tournamentId}/matches`,
-      icon: <MatchesIcon width={25} height={25} fill={"white"} />,
-      hidden: screen === "tournaments" || screen === "profile",
-    },
-    {
-      title: "Tabuľka",
-      to: `/tournaments/${tournamentId}/table`,
-      icon: <TableIcon width={25} height={25} fill={"white"} />,
-      hidden: screen === "tournaments" || screen === "profile",
-    },
-  ];
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar position="fixed">
@@ -97,85 +46,40 @@ export const Navbar = ({ screen }) => {
           sx={{
             width: "100%",
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             height: "70px",
           }}
         >
-          <IconButton sx={{ color: "white" }} onClick={() => setIsOpened(true)}>
-            <MenuIcon></MenuIcon>
-          </IconButton>
-          <IconButton sx={{ color: "white" }}>
-            <LogoutIcon></LogoutIcon>
+          <IconButton
+            sx={{ color: "white", padding: "0px" }}
+            id="user-icon"
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
+            <ManageAccountsOutlinedIcon></ManageAccountsOutlinedIcon>
           </IconButton>
         </Box>
-        <Drawer
-          anchor="left"
-          open={isOpened}
-          onClose={() => setIsOpened(false)}
+        <Menu
+          id="navbar-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
         >
-          <Box
-            sx={{
-              backgroundColor: "#1f2736",
-              width: "250px",
-              paddingTop: "2rem",
-              minHeight: "100vh",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            {links.map(({ title, to, icon, hidden }) => (
-              <Link
-                key={title}
-                style={{
-                  textDecoration: "none",
-                  width: "100%",
-                  justifyContent: "center",
-                  display: hidden ? "none" : "flex",
-                  color: "inherit",
-                  alignItems: "center",
-                }}
-                to={to}
-                className={to === pathname ? "active" : ""}
-              >
-                <Box key={title} sx={boxStyle}>
-                  <IconButton sx={{ marginRight: "0.5rem", padding: "0px" }}>
-                    {icon}
-                  </IconButton>
-                  <Typography variant="h2" fontSize="1.15rem" color="white">
-                    {title}
-                  </Typography>
-                </Box>
-              </Link>
-            ))}
-            <Link
-              key="Odhlasitsa"
-              style={{
-                textDecoration: "none",
-                width: "100%",
-                justifyContent: "center",
-                color: "inherit",
-                marginTop: "auto",
-                display: "flex",
-                alignItems: "center",
-              }}
-              to="/"
-              className={"/" === pathname ? "active" : ""}
-            >
-              <Box sx={boxStyle}>
-                <LogoutIcon width={25} height={25} fill={"white"}></LogoutIcon>
-                <Typography
-                  sx={{ marginLeft: "0.5rem" }}
-                  variant="h2"
-                  fontSize="1.15rem"
-                  color="white"
-                >
-                  Odhlásiť sa
-                </Typography>
-              </Box>
-            </Link>
-          </Box>
-        </Drawer>
+          <MenuItem onClick={handleClose}>
+            <SettingsOutlinedIcon sx={{ marginRight: "0.5rem" }} />
+            Nastavenia profilu
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <DarkModeOutlinedIcon sx={{ marginRight: "0.5rem" }} />
+            Prepnúť vzhľad
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <LogoutOutlinedIcon sx={{ marginRight: "0.5rem" }} />
+            Odhlásiť sa
+          </MenuItem>
+        </Menu>
       </Toolbar>
     </AppBar>
   );

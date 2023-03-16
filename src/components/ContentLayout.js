@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import { appTheme } from "../themes/appTheme";
 import { SideBar } from "../components/Sidebar";
 import { Navbar } from "../components/Navbar";
+import { BottomNav } from "./BottomNav";
 
 export const ContentLayout = ({ screen, children, backGround }) => {
   const boxStyle = {
@@ -11,11 +12,11 @@ export const ContentLayout = ({ screen, children, backGround }) => {
     backgroundColor: backGround,
     minHeight: "100vh",
     [appTheme.breakpoints.down("md")]: {
-      marginTop: "70px",
+      marginBlock: "70px",
       marginLeft: "0px",
       paddingBlock: "2rem",
       paddingInline: "2rem",
-      minHeight: `calc(100vh - 70px)`,
+      minHeight: `calc(100vh - 140px)`,
     },
     [appTheme.breakpoints.down("sm")]: {
       paddingInline: "1rem",
@@ -27,6 +28,7 @@ export const ContentLayout = ({ screen, children, backGround }) => {
       <SideBar screen={screen}></SideBar>
       <Navbar screen={screen}></Navbar>
       <Box sx={boxStyle}>{children}</Box>
+      <BottomNav screen={screen}></BottomNav>
     </>
   );
 };
