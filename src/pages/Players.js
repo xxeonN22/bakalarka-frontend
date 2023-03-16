@@ -33,6 +33,7 @@ export const Players = () => {
         `http://localhost:3000/tournaments/${tournamentId}`
       );
       const data = await response.json();
+      console.log(data);
       setRounds(data.rounds);
       setSelectedRound(data.rounds[0].round_number);
     })();
@@ -69,6 +70,40 @@ export const Players = () => {
 
   const handleGameDayChange = async (date) => {
     setSelectedGameDay(date);
+  };
+
+  const handleChangeStatus = async (
+    playerId,
+    status,
+    selectedRound,
+    selectedGameDay
+  ) => {
+    console.log(`${playerId} ${status} ${selectedRound} ${selectedGameDay}`);
+
+    const response = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/changeStatus`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          playerId,
+          status,
+          selectedRound,
+          selectedGameDay,
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+
+    const fetchData = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/${selectedGameDay}/${selectedRound}`
+    );
+    const fetchedData = await fetchData.json();
+    console.log(fetchedData);
+    setPlayersData(fetchedData);
   };
 
   return (
@@ -188,6 +223,7 @@ export const Players = () => {
                     flex: "3",
                     textDecoration: "underline",
                     wordBreak: "break-all",
+                    cursor: "pointer",
                   }}
                 >
                   {player.first_name} {player.last_name}
@@ -197,8 +233,15 @@ export const Players = () => {
                   {player.group_name.substring(player.group_name.length - 1)}
                 </Typography>
                 <Typography
-                  onClick={() => console.log(player.id_player)}
-                  sx={{ flex: "1" }}
+                  onClick={() => {
+                    handleChangeStatus(
+                      player.id_player,
+                      player.status,
+                      selectedRound,
+                      selectedGameDay
+                    );
+                  }}
+                  sx={{ flex: "1", cursor: "pointer" }}
                 >
                   {player.status}
                 </Typography>
