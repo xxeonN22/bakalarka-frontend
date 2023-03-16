@@ -460,7 +460,7 @@ export const Matches = () => {
                 handleSearch(event.target.value);
               }}
               sx={{
-                width: "35%",
+                width: "34%",
                 marginBottom: "0.5rem",
                 [appTheme.breakpoints.down("md")]: {
                   width: "50%",
