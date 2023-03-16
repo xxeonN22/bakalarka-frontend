@@ -178,6 +178,48 @@ export const Players = () => {
             </Button>
           </Grid>
         </Grid>
+
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            marginTop: "1rem",
+            display: checkedBoxes.length > 0 ? "flex" : "none",
+            justifyContent: "space-between",
+            [appTheme.breakpoints.up("lg")]: { justifyContent: "flex-start" },
+          }}
+        >
+          <Grid item xs={6} md={4} lg={2.5}>
+            <Button variant="contained" sx={{ width: "100%", padding: "1rem" }}>
+              Poslať email
+            </Button>
+          </Grid>
+          <Grid item xs={6} md={4} lg={2.5}>
+            <Button
+              variant="contained"
+              sx={{ width: "100%", padding: "1rem" }}
+            >{`Presunúť hráč${checkedBoxes.length > 1 ? "ov" : "a"}`}</Button>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            md={4}
+            lg={2.5}
+            sx={{
+              [appTheme.breakpoints.up("lg")]: {
+                marginLeft: "auto",
+              },
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{
+                width: "100%",
+                padding: "1rem",
+              }}
+            >{`Odstrániť hráč${checkedBoxes.length > 1 ? "ov" : "a"}`}</Button>
+          </Grid>
+        </Grid>
         <Box
           sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
         >
@@ -235,7 +277,7 @@ export const Players = () => {
               [appTheme.breakpoints.down("md")]: { flex: "0" },
             }}
             onChange={handleCheckAll}
-            checked={checkedBoxes.length === playersData.length}
+            checked={allChecked}
           ></Checkbox>
           <Typography
             sx={{
