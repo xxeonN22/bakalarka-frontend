@@ -11,6 +11,7 @@ import {
   Button,
   Checkbox,
   Typography,
+  TextField,
 } from "@mui/material";
 import { appTheme } from "../themes/appTheme";
 
@@ -23,8 +24,46 @@ export const Players = () => {
   const [value, setValue] = useState(0);
   const [playersData, setPlayersData] = useState([]);
 
+  const [searchTermGroup, setSearchTermGroup] = useState("");
+  const handleSearchGroup = (event) => {
+    setSearchTermGroup(event.target.value);
+  };
+
+  const [searchName, setSearchName] = useState("");
+  const handleSearchName = (event) => {
+    setSearchName(event.target.value);
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const [checkedBoxes, setCheckedBoxes] = useState([]);
+
+  console.log(checkedBoxes);
+
+  // Function to handle checking/unchecking a checkbox
+  const handleCheck = (id) => {
+    const index = checkedBoxes.indexOf(id);
+    if (index === -1) {
+      setCheckedBoxes([...checkedBoxes, id]);
+    } else {
+      setCheckedBoxes(checkedBoxes.filter((box) => box !== id));
+    }
+  };
+
+  const [allChecked, setAllChecked] = useState(false);
+
+  // Function to handle checking all checkboxes
+  const handleCheckAll = () => {
+    if (!allChecked) {
+      const ids = playersData.map((player) => player.id_player);
+      setCheckedBoxes(ids);
+      setAllChecked(true);
+    } else {
+      setCheckedBoxes([]);
+      setAllChecked(false);
+    }
   };
 
   useEffect(() => {
@@ -180,73 +219,157 @@ export const Players = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            backgroundColor: "#1f2736",
+            backgroundColor: "#303A53",
             padding: "1rem",
             marginBlock: "1rem",
             color: "white",
             textAlign: "center",
+            [appTheme.breakpoints.down("md")]: { paddingInline: "0.3rem" },
           }}
         >
           <Checkbox
-            sx={{ color: "white", padding: "0px", flex: "1" }}
+            sx={{
+              color: "white",
+              padding: "0px",
+              flex: "1",
+              [appTheme.breakpoints.down("md")]: { flex: "0" },
+            }}
+            onChange={handleCheckAll}
+            checked={checkedBoxes.length === playersData.length}
           ></Checkbox>
-          <Typography sx={{ flex: "1" }}>Poradie</Typography>
-          <Typography sx={{ flex: "3" }}>Meno</Typography>
+          <Typography
+            sx={{
+              flex: "1",
+              [appTheme.breakpoints.down("md")]: { display: "none" },
+            }}
+          >
+            Poradie
+          </Typography>
+          <Box
+            sx={{
+              flex: "3",
+              [appTheme.breakpoints.down("md")]: { flex: "2" },
+            }}
+          >
+            <Typography sx={{ marginBottom: "0.5rem" }}>Meno</Typography>
+            <TextField
+              id="search-name"
+              label="Vyhľadať hráča"
+              variant="outlined"
+              size="small"
+              value={searchName}
+              onChange={handleSearchName}
+            />
+          </Box>
           <Typography sx={{ flex: "1" }}>ELO</Typography>
-          <Typography sx={{ flex: "2" }}>Skupina</Typography>
+          <Box
+            sx={{
+              flex: "2",
+              [appTheme.breakpoints.down("md")]: { flex: "1" },
+            }}
+          >
+            <Typography sx={{ marginBottom: "0.5rem" }}>Skupina</Typography>
+            <TextField
+              id="search-group"
+              label="Vyhľadať skupinu"
+              variant="outlined"
+              size="small"
+              value={searchTermGroup}
+              onChange={handleSearchGroup}
+            />
+          </Box>
           <Typography sx={{ flex: "1" }}>Status</Typography>
         </Box>
 
         <Grid container>
           {playersData &&
-            playersData.map((player, index) => (
-              <Grid
-                item
-                xs={12}
-                key={player.id_player}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  backgroundColor: "#1f2736",
-                  padding: "1rem",
-                  color: "white",
-                  textAlign: "center",
-                }}
-              >
-                <Checkbox
-                  sx={{ color: "white", padding: "0px", flex: "1" }}
-                ></Checkbox>
-                <Typography sx={{ flex: "1" }}>{index + 1}</Typography>
-                <Typography
+            playersData
+              .filter(
+                (player) =>
+                  player.first_name
+                    .toLowerCase()
+                    .includes(searchName.toLowerCase()) ||
+                  player.last_name
+                    .toLowerCase()
+                    .includes(searchName.toLowerCase())
+              )
+              .filter((player) =>
+                player.group_name
+                  .substring(player.group_name.length - 1)
+                  .toLowerCase()
+                  .includes(searchTermGroup.toLowerCase())
+              )
+              .map((player, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  key={player.id_player}
                   sx={{
-                    flex: "3",
-                    textDecoration: "underline",
-                    wordBreak: "break-all",
-                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    backgroundColor: index % 2 !== 0 ? "#303A53" : "#252E42",
+                    padding: "1rem",
+                    color: "white",
+                    textAlign: "center",
+                    [appTheme.breakpoints.down("md")]: {
+                      paddingInline: "0.3rem",
+                    },
                   }}
                 >
-                  {player.first_name} {player.last_name}
-                </Typography>
-                <Typography sx={{ flex: "1" }}>{player.elo}</Typography>
-                <Typography sx={{ flex: "2" }}>
-                  {player.group_name.substring(player.group_name.length - 1)}
-                </Typography>
-                <Typography
-                  onClick={() => {
-                    handleChangeStatus(
-                      player.id_player,
-                      player.status,
-                      selectedRound,
-                      selectedGameDay
-                    );
-                  }}
-                  sx={{ flex: "1", cursor: "pointer" }}
-                >
-                  {player.status}
-                </Typography>
-              </Grid>
-            ))}
+                  <Checkbox
+                    sx={{
+                      color: "white",
+                      padding: "0px",
+                      flex: "1",
+                      [appTheme.breakpoints.down("md")]: { flex: "0" },
+                    }}
+                    onChange={() => handleCheck(player.id_player)}
+                    checked={checkedBoxes.includes(player.id_player)}
+                  ></Checkbox>
+                  <Typography
+                    sx={{
+                      flex: "1",
+                      [appTheme.breakpoints.down("md")]: { display: "none" },
+                    }}
+                  >
+                    {index + 1}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      flex: "3",
+                      textDecoration: "underline",
+                      wordBreak: "break-all",
+                      cursor: "pointer",
+                      [appTheme.breakpoints.down("md")]: { flex: "2" },
+                    }}
+                  >
+                    {player.first_name} {player.last_name}
+                  </Typography>
+                  <Typography sx={{ flex: "1" }}>{player.elo}</Typography>
+                  <Typography
+                    sx={{
+                      flex: "2",
+                      [appTheme.breakpoints.down("md")]: { flex: "1" },
+                    }}
+                  >
+                    {player.group_name.substring(player.group_name.length - 1)}
+                  </Typography>
+                  <Typography
+                    onClick={() => {
+                      handleChangeStatus(
+                        player.id_player,
+                        player.status,
+                        selectedRound,
+                        selectedGameDay
+                      );
+                    }}
+                    sx={{ flex: "1", cursor: "pointer" }}
+                  >
+                    {player.status}
+                  </Typography>
+                </Grid>
+              ))}
         </Grid>
       </ContentLayout>
     </>
