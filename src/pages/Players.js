@@ -2,7 +2,17 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ContentLayout } from "../components/ContentLayout";
 import { SelectBox } from "../components/SelectBox";
-import { Box, Tab, Tabs, tabsClasses } from "@mui/material";
+import {
+  Box,
+  Tab,
+  Tabs,
+  tabsClasses,
+  Grid,
+  Button,
+  Checkbox,
+  Typography,
+} from "@mui/material";
+import { appTheme } from "../themes/appTheme";
 
 export const Players = () => {
   const { tournamentId } = useParams();
@@ -64,51 +74,137 @@ export const Players = () => {
   return (
     <>
       <ContentLayout>
-        <SelectBox
-          id="select-round"
-          labelContent="Vyberte kolo"
-          labelId="select-round-label"
-          label="Vyberte kolo"
-          onChangeFunction={handleRoundChange}
-          selectValue={selectedRound}
-          itemArray={rounds}
-        ></SelectBox>
+        <Grid container justifyContent="space-between" spacing={2}>
+          <Grid item xs={6} md={4} lg={3} xl={2}>
+            <SelectBox
+              id="select-round"
+              labelContent="Vyberte kolo"
+              labelId="select-round-label"
+              label="Vyberte kolo"
+              onChangeFunction={handleRoundChange}
+              selectValue={selectedRound}
+              itemArray={rounds}
+            ></SelectBox>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            md={4}
+            lg={3}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button
+              variant="contained"
+              sx={{
+                paddingBlock: "1rem",
+                [appTheme.breakpoints.down("md")]: { width: "100%" },
+              }}
+            >
+              Vytvoriť nové kolo
+            </Button>
+          </Grid>
+        </Grid>
+        <Box
+          sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
+        >
+          <Box
+            sx={{
+              width: "200px",
+              bgcolor: "background.paper",
+            }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              variant="scrollable"
+              scrollButtons
+              aria-label="visible arrows tabs example"
+              sx={{
+                [`& .${tabsClasses.scrollButtons}`]: {
+                  "&.Mui-disabled": { opacity: 0.3 },
+                },
+              }}
+            >
+              {gameDays.length > 0 &&
+                gameDays.map((gameday) => {
+                  return (
+                    <Tab
+                      sx={{ width: "100%" }}
+                      onClick={() => handleGameDayChange(gameday)}
+                      key={gameday}
+                      label={gameday}
+                    />
+                  );
+                })}
+            </Tabs>
+          </Box>
+        </Box>
 
         <Box
           sx={{
-            width: "200px",
-            bgcolor: "background.paper",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            backgroundColor: "#1f2736",
+            padding: "1rem",
+            marginBlock: "1rem",
+            color: "white",
+            textAlign: "center",
           }}
         >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            variant="scrollable"
-            scrollButtons
-            aria-label="visible arrows tabs example"
-            sx={{
-              [`& .${tabsClasses.scrollButtons}`]: {
-                "&.Mui-disabled": { opacity: 0.3 },
-              },
-            }}
-          >
-            {gameDays.length > 0 &&
-              gameDays.map((gameday) => {
-                return (
-                  <Tab
-                    sx={{ width: "100%" }}
-                    onClick={() => handleGameDayChange(gameday)}
-                    key={gameday}
-                    label={gameday}
-                  />
-                );
-              })}
-          </Tabs>
+          <Checkbox
+            sx={{ color: "white", padding: "0px", flex: "1" }}
+          ></Checkbox>
+          <Typography sx={{ flex: "1" }}>Poradie</Typography>
+          <Typography sx={{ flex: "3" }}>Meno</Typography>
+          <Typography sx={{ flex: "1" }}>ELO</Typography>
+          <Typography sx={{ flex: "2" }}>Skupina</Typography>
+          <Typography sx={{ flex: "1" }}>Status</Typography>
         </Box>
-        {playersData &&
-          playersData.map((player) => (
-            <p key={player.id_player}>{player.first_name}</p>
-          ))}
+
+        <Grid container>
+          {playersData &&
+            playersData.map((player, index) => (
+              <Grid
+                item
+                xs={12}
+                key={player.id_player}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  backgroundColor: "#1f2736",
+                  padding: "1rem",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                <Checkbox
+                  sx={{ color: "white", padding: "0px", flex: "1" }}
+                ></Checkbox>
+                <Typography sx={{ flex: "1" }}>{index + 1}</Typography>
+                <Typography
+                  sx={{
+                    flex: "3",
+                    textDecoration: "underline",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {player.first_name} {player.last_name}
+                </Typography>
+                <Typography sx={{ flex: "1" }}>{player.elo}</Typography>
+                <Typography sx={{ flex: "2" }}>
+                  {player.group_name.substring(player.group_name.length - 1)}
+                </Typography>
+                <Typography
+                  onClick={() => console.log(player.id_player)}
+                  sx={{ flex: "1" }}
+                >
+                  {player.status}
+                </Typography>
+              </Grid>
+            ))}
+        </Grid>
       </ContentLayout>
     </>
   );
