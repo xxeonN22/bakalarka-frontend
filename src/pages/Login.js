@@ -1,24 +1,48 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { appTheme } from "../themes/appTheme";
 import { ContentNotLogged } from "../components/ContentNotLogged";
+import { ShowPasswordTextField } from "../components/ShowPasswordTextField";
+import { EmailTextField } from "../components/EmailTextField";
+import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
 
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import {
-  TextField,
   Typography,
   Grid,
   Button,
   Checkbox,
-  InputAdornment,
-  IconButton,
+  Container,
+  Paper,
 } from "@mui/material";
 
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+const containerStyles = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "90vh",
+  [appTheme.breakpoints.down("md")]: {
+    paddingInline: "5rem",
+  },
+  [appTheme.breakpoints.down("sm")]: {
+    paddingInline: "2rem",
+  },
+};
+
+const gridContainerStyle = {
+  paddingBlock: "2rem",
+  rowGap: "2rem",
+  [appTheme.breakpoints.up("md")]: {
+    paddingInline: "10rem",
+  },
+  [appTheme.breakpoints.up("xs")]: {
+    paddingInline: "2rem",
+  },
+};
+
+const gridItemStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
 
 export const Login = () => {
   const [formData, setFormData] = useState({
@@ -27,15 +51,7 @@ export const Login = () => {
     rememberMe: false,
   });
 
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleSubmit = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     const response = await fetch("http://localhost:3000/login", {
       method: "POST",
@@ -44,47 +60,17 @@ export const Login = () => {
       },
       body: JSON.stringify(formData),
     });
-
-    console.log(await response.json());
+    const data = await response.json();
+    console.log(data);
   };
 
   return (
     <>
       <ContentNotLogged>
-        <Container
-          maxWidth="md"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "90vh",
-            [appTheme.breakpoints.down("md")]: {
-              paddingInline: "5rem",
-            },
-            [appTheme.breakpoints.down("sm")]: {
-              paddingInline: "2rem",
-            },
-          }}
-        >
-          <Box sx={{ bgcolor: "white" }}>
-            <Grid
-              container
-              sx={{
-                paddingBlock: "2rem",
-                rowGap: "2rem",
-                [appTheme.breakpoints.up("md")]: {
-                  paddingInline: "10rem",
-                },
-                [appTheme.breakpoints.up("xs")]: {
-                  paddingInline: "2rem",
-                },
-              }}
-            >
-              <Grid
-                item
-                xs={12}
-                sx={{ display: "flex", justifyContent: "center" }}
-              >
+        <Container maxWidth="md" sx={containerStyles}>
+          <Paper>
+            <Grid container sx={gridContainerStyle}>
+              <Grid item xs={12} sx={gridItemStyle}>
                 <Typography
                   variant="h2"
                   fontSize="1.5rem"
@@ -95,96 +81,29 @@ export const Login = () => {
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  name="user-email"
-                  id="user-email"
+                <EmailTextField
+                  id="email"
                   label="Zadajte email"
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      email: event.target.value,
-                    })
-                  }
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailOutlinedIcon />{" "}
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{ width: "100%" }}
-                ></TextField>
+                  setFormData={setFormData}
+                  formData={formData}
+                ></EmailTextField>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  name="user-password"
-                  id="user-password"
+                <ShowPasswordTextField
+                  id="password"
                   label="Zadajte heslo"
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      password: event.target.value,
-                    })
-                  }
-                  type={showPassword ? "text" : "password"}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockOutlinedIcon />{" "}
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{ width: "100%" }}
-                ></TextField>
+                  setFormData={setFormData}
+                  formData={formData}
+                ></ShowPasswordTextField>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography variant="h2" fontSize="0.875rem">
-                  Ešte nemáte účet?{" "}
-                  <Link
-                    to="/register"
-                    style={{
-                      textDecoration: "none",
-                      fontWeight: "500",
-                      color: "inherit",
-                    }}
-                  >
-                    {" "}
-                    Zaregistrujte sa
-                  </Link>
-                </Typography>
+              <Grid item xs={12} sx={gridItemStyle}>
+                <AuthenticationPageLink
+                  text="Ešte nemáte účet?"
+                  to="/register"
+                  boldText="Zaregistrujte sa"
+                ></AuthenticationPageLink>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              <Grid item xs={12} md={6} sx={gridItemStyle}>
                 <Checkbox
                   onChange={(event) =>
                     setFormData({
@@ -197,50 +116,24 @@ export const Login = () => {
                   Zapamätať prihlásenie
                 </Typography>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                md={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography variant="h2" fontSize="0.875rem">
-                  Zabudli ste heslo?{" "}
-                  <Link
-                    to="/resetpassword"
-                    style={{
-                      textDecoration: "none",
-                      fontWeight: "500",
-                      color: "inherit",
-                    }}
-                  >
-                    {" "}
-                    Obnoviť heslo
-                  </Link>
-                </Typography>
+              <Grid item xs={12} md={6} sx={gridItemStyle}>
+                <AuthenticationPageLink
+                  text="Zabudli ste heslo?"
+                  to="/resetpassword"
+                  boldText="Obnoviť heslo"
+                ></AuthenticationPageLink>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              <Grid item xs={12} sx={gridItemStyle}>
                 <Button
                   sx={{ padding: "1rem" }}
                   variant="contained"
-                  onClick={handleSubmit}
+                  onClick={handleLogin}
                 >
                   Prihlásiť sa
                 </Button>
               </Grid>
             </Grid>
-          </Box>
+          </Paper>
         </Container>
       </ContentNotLogged>
     </>
