@@ -36,6 +36,10 @@ function App() {
             element={<Players />}
           ></Route>
           <Route
+            path="/tournaments/:tournamentId/:playerId"
+            element={<PlayerProfile />}
+          ></Route>
+          <Route
             exact
             path="/tournaments/:tournamentId/matches"
             element={<Matches />}

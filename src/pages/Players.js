@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 
 import { ChooseGroup } from "../components/ChooseGroup";
@@ -32,12 +32,15 @@ export const Players = () => {
   const [searchName, setSearchName] = useState("");
   const [searchGroup, setSearchGroup] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     (async () => {
       const response = await fetch(
         `http://localhost:3000/tournaments/${tournamentId}`
       );
       const data = await response.json();
+      console.log(data);
       setRounds(data.rounds);
       setSelectedRound(data.rounds[0].round_number);
       setGroups(data.groups);
@@ -120,6 +123,7 @@ export const Players = () => {
     selectedRound,
     selectedGameDay
   ) => {
+    console.log(`${playerId} ${status} ${selectedRound} ${selectedGameDay}`);
     const response = await fetch(
       `http://localhost:3000/tournaments/${tournamentId}/changeStatus`,
       {
@@ -142,6 +146,7 @@ export const Players = () => {
       `http://localhost:3000/tournaments/${tournamentId}/${selectedGameDay}/${selectedRound}`
     );
     const fetchedData = await fetchData.json();
+    console.log(fetchedData);
     console.log(fetchedData);
     setPlayersData(fetchedData);
   };
