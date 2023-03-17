@@ -5,7 +5,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export const ShowPasswordTextField = (props) => {
-  const { setFormData, formData, id, label } = props;
+  const { id, label, handleChange, handleBlur, value, error, helperText } =
+    props;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -20,12 +21,11 @@ export const ShowPasswordTextField = (props) => {
       name={id}
       id={id}
       label={label}
-      onChange={(event) =>
-        setFormData({
-          ...formData,
-          [id]: event.target.value,
-        })
-      }
+      value={value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      error={error}
+      helperText={helperText}
       type={showPassword ? "text" : "password"}
       InputProps={{
         startAdornment: (

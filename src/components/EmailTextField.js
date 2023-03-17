@@ -3,19 +3,19 @@ import { TextField, InputAdornment } from "@mui/material";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 export const EmailTextField = (props) => {
-  const { id, label, setFormData, formData } = props;
+  const { id, label, handleChange, handleBlur, value, error, helperText } =
+    props;
   return (
     <TextField
       required
       name={id}
       id={id}
       label={label}
-      onChange={(event) =>
-        setFormData({
-          ...formData,
-          [id]: event.target.value,
-        })
-      }
+      value={value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      error={error}
+      helperText={helperText}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
