@@ -3,17 +3,9 @@ import { appTheme } from "../themes/appTheme";
 import { ContentLayout } from "../components/ContentLayout";
 import { Tournament } from "../components/Tournament";
 import { CreateTournament } from "../components/CreateTournament";
+import { AutoCompleteSearch } from "../components/AutoCompleteSearch";
 
-import {
-  Grid,
-  Typography,
-  Autocomplete,
-  TextField,
-  InputAdornment,
-  Alert,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
+import { Grid, Typography, Alert } from "@mui/material";
 
 export const Tournaments = () => {
   const [tournamentData, setTournamentData] = useState([]);
@@ -39,10 +31,6 @@ export const Tournaments = () => {
   const filteredData = tournamentData.filter((data) =>
     data.name.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const handleClearClick = () => {
-    setSearchText("");
-  };
 
   const createAlert = (messageType, severity, onClose) => {
     const messageText = message[messageType];
@@ -126,57 +114,19 @@ export const Tournaments = () => {
               },
             }}
           >
-            <Autocomplete
-              sx={{
+            <AutoCompleteSearch
+              id="search-tournament"
+              filteredData={filteredData}
+              searchText={searchText}
+              setSearchText={setSearchText}
+              placeholder="Vyhľadať turnaj"
+              style={{
                 width: "50%",
                 [appTheme.breakpoints.down("lg")]: {
                   width: "90%",
                 },
               }}
-              freeSolo
-              id="free-solo-2-demo"
-              disableClearable
-              options={filteredData.map((data) => data.name)}
-              value={searchText}
-              onInputChange={(event, newValue) => {
-                setSearchText(newValue);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{
-                    backgroundColor: "white",
-                    borderRadius: "4px",
-                  }}
-                  placeholder="Vyhľadať turnaj"
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: (
-                      <>
-                        <InputAdornment position="start">
-                          <SearchIcon />
-                        </InputAdornment>
-                        {params.InputProps.startAdornment}
-                      </>
-                    ),
-                    endAdornment: (
-                      <>
-                        {searchText && (
-                          <InputAdornment
-                            position="end"
-                            onClick={handleClearClick}
-                            sx={{ cursor: "pointer" }}
-                          >
-                            <ClearIcon />
-                          </InputAdornment>
-                        )}
-                        {params.InputProps.endAdornment}
-                      </>
-                    ),
-                  }}
-                />
-              )}
-            />
+            ></AutoCompleteSearch>
           </Grid>
         </Grid>
         {createAlert("createdTournamentMessage", "success")}

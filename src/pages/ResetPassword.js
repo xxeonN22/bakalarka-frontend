@@ -1,18 +1,39 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { appTheme } from "../themes/appTheme";
 import { ContentNotLogged } from "../components/ContentNotLogged";
+import { EmailTextField } from "../components/EmailTextField";
 
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import {
-  TextField,
-  Typography,
-  Grid,
-  Button,
-  InputAdornment,
-} from "@mui/material";
+import { Typography, Grid, Button, Paper, Container } from "@mui/material";
 
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+const containerStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: "90vh",
+  [appTheme.breakpoints.down("md")]: {
+    paddingInline: "5rem",
+  },
+  [appTheme.breakpoints.down("sm")]: {
+    paddingInline: "2rem",
+  },
+};
+
+const gridContainerStyle = {
+  paddingBlock: "2rem",
+  rowGap: "2rem",
+  [appTheme.breakpoints.up("md")]: {
+    paddingInline: "10rem",
+  },
+  [appTheme.breakpoints.up("xs")]: {
+    paddingInline: "2rem",
+  },
+};
+
+const gridItemStyle = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
 
 export const ResetPassword = () => {
   const [formData, setFormData] = useState({
@@ -22,40 +43,10 @@ export const ResetPassword = () => {
   return (
     <>
       <ContentNotLogged>
-        <Container
-          maxWidth="md"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "90vh",
-            [appTheme.breakpoints.down("md")]: {
-              paddingInline: "5rem",
-            },
-            [appTheme.breakpoints.down("sm")]: {
-              paddingInline: "2rem",
-            },
-          }}
-        >
-          <Box sx={{ bgcolor: "white" }}>
-            <Grid
-              container
-              sx={{
-                paddingBlock: "2rem",
-                rowGap: "2rem",
-                [appTheme.breakpoints.up("md")]: {
-                  paddingInline: "10rem",
-                },
-                [appTheme.breakpoints.up("xs")]: {
-                  paddingInline: "2rem",
-                },
-              }}
-            >
-              <Grid
-                item
-                xs={12}
-                sx={{ display: "flex", justifyContent: "center" }}
-              >
+        <Container maxWidth="md" sx={containerStyle}>
+          <Paper>
+            <Grid container sx={gridContainerStyle}>
+              <Grid item xs={12} sx={gridItemStyle}>
                 <Typography
                   variant="h2"
                   fontSize="1.5rem"
@@ -66,35 +57,14 @@ export const ResetPassword = () => {
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  id="user-email"
+                <EmailTextField
+                  id="email"
                   label="Zadajte email"
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      email: event.target.value,
-                    })
-                  }
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailOutlinedIcon />{" "}
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{ width: "100%" }}
-                ></TextField>
+                  setFormData={setFormData}
+                  formData={formData}
+                ></EmailTextField>
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              <Grid item xs={12} sx={gridItemStyle}>
                 <Button
                   variant="contained"
                   onClick={() => console.log(formData)}
@@ -103,7 +73,7 @@ export const ResetPassword = () => {
                 </Button>
               </Grid>
             </Grid>
-          </Box>
+          </Paper>
         </Container>
       </ContentNotLogged>
     </>
