@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { AutoCompleteSearch } from "./AutoCompleteSearch";
 
 import { appTheme } from "../themes/appTheme";
 import SearchIcon from "@mui/icons-material/Search";
@@ -44,7 +45,15 @@ const underlineEffect = {
 
 export const NavbarNotLoggedIn = () => {
   const [isOpened, setIsOpened] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const { pathname } = useLocation();
+
+  const tournamentData = ["Ahoj", "cau"];
+
+  const filteredData = tournamentData.filter((data) =>
+    data.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -70,8 +79,13 @@ export const NavbarNotLoggedIn = () => {
             <Box
               sx={{ display: "flex", justifyContent: "center", width: "100%" }}
             >
-              <InputBase
-                sx={{
+              <AutoCompleteSearch
+                id="search-tournament"
+                placeholder="Vyhľadať turnaj"
+                searchText={searchText}
+                setSearchText={setSearchText}
+                filteredData={filteredData}
+                style={{
                   backgroundColor: "white",
                   borderRadius: "4px",
                   width: "60%",
@@ -81,16 +95,8 @@ export const NavbarNotLoggedIn = () => {
                   [appTheme.breakpoints.down("md")]: {
                     width: "100%",
                   },
-                  "& .MuiInputBase-input": {
-                    paddingBlock: "0.5rem",
-                  },
-                  "& .MuiSvgIcon-root": {
-                    marginInline: "0.5rem",
-                  },
                 }}
-                placeholder="Vyhľadať turnaj"
-                startAdornment={<SearchIcon></SearchIcon>}
-              ></InputBase>
+              ></AutoCompleteSearch>
             </Box>
           </Grid>
           <Grid

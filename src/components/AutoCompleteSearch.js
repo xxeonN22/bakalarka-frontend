@@ -14,7 +14,7 @@ export const AutoCompleteSearch = (props) => {
       freeSolo
       id={id}
       disableClearable
-      options={filteredData.map((data) => data.name)}
+      options={filteredData.map((data) => data)}
       value={searchText}
       onInputChange={(event, newValue) => {
         setSearchText(newValue);
