@@ -30,7 +30,11 @@ export const Confirmation = () => {
   const fetchConfirmations = async (playerHash) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/confirmations/${playerHash}`
+        `http://localhost:3000/confirmations/${playerHash}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
       );
       const data = await response.json();
       setConfirmations(data.confirmations);
@@ -68,6 +72,7 @@ export const Confirmation = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ idConfirmation, idGameDay }),
+          credentials: "include",
         }
       );
       const data = await response.json();
@@ -82,7 +87,11 @@ export const Confirmation = () => {
     try {
       event.stopPropagation();
       const response = await fetch(
-        `http://localhost:3000/confirmations/${playerHash}/${idGameDay}`
+        `http://localhost:3000/confirmations/${playerHash}/${idGameDay}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
       );
       const data = await response.json();
       setConfirmationChanges(data);

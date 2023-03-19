@@ -25,7 +25,11 @@ export const TournamentTable = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/table/tournament/${tournamentId}`
+        `http://localhost:3000/table/tournament/${tournamentId}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
       );
       const data = await response.json();
       setGroups(data.tournamentGroups);
@@ -39,7 +43,11 @@ export const TournamentTable = () => {
     (async () => {
       if (selectedGroup && selectedRound) {
         const response = await fetch(
-          `http://localhost:3000/table/tournament/${tournamentId}/${selectedGroup}/${selectedRound}`
+          `http://localhost:3000/table/tournament/${tournamentId}/${selectedGroup}/${selectedRound}`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
         );
         const data = await response.json();
         setTableData(data);

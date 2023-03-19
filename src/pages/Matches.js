@@ -75,7 +75,11 @@ export const Matches = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/tournament/${tournamentId}/matches`
+        `http://localhost:3000/tournament/${tournamentId}/matches`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
       );
       const data = await response.json();
       setGroups(data.groups);
@@ -93,7 +97,11 @@ export const Matches = () => {
     (async () => {
       if (selectedRound) {
         const response = await fetch(
-          `http://localhost:3000/tournament/${tournamentId}/matches/${selectedRound}`
+          `http://localhost:3000/tournament/${tournamentId}/matches/${selectedRound}`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
         );
         const data = await response.json();
         if (data.length === 0) {
@@ -125,7 +133,11 @@ export const Matches = () => {
 
   const updateMatches = async () => {
     const response = await fetch(
-      `http://localhost:3000/tournament/${tournamentId}/matches`
+      `http://localhost:3000/tournament/${tournamentId}/matches`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
     );
     const data = await response.json();
     setMatches(data.matchPair);
@@ -133,7 +145,11 @@ export const Matches = () => {
 
   const handleGenerateClick = async () => {
     const response = await fetch(
-      `http://localhost:3000/tournament/${tournamentId}/matches/${selectedGroup}/${selectedCourts}/${selectedRound}/${selectedGameDay}`
+      `http://localhost:3000/tournament/${tournamentId}/matches/${selectedGroup}/${selectedCourts}/${selectedRound}/${selectedGameDay}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
     );
     const data = await response.json();
 
@@ -192,6 +208,7 @@ export const Matches = () => {
         body: JSON.stringify({
           selectedMatches,
         }),
+        credentials: "include",
       }
     );
 
@@ -217,6 +234,7 @@ export const Matches = () => {
           matchValues,
           numberOfSets,
         }),
+        credentials: "include",
       }
     );
 

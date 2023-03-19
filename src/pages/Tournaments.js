@@ -22,7 +22,10 @@ export const Tournaments = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://localhost:3000/tournaments");
+      const response = await fetch("http://localhost:3000/tournaments", {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await response.json();
       setTournamentData(data);
     })();

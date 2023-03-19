@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { appTheme } from "../themes/appTheme";
+import { useNavigate } from "react-router-dom";
 import { ContentNotLogged } from "../components/ContentNotLogged";
 import { ShowPasswordTextField } from "../components/ShowPasswordTextField";
 import { EmailTextField } from "../components/EmailTextField";
@@ -13,6 +15,7 @@ import {
   Checkbox,
   Container,
   Paper,
+  Alert,
 } from "@mui/material";
 
 const containerStyles = {
@@ -65,6 +68,28 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
+  const [responseMessage, setResponseMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleLoginUser = async (userCredentials) => {
+    const response = await fetch(`http://localhost:3000/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userCredentials,
+      }),
+      credentials: "include",
+    });
+    const data = await response.json();
+    setResponseMessage(data);
+    if (response.status === 200) {
+      setTimeout(() => {
+        navigate("/tournaments", { credentials: "include" });
+      }, 1500);
+    }
+  };
   return (
     <>
       <ContentNotLogged>
@@ -72,11 +97,24 @@ export const Login = () => {
           <Paper>
             <Formik
               initialValues={{ email: "", password: "", rememberMe: false }}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={(values) => handleLoginUser(values)}
               validationSchema={validationSchema}
             >
               {({ values, handleChange, errors, touched, handleBlur }) => (
                 <Form>
+                  {responseMessage && (
+                    <Alert
+                      sx={{ marginBlock: "1rem" }}
+                      severity={
+                        responseMessage.type === "success" ? "success" : "error"
+                      }
+                      onClose={() => {
+                        setResponseMessage(null);
+                      }}
+                    >
+                      {responseMessage.message}
+                    </Alert>
+                  )}
                   <Grid container sx={gridContainerStyle}>
                     <Grid item xs={12} sx={gridItemStyle}>
                       <Typography

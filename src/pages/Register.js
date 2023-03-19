@@ -97,6 +97,7 @@ export const Register = () => {
       body: JSON.stringify({
         userCredentials,
       }),
+      credentials: "include",
     });
     const data = await response.json();
     setResponseMessage(data);

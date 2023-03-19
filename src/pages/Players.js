@@ -37,7 +37,11 @@ export const Players = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/players/tournament/${tournamentId}`
+        `http://localhost:3000/players/tournament/${tournamentId}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
       );
       const data = await response.json();
       setRounds(data.rounds);
@@ -50,7 +54,11 @@ export const Players = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/players/tournament/${tournamentId}/${selectedRound}`
+        `http://localhost:3000/players/tournament/${tournamentId}/${selectedRound}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
       );
       const data = await response.json();
       setGameDays(data);
@@ -63,7 +71,11 @@ export const Players = () => {
     (async () => {
       if (selectedGameDay) {
         const response = await fetch(
-          `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
+          `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
         );
         const data = await response.json();
         console.log(data);
@@ -135,13 +147,18 @@ export const Players = () => {
           selectedRound,
           selectedGameDay,
         }),
+        credentials: "include",
       }
     );
     const data = await response.json();
     console.log(data);
 
     const fetchData = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
+      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
     );
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
@@ -159,13 +176,18 @@ export const Players = () => {
         body: JSON.stringify({
           checkedBoxes,
         }),
+        credentials: "include",
       }
     );
     const data = await response.json();
     console.log(data);
 
     const fetchData = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
+      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
     );
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
@@ -184,13 +206,18 @@ export const Players = () => {
           checkedBoxes,
           selectedGroup,
         }),
+        credentials: "include",
       }
     );
     const data = await response.json();
     console.log(data);
 
     const fetchData = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
+      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
     );
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
