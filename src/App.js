@@ -23,7 +23,7 @@ function App() {
             path="/players/:id"
             element={<PlayerProfile></PlayerProfile>}
           ></Route>
-          <Route path="/:hash/confirmation" element={<Confirmation />}></Route>
+          <Route path="/confirmations/:hash" element={<Confirmation />}></Route>
           <Route path="/newpassword" element={<NewPassword />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>

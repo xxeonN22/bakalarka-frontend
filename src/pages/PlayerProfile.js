@@ -62,7 +62,7 @@ export const PlayerProfile = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/tournaments/${tournamentId}/player/${playerId}`
+        `http://localhost:3000/player/${tournamentId}/${playerId}`
       );
       const data = await response.json();
       setPlayerData({
@@ -82,7 +82,7 @@ export const PlayerProfile = () => {
     (async () => {
       if (selectedRound) {
         const response = await fetch(
-          `http://localhost:3000/tournaments/${tournamentId}/player/${playerId}/matches/${selectedRound}`
+          `http://localhost:3000/player/${tournamentId}/${playerId}/matches/${selectedRound}`
         );
         const data = await response.json();
         setMatches(data);
@@ -92,7 +92,7 @@ export const PlayerProfile = () => {
 
   const handleShowScore = async (matchId) => {
     const respone = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/player/${playerId}/match/${matchId}`
+      `http://localhost:3000/player/${tournamentId}/${playerId}/match/${matchId}`
     );
     const data = await respone.json();
     console.log(data);

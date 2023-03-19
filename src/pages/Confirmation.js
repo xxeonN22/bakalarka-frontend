@@ -30,7 +30,7 @@ export const Confirmation = () => {
   const fetchConfirmations = async (playerHash) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/${playerHash}/confirmations`
+        `http://localhost:3000/confirmations/${playerHash}`
       );
       const data = await response.json();
       setConfirmations(data.confirmations);
@@ -61,7 +61,7 @@ export const Confirmation = () => {
   const handleConfirmationChange = async (idConfirmation, idGameDay) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/${playerHash}/confirmations`,
+        `http://localhost:3000/confirmations/${playerHash}`,
         {
           method: "PUT",
           headers: {
@@ -82,7 +82,7 @@ export const Confirmation = () => {
     try {
       event.stopPropagation();
       const response = await fetch(
-        `http://localhost:3000/${playerHash}/confirmations/${idGameDay}`
+        `http://localhost:3000/confirmations/${playerHash}/${idGameDay}`
       );
       const data = await response.json();
       setConfirmationChanges(data);

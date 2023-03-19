@@ -37,7 +37,7 @@ export const Players = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/tournaments/${tournamentId}`
+        `http://localhost:3000/players/tournament/${tournamentId}`
       );
       const data = await response.json();
       setRounds(data.rounds);
@@ -50,7 +50,7 @@ export const Players = () => {
   useEffect(() => {
     (async () => {
       const response = await fetch(
-        `http://localhost:3000/tournaments/${tournamentId}/${selectedRound}`
+        `http://localhost:3000/players/tournament/${tournamentId}/${selectedRound}`
       );
       const data = await response.json();
       setGameDays(data);
@@ -63,7 +63,7 @@ export const Players = () => {
     (async () => {
       if (selectedGameDay) {
         const response = await fetch(
-          `http://localhost:3000/tournaments/${tournamentId}/${selectedGameDay}/${selectedRound}`
+          `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
         );
         const data = await response.json();
         console.log(data);
@@ -123,7 +123,7 @@ export const Players = () => {
     selectedGameDay
   ) => {
     const response = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/changeStatus`,
+      `http://localhost:3000/players/tournament/${tournamentId}/changeStatus`,
       {
         method: "PUT",
         headers: {
@@ -141,7 +141,7 @@ export const Players = () => {
     console.log(data);
 
     const fetchData = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/${selectedGameDay}/${selectedRound}`
+      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
     );
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
@@ -150,7 +150,7 @@ export const Players = () => {
 
   const handleDeletePlayers = async () => {
     const response = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/deletePlayers`,
+      `http://localhost:3000/players/tournament/${tournamentId}/deletePlayers`,
       {
         method: "DELETE",
         headers: {
@@ -165,7 +165,7 @@ export const Players = () => {
     console.log(data);
 
     const fetchData = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/${selectedGameDay}/${selectedRound}`
+      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
     );
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
@@ -174,7 +174,7 @@ export const Players = () => {
 
   const handleMovePlayers = async () => {
     const response = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/movePlayers`,
+      `http://localhost:3000/players/tournament/${tournamentId}/movePlayers`,
       {
         method: "PUT",
         headers: {
@@ -190,7 +190,7 @@ export const Players = () => {
     console.log(data);
 
     const fetchData = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/${selectedGameDay}/${selectedRound}`
+      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
     );
     const fetchedData = await fetchData.json();
     console.log(fetchedData);

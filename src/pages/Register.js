@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { appTheme } from "../themes/appTheme";
+import { useNavigate } from "react-router-dom";
 import { ContentNotLogged } from "../components/ContentNotLogged";
 import { ShowPasswordTextField } from "../components/ShowPasswordTextField";
 import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
@@ -14,6 +15,7 @@ import {
   Button,
   Container,
   Paper,
+  Alert,
 } from "@mui/material";
 
 const containerStyle = {
@@ -83,6 +85,27 @@ const validationSchema = yup.object({
 });
 
 export const Register = () => {
+  const [responseMessage, setResponseMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleRegisterUser = async (userCredentials) => {
+    const response = await fetch(`http://localhost:3000/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userCredentials,
+      }),
+    });
+    const data = await response.json();
+    setResponseMessage(data);
+    if (response.status === 200) {
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    }
+  };
   return (
     <>
       <ContentNotLogged>
@@ -96,11 +119,24 @@ export const Register = () => {
                 password: "",
                 repeatPassword: "",
               }}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={(values) => handleRegisterUser(values)}
               validationSchema={validationSchema}
             >
               {({ values, handleChange, errors, touched, handleBlur }) => (
                 <Form>
+                  {responseMessage && (
+                    <Alert
+                      sx={{ marginBlock: "1rem" }}
+                      severity={
+                        responseMessage.type === "success" ? "success" : "error"
+                      }
+                      onClose={() => {
+                        setResponseMessage(null);
+                      }}
+                    >
+                      {responseMessage.message}
+                    </Alert>
+                  )}
                   <Grid container sx={gridContainerStyle}>
                     <Grid item xs={12} sx={gridItemStyle}>
                       <Typography
