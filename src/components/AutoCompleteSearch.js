@@ -14,7 +14,7 @@ export const AutoCompleteSearch = (props) => {
       freeSolo
       id={id}
       disableClearable
-      options={filteredData.map((data) => data)}
+      options={filteredData.map((data) => data.name)}
       value={searchText}
       onInputChange={(event, newValue) => {
         setSearchText(newValue);
@@ -31,7 +31,7 @@ export const AutoCompleteSearch = (props) => {
             ...params.InputProps,
             startAdornment: (
               <>
-                <InputAdornment position="start">
+                <InputAdornment position="start" sx={{ marginLeft: "0.5rem" }}>
                   <SearchIcon />
                 </InputAdornment>
                 {params.InputProps.startAdornment}

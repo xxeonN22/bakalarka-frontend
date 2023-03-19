@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AutoCompleteSearch } from "./AutoCompleteSearch";
 
 import { appTheme } from "../themes/appTheme";
-import SearchIcon from "@mui/icons-material/Search";
-import LoginIcon from "../icons/LoginIcon";
-import RegisterIcon from "../icons/RegisterIcon";
 
 import {
   Toolbar,
@@ -13,11 +10,13 @@ import {
   Grid,
   Box,
   IconButton,
-  Typography,
-  InputBase,
-  Drawer,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 
 const underlineEffect = {
   display: "flex",
@@ -44,15 +43,39 @@ const underlineEffect = {
 };
 
 export const NavbarNotLoggedIn = () => {
-  const [isOpened, setIsOpened] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const { pathname } = useLocation();
+  const [tournamentData, setTournamentData] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
 
-  const tournamentData = ["Ahoj", "cau"];
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(
+        `http://localhost:3000/tournaments/notLoggedIn`
+      );
+      const data = await response.json();
+      setTournamentData(data);
+      console.log(data);
+    })();
+  }, []);
 
   const filteredData = tournamentData.filter((data) =>
-    data.toLowerCase().includes(searchText.toLowerCase())
+    data.name.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  useEffect(() => {
+    if (!isTabletSize) {
+      handleClose();
+    }
+  });
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <AppBar position="fixed">
@@ -61,20 +84,7 @@ export const NavbarNotLoggedIn = () => {
           container
           sx={{ display: "flex", height: "70px", alignItems: "center" }}
         >
-          <Grid item sx={{ flex: 1 }}>
-            <IconButton
-              sx={{
-                color: "white",
-                paddingBlock: "0.5rem",
-                [appTheme.breakpoints.up("md")]: {
-                  display: "none",
-                },
-              }}
-              onClick={() => setIsOpened(true)}
-            >
-              <MenuIcon></MenuIcon>
-            </IconButton>
-          </Grid>
+          <Grid item sx={{ flex: 1 }}></Grid>
           <Grid item sx={{ flex: 3 }}>
             <Box
               sx={{ display: "flex", justifyContent: "center", width: "100%" }}
@@ -95,6 +105,9 @@ export const NavbarNotLoggedIn = () => {
                   [appTheme.breakpoints.down("md")]: {
                     width: "100%",
                   },
+                  "& .MuiOutlinedInput-root": {
+                    padding: "0.2rem",
+                  },
                 }}
               ></AutoCompleteSearch>
             </Box>
@@ -103,8 +116,26 @@ export const NavbarNotLoggedIn = () => {
             item
             sx={{
               flex: 1,
+              display: "flex",
+              justifyContent: "flex-end",
             }}
           >
+            <IconButton
+              sx={{
+                color: "white",
+                paddingBlock: "0.5rem",
+                [appTheme.breakpoints.up("md")]: {
+                  display: "none",
+                },
+              }}
+              id="menu-icon"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+            >
+              <MenuIcon></MenuIcon>
+            </IconButton>
             <Box
               sx={{
                 display: "flex",
@@ -134,76 +165,31 @@ export const NavbarNotLoggedIn = () => {
             </Box>
           </Grid>
         </Grid>
-        <Drawer
-          anchor="left"
-          open={isOpened}
-          onClose={() => setIsOpened(false)}
+        <Menu
+          id="navbar-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
         >
-          <Box
-            sx={{
-              backgroundColor: "#1f2736",
-              width: "250px",
-              paddingTop: "2rem",
-              minHeight: "100vh",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
+          <MenuItem onClick={handleClose}>
+            <LoginIcon sx={{ marginRight: "0.5rem" }} />
             <Link
-              style={{
-                textDecoration: "none",
-                width: "100%",
-                justifyContent: "center",
-                color: "inherit",
-                display: "flex",
-                alignItems: "center",
-              }}
               to="/login"
-              className={"/login" === pathname ? "active" : ""}
+              style={{ color: "inherit", textDecoration: "none" }}
             >
-              <Box sx={underlineEffect}>
-                <LoginIcon width={25} height={25} fill={"white"}></LoginIcon>
-                <Typography
-                  sx={{ marginLeft: "0.5rem" }}
-                  variant="h2"
-                  fontSize="1.15rem"
-                  color="white"
-                >
-                  Prihlásiť sa
-                </Typography>
-              </Box>
+              Prihlásiť
             </Link>
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <PersonAddOutlinedIcon sx={{ marginRight: "0.5rem" }} />
             <Link
-              style={{
-                textDecoration: "none",
-                width: "100%",
-                justifyContent: "center",
-                color: "inherit",
-                display: "flex",
-                alignItems: "center",
-              }}
               to="/register"
-              className={"/register" === pathname ? "active" : ""}
+              style={{ color: "inherit", textDecoration: "none" }}
             >
-              <Box sx={underlineEffect}>
-                <RegisterIcon
-                  width={25}
-                  height={25}
-                  fill={"white"}
-                ></RegisterIcon>
-                <Typography
-                  sx={{ marginLeft: "0.5rem" }}
-                  variant="h2"
-                  fontSize="1.15rem"
-                  color="white"
-                >
-                  Registrovať sa
-                </Typography>
-              </Box>
+              Registrovať
             </Link>
-          </Box>
-        </Drawer>
+          </MenuItem>
+        </Menu>
       </Toolbar>
     </AppBar>
   );
