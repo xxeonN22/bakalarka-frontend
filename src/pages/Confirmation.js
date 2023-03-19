@@ -44,10 +44,9 @@ export const Confirmation = () => {
   };
 
   const transformDate = (dateToTransform) => {
-    const date = dateToTransform.substring(0, 10);
-    const [year, month, day] = date.split("-");
-    const newDate = `${day}.${month}.${year}`;
-    return newDate;
+    const getDate = new Date(dateToTransform);
+    const date = getDate.toLocaleDateString("sk-SK");
+    return date;
   };
 
   const getTodaysDate = () => {

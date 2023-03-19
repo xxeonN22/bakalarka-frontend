@@ -1,4 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { appTheme } from "../themes/appTheme";
+import { Formik, Form } from "formik";
+import * as yup from "yup";
+
+import { ContentLayout } from "../components/ContentLayout";
+import { SelectBox } from "../components/SelectBox";
+
 import {
   Breadcrumbs,
   Typography,
@@ -12,22 +20,34 @@ import {
   TextField,
   Paper,
 } from "@mui/material";
-import { appTheme } from "../themes/appTheme";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useParams, useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-import { ContentLayout } from "../components/ContentLayout";
-import { TextFieldIncrement } from "../components/TextFieldIncrement";
-import { SelectBox } from "../components/SelectBox";
+const validationSchema = yup.object({
+  firstName: yup.string().required("Meno musí byť zadané"),
+  lastName: yup.string().required("Priezvisko musí byť zadané"),
+  email: yup
+    .string()
+    .required("Email musí byť zadaný")
+    .matches(
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      "Neplatný tvar emailovej adresy"
+    ),
+  elo: yup
+    .number()
+    .min(500, "Minimálna hodnota musí byť aspoň 500")
+    .max(5000, "Maximálna povolená hodnota je 5000")
+    .typeError("Hodnota ELO musí byť číselná hodnota")
+    .required("Hodnota ELO musí byť zadaná"),
+});
 
 export const PlayerProfile = () => {
-  const navigate = useNavigate();
-  const { tournamentId, playerId } = useParams();
-  const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
+  const [rounds, setRounds] = useState([]);
+  const [selectedRound, setSelectedRound] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
+  const [matches, setMatches] = useState([]);
+  const [playerAttendance, setPlayerAttendance] = useState([]);
   const [playerData, setPlayerData] = useState({
     first_name: "",
     last_name: "",
@@ -35,17 +55,9 @@ export const PlayerProfile = () => {
     elo: 10,
   });
 
-  const [matches, setMatches] = useState([]);
-  const [playerAttendance, setPlayerAttendance] = useState([]);
-  const [rounds, setRounds] = useState([]);
-  const [selectedRound, setSelectedRound] = useState("");
-
-  const handlePlayerSettingsChange = (name, value) => {
-    setPlayerData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const { tournamentId, playerId } = useParams();
+  const navigate = useNavigate();
+  const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
 
   useEffect(() => {
     (async () => {
@@ -53,7 +65,6 @@ export const PlayerProfile = () => {
         `http://localhost:3000/tournaments/${tournamentId}/player/${playerId}`
       );
       const data = await response.json();
-      console.log(data);
       setPlayerData({
         first_name: data.playerData[0].first_name,
         last_name: data.playerData[0].last_name,
@@ -74,11 +85,22 @@ export const PlayerProfile = () => {
           `http://localhost:3000/tournaments/${tournamentId}/player/${playerId}/matches/${selectedRound}`
         );
         const data = await response.json();
-        console.log(data);
         setMatches(data);
       }
     })();
   }, [tournamentId, playerId, selectedRound]);
+
+  const handleShowScore = async (matchId) => {
+    const respone = await fetch(
+      `http://localhost:3000/tournaments/${tournamentId}/player/${playerId}/match/${matchId}`
+    );
+    const data = await respone.json();
+    console.log(data);
+  };
+
+  const handleEditScore = async (values) => {
+    console.log(values);
+  };
 
   const convertDate = (dateToConvert) => {
     const dateObject = new Date(dateToConvert);
@@ -88,14 +110,6 @@ export const PlayerProfile = () => {
 
   const handleRoundChange = (event) => {
     setSelectedRound(event.target.value);
-  };
-
-  const handleShowScore = async (matchId) => {
-    const respone = await fetch(
-      `http://localhost:3000/tournaments/${tournamentId}/player/${playerId}/match/${matchId}`
-    );
-    const data = await respone.json();
-    console.log(data);
   };
 
   return (
@@ -131,69 +145,103 @@ export const PlayerProfile = () => {
                 {!isLoading && (
                   <>
                     {" "}
-                    <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          label="Meno"
-                          value={playerData.first_name}
-                          onChange={(e) =>
-                            handlePlayerSettingsChange(
-                              "first_name",
-                              e.target.value
-                            )
-                          }
-                        ></TextField>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          label="Priezvisko"
-                          value={playerData.last_name}
-                          onChange={(e) =>
-                            handlePlayerSettingsChange(
-                              "last_name",
-                              e.target.value
-                            )
-                          }
-                        ></TextField>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          fullWidth
-                          label="Email"
-                          value={playerData.email}
-                          onChange={(e) =>
-                            handlePlayerSettingsChange("email", e.target.value)
-                          }
-                        ></TextField>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextFieldIncrement
-                          isRequired={true}
-                          value={playerData.elo}
-                          functionName={(value) =>
-                            handlePlayerSettingsChange("elo", value)
-                          }
-                          label={`ELO`}
-                          id={`player-elo`}
-                          min={1000}
-                          max={5000}
-                        ></TextFieldIncrement>
-                      </Grid>
-                    </Grid>
-                    <Box sx={{ display: "flex", justifyContent: "center" }}>
-                      <Button
-                        variant="contained"
-                        sx={{ marginTop: "1rem" }}
-                        startIcon={<EditOutlinedIcon />}
-                      >
-                        Potvrdiť úpravu údajov
-                      </Button>
-                    </Box>
+                    <Formik
+                      initialValues={{
+                        firstName: playerData.first_name,
+                        lastName: playerData.last_name,
+                        email: playerData.email,
+                        elo: playerData.elo,
+                      }}
+                      onSubmit={(values) => handleEditScore(values)}
+                      validationSchema={validationSchema}
+                    >
+                      {({
+                        values,
+                        handleChange,
+                        errors,
+                        touched,
+                        handleBlur,
+                      }) => (
+                        <Form>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                              <TextField
+                                required
+                                fullWidth
+                                id="firstName"
+                                label="Meno"
+                                name="firstName"
+                                value={values.firstName}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={
+                                  touched.firstName && Boolean(errors.firstName)
+                                }
+                                helperText={
+                                  touched.firstName && errors.firstName
+                                }
+                              ></TextField>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                required
+                                fullWidth
+                                id="lastName"
+                                label="Priezvisko"
+                                name="lastName"
+                                value={values.lastName}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={
+                                  touched.lastName && Boolean(errors.lastName)
+                                }
+                                helperText={touched.lastName && errors.lastName}
+                              ></TextField>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email"
+                                name="email"
+                                value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.email && Boolean(errors.email)}
+                                helperText={touched.email && errors.email}
+                              ></TextField>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                required
+                                fullWidth
+                                id="elo"
+                                label="Elo"
+                                name="elo"
+                                value={values.elo}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.elo && Boolean(errors.elo)}
+                                helperText={touched.elo && errors.elo}
+                              ></TextField>
+                            </Grid>
+                          </Grid>
+                          <Box
+                            sx={{ display: "flex", justifyContent: "center" }}
+                          >
+                            <Button
+                              variant="contained"
+                              sx={{ marginTop: "1rem" }}
+                              startIcon={<EditOutlinedIcon />}
+                              type="submit"
+                            >
+                              Potvrdiť úpravu údajov
+                            </Button>
+                          </Box>
+                        </Form>
+                      )}
+                    </Formik>
                   </>
                 )}
               </AccordionDetails>
