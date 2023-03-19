@@ -68,6 +68,10 @@ export const PlayerProfile = () => {
           credentials: "include",
         }
       );
+      if (response.status === 401) {
+        navigate("/login");
+        return;
+      }
       const data = await response.json();
       setPlayerData({
         first_name: data.playerData[0].first_name,
@@ -92,6 +96,10 @@ export const PlayerProfile = () => {
             credentials: "include",
           }
         );
+        if (response.status === 401) {
+          navigate("/login");
+          return;
+        }
         const data = await response.json();
         setMatches(data);
       }
@@ -99,14 +107,18 @@ export const PlayerProfile = () => {
   }, [tournamentId, playerId, selectedRound]);
 
   const handleShowScore = async (matchId) => {
-    const respone = await fetch(
+    const response = await fetch(
       `http://localhost:3000/player/${tournamentId}/${playerId}/match/${matchId}`,
       {
         method: "GET",
         credentials: "include",
       }
     );
-    const data = await respone.json();
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
+    const data = await response.json();
     console.log(data);
   };
 

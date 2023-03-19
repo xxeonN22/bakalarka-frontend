@@ -81,6 +81,10 @@ export const Matches = () => {
           credentials: "include",
         }
       );
+      if (response.status === 401) {
+        navigate("/login");
+        return;
+      }
       const data = await response.json();
       setGroups(data.groups);
       setSelectedGroup(data.groups[0].group_name);
@@ -103,6 +107,10 @@ export const Matches = () => {
             credentials: "include",
           }
         );
+        if (response.status === 401) {
+          navigate("/login");
+          return;
+        }
         const data = await response.json();
         if (data.length === 0) {
           setGameDays([]);
@@ -139,6 +147,10 @@ export const Matches = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
     const data = await response.json();
     setMatches(data.matchPair);
   };
@@ -151,6 +163,10 @@ export const Matches = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
     const data = await response.json();
 
     setMessageState({
@@ -211,6 +227,10 @@ export const Matches = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
 
     const data = await response.json();
 
@@ -237,6 +257,10 @@ export const Matches = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
 
     const data = await response.json();
     setMessageState({

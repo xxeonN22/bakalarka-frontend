@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { appTheme } from "../themes/appTheme";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { ContentLayout } from "../components/ContentLayout";
 import { SelectBox } from "../components/SelectBox";
@@ -13,6 +14,8 @@ export const TournamentTable = () => {
   const [rounds, setRounds] = useState([]);
   const [selectedRound, setSelectedRound] = useState("");
   const [tableData, setTableData] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleGroupChange = (event) => {
     setSelectedGroup(event.target.value);
@@ -31,6 +34,10 @@ export const TournamentTable = () => {
           credentials: "include",
         }
       );
+      if (response.status === 401) {
+        navigate("/login");
+        return;
+      }
       const data = await response.json();
       setGroups(data.tournamentGroups);
       setSelectedGroup(data.tournamentGroups[0].group_name);
@@ -49,6 +56,10 @@ export const TournamentTable = () => {
             credentials: "include",
           }
         );
+        if (response.status === 401) {
+          navigate("/login");
+          return;
+        }
         const data = await response.json();
         setTableData(data);
       }

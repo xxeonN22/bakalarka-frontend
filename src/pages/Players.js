@@ -43,6 +43,10 @@ export const Players = () => {
           credentials: "include",
         }
       );
+      if (response.status === 401) {
+        navigate("/login");
+        return;
+      }
       const data = await response.json();
       setRounds(data.rounds);
       setSelectedRound(data.rounds[0].round_number);
@@ -60,6 +64,10 @@ export const Players = () => {
           credentials: "include",
         }
       );
+      if (response.status === 401) {
+        navigate("/login");
+        return;
+      }
       const data = await response.json();
       setGameDays(data);
       setValue(0);
@@ -77,6 +85,10 @@ export const Players = () => {
             credentials: "include",
           }
         );
+        if (response.status === 401) {
+          navigate("/login");
+          return;
+        }
         const data = await response.json();
         console.log(data);
         setPlayersData(data);
@@ -150,6 +162,10 @@ export const Players = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
     const data = await response.json();
     console.log(data);
 
@@ -160,6 +176,10 @@ export const Players = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
     setPlayersData(fetchedData);
@@ -179,6 +199,10 @@ export const Players = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
     const data = await response.json();
     console.log(data);
 
@@ -189,6 +213,10 @@ export const Players = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
     setPlayersData(fetchedData);
@@ -219,6 +247,10 @@ export const Players = () => {
         credentials: "include",
       }
     );
+    if (response.status === 401) {
+      navigate("/login");
+      return;
+    }
     const fetchedData = await fetchData.json();
     console.log(fetchedData);
     setPlayersData(fetchedData);

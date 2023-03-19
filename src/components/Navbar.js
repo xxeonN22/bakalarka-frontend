@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { appTheme } from "../themes/appTheme";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   IconButton,
@@ -25,12 +26,23 @@ export const Navbar = ({ screen }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isTabletSize) {
       handleClose();
     }
   });
+
+  const handleLogOut = async () => {
+    const response = await fetch(`http://localhost:3000/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+    if (response.status === 200) {
+      navigate("/login");
+    }
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,7 +87,12 @@ export const Navbar = ({ screen }) => {
             <DarkModeOutlinedIcon sx={{ marginRight: "0.5rem" }} />
             Prepnúť vzhľad
           </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              handleLogOut();
+            }}
+          >
             <LogoutOutlinedIcon sx={{ marginRight: "0.5rem" }} />
             Odhlásiť sa
           </MenuItem>

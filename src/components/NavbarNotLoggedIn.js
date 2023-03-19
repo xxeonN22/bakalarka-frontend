@@ -51,9 +51,7 @@ export const NavbarNotLoggedIn = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `http://localhost:3000/tournaments/notLoggedIn`
-      );
+      const response = await fetch(`http://localhost:3000`);
       const data = await response.json();
       setTournamentData(data);
       console.log(data);

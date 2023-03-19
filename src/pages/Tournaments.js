@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { appTheme } from "../themes/appTheme";
+import { useNavigate } from "react-router-dom";
 import { ContentLayout } from "../components/ContentLayout";
 import { Tournament } from "../components/Tournament";
 import { CreateTournament } from "../components/CreateTournament";
@@ -8,6 +9,7 @@ import { AutoCompleteSearch } from "../components/AutoCompleteSearch";
 import { Grid, Typography, Alert } from "@mui/material";
 
 export const Tournaments = () => {
+  const navigate = useNavigate();
   const [tournamentData, setTournamentData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [message, setMessage] = useState({
@@ -22,14 +24,18 @@ export const Tournaments = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://localhost:3000/tournaments", {
+      const response = await fetch(`http://localhost:3000/tournaments`, {
         method: "GET",
         credentials: "include",
       });
+      if (response.status === 401) {
+        navigate("/login");
+        return;
+      }
       const data = await response.json();
       setTournamentData(data);
     })();
-  }, []);
+  }, [navigate]);
 
   const filteredData = tournamentData.filter((data) =>
     data.name.toLowerCase().includes(searchText.toLowerCase())
