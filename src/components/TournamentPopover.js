@@ -27,7 +27,6 @@ export const TournamentPopover = ({
   };
 
   const handleDialogClose = (dialogName) => {
-    window.history.back();
     setDialogState((prevState) => ({ ...prevState, [dialogName]: false }));
   };
 
@@ -68,11 +67,6 @@ export const TournamentPopover = ({
         <Box display="flex" flexDirection="column">
           <Button
             onClick={() => {
-              window.history.pushState(
-                {},
-                "",
-                `/tournaments/eddittournament/${tournamentId}`
-              );
               handleDialogOpen("editSettings");
             }}
             sx={{ borderRadius: "0" }}
@@ -96,11 +90,6 @@ export const TournamentPopover = ({
 
           <Button
             onClick={() => {
-              window.history.pushState(
-                {},
-                "",
-                `/tournaments/addplayers/${tournamentId}`
-              );
               handleDialogOpen("addPlayers");
             }}
             sx={{ borderRadius: "0" }}
@@ -134,11 +123,6 @@ export const TournamentPopover = ({
           </Button>
           <Button
             onClick={() => {
-              window.history.pushState(
-                {},
-                "",
-                `/tournaments/deletetournament/${tournamentId}`
-              );
               handleDialogOpen("deleteTournament");
             }}
             color="error"

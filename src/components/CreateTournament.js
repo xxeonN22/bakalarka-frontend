@@ -48,7 +48,6 @@ export const CreateTournament = (props) => {
 
   const handleDialogClose = () => {
     setDialogState(false);
-    window.history.back();
   };
   return (
     <>
@@ -56,7 +55,6 @@ export const CreateTournament = (props) => {
         startIcon={<AddIcon></AddIcon>}
         onClick={() => {
           handleDialogOpen();
-          window.history.pushState({}, "", "/tournaments/createtournament");
         }}
         sx={{
           paddingBlock: "1rem",
