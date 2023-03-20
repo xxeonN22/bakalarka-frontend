@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { api } from "../axios/axios";
 import { TextFieldIncrement } from "./TextFieldIncrement";
 import {
   TextField,
@@ -34,28 +35,30 @@ export const EditTournamentSettings = ({
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        `http://localhost:3000/tournaments/eddittournament/${tournamentId}`,
-        {
-          method: "GET",
-          credentials: "include",
+    (async () => {
+      try {
+        const response = await api.get(
+          `/tournaments/eddittournament/${tournamentId}`
+        );
+        setTournamentData({
+          tournamentName: response.data[0].name,
+          maxSets: response.data[0].max_sets,
+          maxPoints: response.data[0].max_points,
+          numberOfCourts: response.data[3].courts,
+          numberOfGroups: response.data[1].groups,
+          numberOfRounds: response.data[2].rounds,
+          sportType: response.data[0].sport_type,
+          pairingSystem: response.data[0].pairing_system,
+        });
+        setLoading(false);
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
         }
-      );
-      const data = await response.json();
-      setTournamentData({
-        tournamentName: data[0].name,
-        maxSets: data[0].max_sets,
-        maxPoints: data[0].max_points,
-        numberOfCourts: data[3].courts,
-        numberOfGroups: data[1].groups,
-        numberOfRounds: data[2].rounds,
-        sportType: data[0].sport_type,
-        pairingSystem: data[0].pairing_system,
-      });
-      setLoading(false);
-    };
-    fetchData();
+      }
+    })();
   }, [tournamentId]);
 
   const handleTournamentSettingsChange = (name, value) => {

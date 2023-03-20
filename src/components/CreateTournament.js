@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { appTheme } from "../themes/appTheme";
+import { api } from "../axios/axios";
 
 import { StepperCreateTournament } from "./StepperCreateTournament";
 
@@ -12,34 +13,37 @@ export const CreateTournament = (props) => {
   const { setMessage, message, setTournamentData } = props;
   const [dialogState, setDialogState] = useState(false);
 
-  const handleCreateTournamet = async (newTournament) => {
-    const response = await fetch(
-      `http://localhost:3000/tournaments/createtournament`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          newTournament,
-        }),
-        credentials: "include",
+  const fetchTournaments = async () => {
+    try {
+      const response = await api.get(`/tournaments`);
+      setTournamentData(response.data);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
       }
-    );
+    }
+  };
 
-    const data = await response.json();
-
-    setMessage({
-      ...message,
-      createdTournamentMessage: data.message,
-    });
-
-    const fetchMatches = await fetch("http://localhost:3000/tournaments", {
-      method: "GET",
-      credentials: "include",
-    });
-    const fetchedMatches = await fetchMatches.json();
-    setTournamentData(fetchedMatches);
+  const handleCreateTournamet = async (newTournament) => {
+    try {
+      const response = await api.put(
+        `/tournaments/createtournament`,
+        newTournament
+      );
+      setMessage({
+        ...message,
+        createdTournamentMessage: response.data.message,
+      });
+      fetchTournaments();
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
   };
 
   const handleDialogOpen = () => {

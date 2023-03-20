@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { api } from "../axios/axios";
 import { AutoCompleteSearch } from "./AutoCompleteSearch";
 
 import { appTheme } from "../themes/appTheme";
@@ -51,10 +52,16 @@ export const NavbarNotLoggedIn = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(`http://localhost:3000`);
-      const data = await response.json();
-      setTournamentData(data);
-      console.log(data);
+      try {
+        const response = await api.get("/");
+        setTournamentData(response.data);
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
+      }
     })();
   }, []);
 

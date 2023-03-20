@@ -1,5 +1,5 @@
-import { NavLink, useLocation, useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
+import { api } from "../axios/axios";
 import { Box, IconButton } from "@mui/material";
 import { SideBarTooltip } from "./SideBarTooltip";
 
@@ -40,12 +40,17 @@ export const SideBar = ({ screen }) => {
   const navigate = useNavigate();
 
   const handleLogOut = async () => {
-    const response = await fetch(`http://localhost:3000/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-    if (response.status === 200) {
-      navigate("/login");
+    try {
+      const response = await api.post(`/logout`);
+      if (response.status === 200) {
+        navigate("/login");
+      }
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
   };
 

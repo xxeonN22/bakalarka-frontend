@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { api } from "../axios/axios";
 import {
   Box,
   Input,
@@ -26,15 +27,18 @@ export const NewPlayerData = (props) => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `http://localhost:3000/tournaments/addplayers/${tournamentId}`,
-        {
-          method: "GET",
-          credentials: "include",
+      try {
+        const response = await api.get(
+          `/tournaments/addplayers/${tournamentId}`
+        );
+        setGroups(response.data);
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
         }
-      );
-      const data = await response.json();
-      setGroups(data);
+      }
     })();
   }, [tournamentId]);
 

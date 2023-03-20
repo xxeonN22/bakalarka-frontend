@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { api } from "../axios/axios";
 import { Paper, Button, Typography, Grid } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { TournamentPopover } from "./TournamentPopover";
@@ -15,29 +16,43 @@ export const Tournament = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleDeleteTournament = async () => {
-    const response = await fetch(
-      `http://localhost:3000/tournaments/deletetournament/${tournamentId}`,
-      {
-        method: "DELETE",
-        credentials: "include",
+  const fetchTournaments = async () => {
+    try {
+      const response = await api.get(`/tournaments`);
+      setTournamentData(response.data);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
       }
-    );
+    }
+  };
 
-    const data = await response.json();
-    setMessage({
-      ...message,
-      deleteTournamentMessage: data.message,
-    });
+  const handleDeleteTournament = async () => {
+    try {
+      const response = await api.delete(
+        `/tournaments/deletetournament/${tournamentId}`
+      );
+      setMessage({
+        ...message,
+        deleteTournamentMessage: response.data.message,
+      });
 
-    const updatedTournaments = tournamentData.filter(
-      (tournament) => tournament.id_tournament !== tournamentId
-    );
-    setTournamentData(updatedTournaments);
+      const updatedTournaments = tournamentData.filter(
+        (tournament) => tournament.id_tournament !== tournamentId
+      );
+      setTournamentData(updatedTournaments);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
   };
 
   const handleEditTournament = async (newSettings) => {
-    console.log(newSettings);
     if (newSettings.tournamentName === "") {
       setMessage({
         ...message,
@@ -62,61 +77,45 @@ export const Tournament = ({
       return;
     }
 
-    const response = await fetch(
-      `http://localhost:3000/tournaments/eddittournament/${tournamentId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          newSettings,
-        }),
-        credentials: "include",
+    try {
+      const response = await api.put(
+        `/tournaments/eddittournament/${tournamentId}`,
+        newSettings
+      );
+      setMessage({
+        ...message,
+        edditTournamentMessage: response.data.message,
+      });
+      fetchTournaments();
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
       }
-    );
-
-    const data = await response.json();
-    setMessage({
-      ...message,
-      edditTournamentMessage: data.message,
-    });
-
-    const fetchTournaments = await fetch("http://localhost:3000/tournaments", {
-      method: "GET",
-      credentials: "include",
-    });
-    const fetchedTournaments = await fetchTournaments.json();
-    setTournamentData(fetchedTournaments);
+    }
   };
 
   const handleImportPlayers = async (selectedStyle, selectedFile) => {
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-
-    const response = await fetch(
-      `http://localhost:3000/tournaments/importplayers/${tournamentId}`,
-      {
-        method: "PUT",
-        body: formData,
-        credentials: "include",
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const response = await api.put(
+        `/tournaments/importplayers/${tournamentId}`,
+        formData
+      );
+      setMessage({
+        ...message,
+        addPlayerMessage: `${response.data.message}`,
+      });
+      fetchTournaments();
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
       }
-    );
-
-    const data = await response.json();
-    console.log(data.message);
-
-    setMessage({
-      ...message,
-      addPlayerMessage: `${data.message}`,
-    });
-
-    const fetchTournaments = await fetch("http://localhost:3000/tournaments", {
-      method: "GET",
-      credentials: "include",
-    });
-    const fetchedTournaments = await fetchTournaments.json();
-    setTournamentData(fetchedTournaments);
+    }
   };
 
   const handleAddPlayers = async (
@@ -124,65 +123,49 @@ export const Tournament = ({
     newPlayerData,
     newPlayersData
   ) => {
-    const response = await fetch(
-      `http://localhost:3000/tournaments/addplayers/${tournamentId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          selectedStyle,
-          newPlayerData,
-          newPlayersData,
-        }),
-        credentials: "include",
+    try {
+      const response = await api.put(
+        `/tournaments/addplayers/${tournamentId}`,
+        { selectedStyle, newPlayerData, newPlayersData }
+      );
+      setMessage({
+        ...message,
+        addPlayerMessage: `${response.data.message}`,
+      });
+      fetchTournaments();
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
       }
-    );
-    const data = await response.json();
-
-    console.log(data.message);
-
-    setMessage({
-      ...message,
-      addPlayerMessage: `${data.message}`,
-    });
-
-    const fetchTournaments = await fetch("http://localhost:3000/tournaments", {
-      method: "GET",
-      credentials: "include",
-    });
-    const fetchedTournaments = await fetchTournaments.json();
-    setTournamentData(fetchedTournaments);
+    }
   };
 
   const handleCopyPlayers = async () => {
-    const response = await fetch(
-      `http://localhost:3000/tournaments/copyplayers/${tournamentId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+    try {
+      const response = await api.post(
+        `/tournaments/copyplayers/${tournamentId}`
+      );
+      let stringToSave = "";
+
+      for (let i = 0; i < response.data.length; i++) {
+        let player = response.data[i];
+        let playerString = `${player.first_name}, ${player.last_name}, ${player.email}, ${player.group_name}, ${player.elo}; `;
+        stringToSave += playerString;
       }
-    );
-    const data = await response.json();
-
-    let stringToSave = "";
-
-    for (let i = 0; i < data.length; i++) {
-      let player = data[i];
-      let playerString = `${player.first_name}, ${player.last_name}, ${player.email}, ${player.group_name}, ${player.elo}; `;
-      stringToSave += playerString;
+      navigator.clipboard.writeText(stringToSave);
+      setMessage({
+        ...message,
+        copyPlayersMessage: `Hráči boli úspešne skopírovaní`,
+      });
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
-
-    navigator.clipboard.writeText(stringToSave);
-
-    setMessage({
-      ...message,
-      copyPlayersMessage: `Hráči boli úspešne skopírovaní`,
-    });
   };
 
   return (
