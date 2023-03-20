@@ -13,12 +13,14 @@ import { NewPassword } from "./pages/NewPassword";
 import { PlayerProfile } from "./pages/PlayerProfile";
 import { MatchScore } from "./components/MatchScore";
 import { Confirmation } from "./pages/Confirmation";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 function App() {
   return (
     <ThemeProvider theme={appTheme}>
       <BrowserRouter>
         <Routes>
+          <Route path="*" element={<NotFoundPage />}></Route>
           <Route
             path="/players/:id"
             element={<PlayerProfile></PlayerProfile>}
