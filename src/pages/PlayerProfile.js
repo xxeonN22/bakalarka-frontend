@@ -383,7 +383,7 @@ export const PlayerProfile = () => {
                     [appTheme.breakpoints.down("md")]: {
                       position: "absolute",
                       top: 0,
-                      left: 0,
+                      left: 10,
                     },
                   }}
                 >
