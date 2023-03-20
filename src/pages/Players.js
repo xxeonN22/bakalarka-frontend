@@ -262,7 +262,7 @@ export const Players = () => {
     <>
       <ContentLayout>
         <Grid container justifyContent="space-between" spacing={2}>
-          <Grid item xs={6} md={4} lg={3} xl={2}>
+          <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
             <SelectBox
               id="select-round"
               labelContent="Vyberte kolo"
@@ -275,7 +275,8 @@ export const Players = () => {
           </Grid>
           <Grid
             item
-            xs={6}
+            xs={12}
+            sm={6}
             md={4}
             lg={3}
             sx={{ display: "flex", justifyContent: "flex-end" }}
@@ -302,12 +303,12 @@ export const Players = () => {
             [appTheme.breakpoints.up("lg")]: { justifyContent: "flex-start" },
           }}
         >
-          <Grid item xs={6} md={4} lg={2.5}>
+          <Grid item xs={12} sm={6} md={4} lg={2.5}>
             <Button variant="contained" sx={{ width: "100%", padding: "1rem" }}>
               Poslať email
             </Button>
           </Grid>
-          <Grid item xs={6} md={4} lg={2.5}>
+          <Grid item xs={12} sm={6} md={4} lg={2.5}>
             <ChooseGroup
               checkedBoxes={checkedBoxes}
               groups={groups}
@@ -318,7 +319,8 @@ export const Players = () => {
           </Grid>
           <Grid
             item
-            xs={6}
+            xs={12}
+            sm={6}
             md={4}
             lg={2.5}
             sx={{
@@ -338,7 +340,12 @@ export const Players = () => {
           </Grid>
         </Grid>
         <Box
-          sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "2rem",
+            [appTheme.breakpoints.down("md")]: { marginBottom: "4rem" },
+          }}
         >
           <Box
             sx={{
@@ -383,7 +390,10 @@ export const Players = () => {
             marginBlock: "1rem",
             color: "white",
             textAlign: "center",
-            [appTheme.breakpoints.down("md")]: { paddingInline: "0.3rem" },
+            [appTheme.breakpoints.down("md")]: {
+              paddingInline: "0.3rem",
+              position: "relative",
+            },
           }}
         >
           <Checkbox
@@ -391,7 +401,7 @@ export const Players = () => {
               color: "white",
               padding: "0px",
               flex: "1",
-              [appTheme.breakpoints.down("md")]: { flex: "0" },
+              [appTheme.breakpoints.down("sm")]: { flex: "0" },
             }}
             onChange={handleCheckAll}
             checked={allChecked}
@@ -410,7 +420,14 @@ export const Players = () => {
               [appTheme.breakpoints.down("md")]: { flex: "2" },
             }}
           >
-            <Typography sx={{ marginBottom: "0.5rem" }}>Meno</Typography>
+            <Typography
+              sx={{
+                marginBottom: "0.5rem",
+                [appTheme.breakpoints.down("md")]: { marginBottom: "0" },
+              }}
+            >
+              Meno
+            </Typography>
             <TextField
               id="search-name"
               label="Vyhľadať hráča"
@@ -418,6 +435,17 @@ export const Players = () => {
               size="small"
               value={searchName}
               onChange={handleSearchName}
+              sx={{
+                [appTheme.breakpoints.down("md")]: {
+                  position: "absolute",
+                  top: -50,
+                  left: 0,
+                  width: "30%",
+                },
+                [appTheme.breakpoints.down("sm")]: {
+                  width: "47%",
+                },
+              }}
             />
           </Box>
           <Typography sx={{ flex: "1" }}>ELO</Typography>
@@ -427,7 +455,14 @@ export const Players = () => {
               [appTheme.breakpoints.down("md")]: { flex: "1" },
             }}
           >
-            <Typography sx={{ marginBottom: "0.5rem" }}>Skupina</Typography>
+            <Typography
+              sx={{
+                marginBottom: "0.5rem",
+                [appTheme.breakpoints.down("md")]: { marginBottom: "0" },
+              }}
+            >
+              Skupina
+            </Typography>
             <TextField
               id="search-group"
               label="Vyhľadať skupinu"
@@ -435,6 +470,17 @@ export const Players = () => {
               size="small"
               value={searchGroup}
               onChange={handleSearchGroup}
+              sx={{
+                [appTheme.breakpoints.down("md")]: {
+                  position: "absolute",
+                  top: -50,
+                  right: 0,
+                  width: "30%",
+                },
+                [appTheme.breakpoints.down("sm")]: {
+                  width: "47%",
+                },
+              }}
             />
           </Box>
           <Typography sx={{ flex: "1" }}>Status</Typography>
@@ -481,7 +527,7 @@ export const Players = () => {
                       color: "white",
                       padding: "0px",
                       flex: "1",
-                      [appTheme.breakpoints.down("md")]: { flex: "0" },
+                      [appTheme.breakpoints.down("sm")]: { flex: "0" },
                     }}
                     onChange={() => handleCheck(player.id_player)}
                     checked={checkedBoxes.includes(player.id_player)}

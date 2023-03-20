@@ -19,6 +19,9 @@ export const ContentLayout = ({ screen, children, backGround }) => {
       minHeight: `calc(100vh - 140px)`,
     },
     [appTheme.breakpoints.down("sm")]: {
+      paddingInline: "0.5rem",
+    },
+    [appTheme.breakpoints.up("sm")]: {
       paddingInline: "1rem",
     },
   };
