@@ -63,6 +63,9 @@ export const CreateTournament = (props) => {
           [appTheme.breakpoints.down("lg")]: {
             width: "90%",
           },
+          [appTheme.breakpoints.down("sm")]: {
+            width: "100%",
+          },
         }}
         variant="contained"
       >

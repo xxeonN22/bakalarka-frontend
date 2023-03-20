@@ -5,6 +5,12 @@ export const DialogWindow = (props) => {
   return (
     <div>
       <Dialog
+        sx={{
+          "& .MuiDialog-paper": {
+            maxWidth: "100%",
+            margin: "1.5rem",
+          },
+        }}
         open={open}
         onClose={() => {
           handleCloseModal();

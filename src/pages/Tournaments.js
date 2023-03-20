@@ -67,7 +67,15 @@ export const Tournaments = () => {
   return (
     <>
       <ContentLayout screen={"tournaments"}>
-        <Grid container rowGap={10}>
+        <Grid
+          container
+          sx={{
+            rowGap: "5rem",
+            [appTheme.breakpoints.down("sm")]: {
+              rowGap: "2rem",
+            },
+          }}
+        >
           <Grid item xs={12} lg={8}>
             <Typography
               variant="h2"
@@ -89,7 +97,8 @@ export const Tournaments = () => {
           </Grid>
           <Grid
             item
-            xs={6}
+            xs={12}
+            sm={6}
             md={6}
             lg={4}
             sx={{
@@ -111,7 +120,8 @@ export const Tournaments = () => {
           </Grid>
           <Grid
             item
-            xs={6}
+            xs={12}
+            sm={6}
             md={6}
             lg={12}
             sx={{
@@ -133,6 +143,9 @@ export const Tournaments = () => {
                 width: "50%",
                 [appTheme.breakpoints.down("lg")]: {
                   width: "90%",
+                },
+                [appTheme.breakpoints.down("sm")]: {
+                  width: "100%",
                 },
               }}
             ></AutoCompleteSearch>
