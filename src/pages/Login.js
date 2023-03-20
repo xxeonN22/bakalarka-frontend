@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { appTheme } from "../themes/appTheme";
 import { useNavigate } from "react-router-dom";
 import { ContentNotLogged } from "../components/ContentNotLogged";
@@ -71,6 +71,13 @@ export const Login = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const isLoggedIn = document.cookie.includes("loggedIn=true");
+    if (isLoggedIn) {
+      navigate("/tournaments");
+    }
+  }, [navigate]);
+
   const handleLoginUser = async (userCredentials) => {
     const response = await fetch(`http://localhost:3000/login`, {
       method: "POST",
@@ -90,6 +97,7 @@ export const Login = () => {
       }, 1500);
     }
   };
+
   return (
     <>
       <ContentNotLogged>
