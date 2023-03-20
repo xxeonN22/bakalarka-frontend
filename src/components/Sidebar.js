@@ -1,4 +1,4 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Box, IconButton } from "@mui/material";
 import { SideBarTooltip } from "./SideBarTooltip";
@@ -36,7 +36,6 @@ const linkStyles = {
 };
 
 export const SideBar = ({ screen }) => {
-  const { pathname } = useLocation();
   const { tournamentId } = useParams();
   const navigate = useNavigate();
 
@@ -88,7 +87,12 @@ export const SideBar = ({ screen }) => {
     },
   ];
 
-  let isActive = false;
+  function getClassName({ isActive }) {
+    if (isActive) {
+      return true;
+    }
+  }
+
   return (
     <Box sx={sidebarStyles}>
       {links.map(({ title, to, icon, activeIcon, hidden }) => (
@@ -100,14 +104,9 @@ export const SideBar = ({ screen }) => {
           }}
         >
           <SideBarTooltip title={title}>
-            <Link
-              to={to}
-              className={
-                to === pathname ? (isActive = true) : (isActive = false)
-              }
-            >
-              <IconButton>{isActive ? activeIcon : icon}</IconButton>
-            </Link>
+            <NavLink to={to}>
+              <IconButton>{getClassName ? activeIcon : icon}</IconButton>
+            </NavLink>
           </SideBarTooltip>
         </Box>
       ))}
