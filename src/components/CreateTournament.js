@@ -23,6 +23,7 @@ export const CreateTournament = (props) => {
         body: JSON.stringify({
           newTournament,
         }),
+        credentials: "include",
       }
     );
 
@@ -33,7 +34,10 @@ export const CreateTournament = (props) => {
       createdTournamentMessage: data.message,
     });
 
-    const fetchMatches = await fetch("http://localhost:3000/tournaments");
+    const fetchMatches = await fetch("http://localhost:3000/tournaments", {
+      method: "GET",
+      credentials: "include",
+    });
     const fetchedMatches = await fetchMatches.json();
     setTournamentData(fetchedMatches);
   };

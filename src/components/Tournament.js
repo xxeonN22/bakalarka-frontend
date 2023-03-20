@@ -20,6 +20,7 @@ export const Tournament = ({
       `http://localhost:3000/tournaments/deletetournament/${tournamentId}`,
       {
         method: "DELETE",
+        credentials: "include",
       }
     );
 
@@ -71,6 +72,7 @@ export const Tournament = ({
         body: JSON.stringify({
           newSettings,
         }),
+        credentials: "include",
       }
     );
 
@@ -80,7 +82,10 @@ export const Tournament = ({
       edditTournamentMessage: data.message,
     });
 
-    const fetchTournaments = await fetch("http://localhost:3000/tournaments");
+    const fetchTournaments = await fetch("http://localhost:3000/tournaments", {
+      method: "GET",
+      credentials: "include",
+    });
     const fetchedTournaments = await fetchTournaments.json();
     setTournamentData(fetchedTournaments);
   };
@@ -94,6 +99,7 @@ export const Tournament = ({
       {
         method: "PUT",
         body: formData,
+        credentials: "include",
       }
     );
 
@@ -105,7 +111,10 @@ export const Tournament = ({
       addPlayerMessage: `${data.message}`,
     });
 
-    const fetchTournaments = await fetch("http://localhost:3000/tournaments");
+    const fetchTournaments = await fetch("http://localhost:3000/tournaments", {
+      method: "GET",
+      credentials: "include",
+    });
     const fetchedTournaments = await fetchTournaments.json();
     setTournamentData(fetchedTournaments);
   };
@@ -127,6 +136,7 @@ export const Tournament = ({
           newPlayerData,
           newPlayersData,
         }),
+        credentials: "include",
       }
     );
     const data = await response.json();
@@ -138,7 +148,10 @@ export const Tournament = ({
       addPlayerMessage: `${data.message}`,
     });
 
-    const fetchTournaments = await fetch("http://localhost:3000/tournaments");
+    const fetchTournaments = await fetch("http://localhost:3000/tournaments", {
+      method: "GET",
+      credentials: "include",
+    });
     const fetchedTournaments = await fetchTournaments.json();
     setTournamentData(fetchedTournaments);
   };
@@ -151,6 +164,7 @@ export const Tournament = ({
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       }
     );
     const data = await response.json();
