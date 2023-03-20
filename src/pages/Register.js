@@ -7,6 +7,7 @@ import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
 import { EmailTextField } from "../components/EmailTextField";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
+import { api } from "../axios/axios";
 
 import {
   TextField,
@@ -89,22 +90,20 @@ export const Register = () => {
   const navigate = useNavigate();
 
   const handleRegisterUser = async (userCredentials) => {
-    const response = await fetch(`http://localhost:3000/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userCredentials,
-      }),
-      credentials: "include",
-    });
-    const data = await response.json();
-    setResponseMessage(data);
-    if (response.status === 200) {
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
+    try {
+      const response = await api.post(`/register`, userCredentials);
+      setResponseMessage(response.data);
+      if (response.status === 200) {
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      }
+    } catch (error) {
+      if (error.response) {
+        setResponseMessage(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
   };
   return (

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { appTheme } from "../themes/appTheme";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { ContentLayout } from "../components/ContentLayout";
 import { SelectBox } from "../components/SelectBox";
+import { api } from "../axios/axios";
 
 import { Box, Typography, Grid } from "@mui/material";
 
@@ -27,41 +27,45 @@ export const TournamentTable = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `http://localhost:3000/table/tournament/${tournamentId}`,
-        {
-          method: "GET",
-          credentials: "include",
+      try {
+        const response = await api.get(`/table/tournament/${tournamentId}`);
+        setGroups(response.data.tournamentGroups);
+        setSelectedGroup(response.data.tournamentGroups[0].group_name);
+        setRounds(response.data.tournamentRounds);
+        setSelectedRound(response.data.tournamentRounds[0].round_number);
+      } catch (error) {
+        if (error.response.status === 401) {
+          navigate("/login");
+          return;
         }
-      );
-      if (response.status === 401) {
-        navigate("/login");
-        return;
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
       }
-      const data = await response.json();
-      setGroups(data.tournamentGroups);
-      setSelectedGroup(data.tournamentGroups[0].group_name);
-      setRounds(data.tournamentRounds);
-      setSelectedRound(data.tournamentRounds[0].round_number);
     })();
   }, [tournamentId]);
 
   useEffect(() => {
     (async () => {
       if (selectedGroup && selectedRound) {
-        const response = await fetch(
-          `http://localhost:3000/table/tournament/${tournamentId}/${selectedGroup}/${selectedRound}`,
-          {
-            method: "GET",
-            credentials: "include",
+        try {
+          const response = await api.get(
+            `/table/tournament/${tournamentId}/${selectedGroup}/${selectedRound}`
+          );
+          setTableData(response.data);
+        } catch (error) {
+          if (error.response.status === 401) {
+            navigate("/login");
+            return;
           }
-        );
-        if (response.status === 401) {
-          navigate("/login");
-          return;
+          if (error.response) {
+            console.log(error.response.data);
+          } else {
+            console.log(`Error: ${error.message}`);
+          }
         }
-        const data = await response.json();
-        setTableData(data);
       }
     })();
   }, [tournamentId, selectedGroup, selectedRound]);

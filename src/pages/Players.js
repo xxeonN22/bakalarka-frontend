@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
+import { api } from "../axios/axios";
 
 import { ChooseGroup } from "../components/ChooseGroup";
 import { ContentLayout } from "../components/ContentLayout";
@@ -36,62 +37,72 @@ export const Players = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `http://localhost:3000/players/tournament/${tournamentId}`,
-        {
-          method: "GET",
-          credentials: "include",
+      try {
+        const response = await api.get(`/players/tournament/${tournamentId}`);
+        setRounds(response.data.rounds);
+        setSelectedRound(response.data.rounds[0].round_number);
+        setGroups(response.data.groups);
+        setSelectedGroup(response.data.groups[0].group_name);
+      } catch (error) {
+        if (error.response.status === 401) {
+          navigate("/login");
+          return;
         }
-      );
-      if (response.status === 401) {
-        navigate("/login");
-        return;
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
       }
-      const data = await response.json();
-      setRounds(data.rounds);
-      setSelectedRound(data.rounds[0].round_number);
-      setGroups(data.groups);
-      setSelectedGroup(data.groups[0].group_name);
     })();
   }, [tournamentId]);
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `http://localhost:3000/players/tournament/${tournamentId}/${selectedRound}`,
-        {
-          method: "GET",
-          credentials: "include",
+      try {
+        const response = await api.get(
+          `/players/tournament/${tournamentId}/${selectedRound}`
+        );
+        setGameDays(response.data);
+        setValue(0);
+        setSelectedGameDay(response.data[0]);
+      } catch (error) {
+        if (error.response.status === 401) {
+          navigate("/login");
+          return;
         }
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
+      }
+    })();
+  }, [tournamentId, selectedRound]);
+
+  const fetchPlayersData = async () => {
+    try {
+      const response = await api.get(
+        `/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`
       );
-      if (response.status === 401) {
+      setPlayersData(response.data);
+    } catch (error) {
+      if (error.response.status === 401) {
         navigate("/login");
         return;
       }
-      const data = await response.json();
-      setGameDays(data);
-      setValue(0);
-      setSelectedGameDay(data[0]);
-    })();
-  }, [tournamentId, selectedRound]);
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
+  };
 
   useEffect(() => {
     (async () => {
       if (selectedGameDay) {
-        const response = await fetch(
-          `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-        if (response.status === 401) {
-          navigate("/login");
-          return;
-        }
-        const data = await response.json();
-        console.log(data);
-        setPlayersData(data);
+        fetchPlayersData();
       }
     })();
   }, [selectedGameDay, selectedRound, tournamentId]);
@@ -146,116 +157,57 @@ export const Players = () => {
     selectedRound,
     selectedGameDay
   ) => {
-    const response = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/changeStatus`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          playerId,
-          status,
-          selectedRound,
-          selectedGameDay,
-        }),
-        credentials: "include",
+    try {
+      const response = await api.put(
+        `/players/tournament/${tournamentId}/changeStatus`,
+        { playerId, status, selectedRound, selectedGameDay }
+      );
+      fetchPlayersData();
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
       }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
     }
-    const data = await response.json();
-    console.log(data);
-
-    const fetchData = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
-    }
-    const fetchedData = await fetchData.json();
-    console.log(fetchedData);
-    setPlayersData(fetchedData);
   };
 
   const handleDeletePlayers = async () => {
-    const response = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/deletePlayers`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          checkedBoxes,
-        }),
-        credentials: "include",
+    try {
+      await api.delete(`/players/tournament/${tournamentId}/deletePlayers`, {
+        data: checkedBoxes,
+      });
+      fetchPlayersData();
+      setCheckedBoxes([]);
+      setAllChecked(false);
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
       }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
-    }
-    const data = await response.json();
-    console.log(data);
-
-    const fetchData = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`,
-      {
-        method: "GET",
-        credentials: "include",
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
       }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
     }
-    const fetchedData = await fetchData.json();
-    console.log(fetchedData);
-    setPlayersData(fetchedData);
   };
 
   const handleMovePlayers = async () => {
-    const response = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/movePlayers`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          checkedBoxes,
-          selectedGroup,
-        }),
-        credentials: "include",
+    try {
+      await api.put(`/players/tournament/${tournamentId}/movePlayers`, {
+        checkedBoxes,
+        selectedGroup,
+      });
+      fetchPlayersData();
+      setCheckedBoxes([]);
+      setAllChecked(false);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
       }
-    );
-    const data = await response.json();
-    console.log(data);
-
-    const fetchData = await fetch(
-      `http://localhost:3000/players/tournament/${tournamentId}/${selectedGameDay}/${selectedRound}`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
     }
-    const fetchedData = await fetchData.json();
-    console.log(fetchedData);
-    setPlayersData(fetchedData);
-    setCheckedBoxes([]);
-    setAllChecked(false);
   };
 
   return (

@@ -5,6 +5,7 @@ import { ContentLayout } from "../components/ContentLayout";
 import { Tournament } from "../components/Tournament";
 import { CreateTournament } from "../components/CreateTournament";
 import { AutoCompleteSearch } from "../components/AutoCompleteSearch";
+import { api } from "../axios/axios";
 
 import { Grid, Typography, Alert } from "@mui/material";
 
@@ -24,16 +25,20 @@ export const Tournaments = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(`http://localhost:3000/tournaments`, {
-        method: "GET",
-        credentials: "include",
-      });
-      if (response.status === 401) {
-        navigate("/login");
-        return;
+      try {
+        const response = await api.get(`/tournaments`);
+        setTournamentData(response.data);
+      } catch (error) {
+        if (error.response.status === 401) {
+          navigate("/login");
+          return;
+        }
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
       }
-      const data = await response.json();
-      setTournamentData(data);
     })();
   }, [navigate]);
 
