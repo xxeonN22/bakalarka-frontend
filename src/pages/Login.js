@@ -7,6 +7,7 @@ import { EmailTextField } from "../components/EmailTextField";
 import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
+import { api } from "../axios/axios";
 
 import {
   Typography,
@@ -79,22 +80,20 @@ export const Login = () => {
   }, [navigate]);
 
   const handleLoginUser = async (userCredentials) => {
-    const response = await fetch(`http://localhost:3000/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userCredentials,
-      }),
-      credentials: "include",
-    });
-    const data = await response.json();
-    setResponseMessage(data);
-    if (response.status === 200) {
-      setTimeout(() => {
-        navigate("/tournaments", { credentials: "include" });
-      }, 1500);
+    try {
+      const response = await api.post(`/login`, userCredentials);
+      setResponseMessage(response.data);
+      if (response.status === 200) {
+        setTimeout(() => {
+          navigate("/tournaments", { credentials: "include" });
+        }, 1500);
+      }
+    } catch (error) {
+      if (error.response) {
+        setResponseMessage(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
   };
 

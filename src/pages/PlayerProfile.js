@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
+import { api } from "../axios/axios";
 
 import { ContentLayout } from "../components/ContentLayout";
 import { SelectBox } from "../components/SelectBox";
@@ -61,65 +62,71 @@ export const PlayerProfile = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `http://localhost:3000/player/${tournamentId}/${playerId}`,
-        {
-          method: "GET",
-          credentials: "include",
+      try {
+        const response = await api.get(`/player/${tournamentId}/${playerId}`);
+        setPlayerData({
+          first_name: response.data.playerData[0].first_name,
+          last_name: response.data.playerData[0].last_name,
+          email: response.data.playerData[0].email,
+          elo: response.data.playerData[0].elo,
+        });
+        setPlayerAttendance(response.data.playerAttendance);
+        setRounds(response.data.gameRounds);
+        setSelectedRound(response.data.gameRounds[0].round_number);
+        setIsLoading(false);
+      } catch (error) {
+        if (error.response.status === 401) {
+          navigate("/login");
+          return;
         }
-      );
-      if (response.status === 401) {
-        navigate("/login");
-        return;
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
       }
-      const data = await response.json();
-      setPlayerData({
-        first_name: data.playerData[0].first_name,
-        last_name: data.playerData[0].last_name,
-        email: data.playerData[0].email,
-        elo: data.playerData[0].elo,
-      });
-      setPlayerAttendance(data.playerAttendance);
-      setRounds(data.gameRounds);
-      setSelectedRound(data.gameRounds[0].round_number);
-      setIsLoading(false);
     })();
   }, [tournamentId, playerId]);
 
   useEffect(() => {
     (async () => {
       if (selectedRound) {
-        const response = await fetch(
-          `http://localhost:3000/player/${tournamentId}/${playerId}/matches/${selectedRound}`,
-          {
-            method: "GET",
-            credentials: "include",
+        try {
+          const response = await api.get(
+            `/player/${tournamentId}/${playerId}/matches/${selectedRound}`
+          );
+          setMatches(response.data);
+        } catch (error) {
+          if (error.response.status === 401) {
+            navigate("/login");
+            return;
           }
-        );
-        if (response.status === 401) {
-          navigate("/login");
-          return;
+          if (error.response) {
+            console.log(error.response.data);
+          } else {
+            console.log(`Error: ${error.message}`);
+          }
         }
-        const data = await response.json();
-        setMatches(data);
       }
     })();
   }, [tournamentId, playerId, selectedRound]);
 
   const handleShowScore = async (matchId) => {
-    const response = await fetch(
-      `http://localhost:3000/player/${tournamentId}/${playerId}/match/${matchId}`,
-      {
-        method: "GET",
-        credentials: "include",
+    try {
+      const response = await api.get(
+        `/player/${tournamentId}/${playerId}/match/${matchId}`
+      );
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
       }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
-    const data = await response.json();
-    console.log(data);
   };
 
   const handleEditScore = async (values) => {

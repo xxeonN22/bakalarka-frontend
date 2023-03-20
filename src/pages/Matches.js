@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, useNavigate, Route, useParams } from "react-router-dom";
+import { api } from "../axios/axios";
 
 import { MatchScore } from "../components/MatchScore";
 import { MatchBox } from "../components/MatchBox";
@@ -51,8 +52,6 @@ export const Matches = () => {
   const [maxPoints, setMaxPoints] = useState("");
 
   const { tournamentId, matchId } = useParams();
-  const params = useParams();
-  console.log(params);
 
   const [match, setMatch] = useState({
     selectedMatchId: "",
@@ -62,6 +61,14 @@ export const Matches = () => {
     secondPlayerElo: "",
     firstPlayerId: "",
     secondPlayerId: "",
+  });
+
+  const [matchValues, setMatchValues] = useState({
+    matchId: null,
+    firstPlayer: null,
+    firstPlayerElo: null,
+    secondPlayer: null,
+    secondPlayerElo: null,
   });
 
   const [messageState, setMessageState] = useState({
@@ -74,51 +81,55 @@ export const Matches = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `http://localhost:3000/tournament/${tournamentId}/matches`,
-        {
-          method: "GET",
-          credentials: "include",
+      try {
+        const response = await api.get(`/tournament/${tournamentId}/matches`);
+        setGroups(response.data.groups);
+        setSelectedGroup(response.data.groups[0].group_name);
+        setRounds(response.data.rounds);
+        setSelectedRound(response.data.rounds[0].round_number);
+        setNumberOfCourts(response.data.courts[0]["count(id_location)"]);
+        setMatches(response.data.matchPair);
+        setNumberOfSets(response.data.numberOfSets[0].max_sets);
+        setMaxPoints(response.data.maxPoints[0].max_points);
+      } catch (error) {
+        if (error.response.status === 401) {
+          navigate("/login");
+          return;
         }
-      );
-      if (response.status === 401) {
-        navigate("/login");
-        return;
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
       }
-      const data = await response.json();
-      setGroups(data.groups);
-      setSelectedGroup(data.groups[0].group_name);
-      setRounds(data.rounds);
-      setSelectedRound(data.rounds[0].round_number);
-      setNumberOfCourts(data.courts[0]["count(id_location)"]);
-      setMatches(data.matchPair);
-      setNumberOfSets(data.numberOfSets[0].max_sets);
-      setMaxPoints(data.maxPoints[0].max_points);
     })();
   }, [tournamentId]);
 
   useEffect(() => {
     (async () => {
       if (selectedRound) {
-        const response = await fetch(
-          `http://localhost:3000/tournament/${tournamentId}/matches/${selectedRound}`,
-          {
-            method: "GET",
-            credentials: "include",
+        try {
+          const response = await api.get(
+            `/tournament/${tournamentId}/matches/${selectedRound}`
+          );
+          if (response.data.length === 0) {
+            setGameDays([]);
+            setSelectedGameDay("");
+            return;
           }
-        );
-        if (response.status === 401) {
-          navigate("/login");
-          return;
+          setGameDays(response.data);
+          setSelectedGameDay(response.data[0]);
+        } catch (error) {
+          if (error.response.status === 401) {
+            navigate("/login");
+            return;
+          }
+          if (error.response) {
+            console.log(error.response.data);
+          } else {
+            console.log(`Error: ${error.message}`);
+          }
         }
-        const data = await response.json();
-        if (data.length === 0) {
-          setGameDays([]);
-          setSelectedGameDay("");
-          return;
-        }
-        setGameDays(data);
-        setSelectedGameDay(data[0]);
       }
     })();
   }, [selectedRound, tournamentId]);
@@ -140,42 +151,44 @@ export const Matches = () => {
   ]);
 
   const updateMatches = async () => {
-    const response = await fetch(
-      `http://localhost:3000/tournament/${tournamentId}/matches`,
-      {
-        method: "GET",
-        credentials: "include",
+    try {
+      const response = await api.get(`/tournament/${tournamentId}/matches`);
+      setMatches(response.data.matchPair);
+      setSearchResults(response.data.matchPair);
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
       }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
-    const data = await response.json();
-    setMatches(data.matchPair);
-    setSearchResults(data.matchPair);
   };
 
   const handleGenerateClick = async () => {
-    const response = await fetch(
-      `http://localhost:3000/tournament/${tournamentId}/matches/${selectedGroup}/${selectedCourts}/${selectedRound}/${selectedGameDay}`,
-      {
-        method: "GET",
-        credentials: "include",
+    try {
+      const response = await api.get(
+        `/tournament/${tournamentId}/matches/${selectedGroup}/${selectedCourts}/${selectedRound}/${selectedGameDay}`
+      );
+      setMessageState({
+        ...messageState,
+        responseMessage: response.data.message,
+      });
+      updateMatches();
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
       }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
-    const data = await response.json();
-
-    setMessageState({
-      ...messageState,
-      responseMessage: data.message,
-    });
-
-    updateMatches();
   };
 
   const handleGroupChange = (event) => {
@@ -214,62 +227,52 @@ export const Matches = () => {
   };
 
   const handleDeleteButtonClick = async () => {
-    console.log("clicked");
-    const response = await fetch(
-      `http://localhost:3000/tournament/${tournamentId}/matches`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          selectedMatches,
-        }),
-        credentials: "include",
+    try {
+      const response = await api.delete(`/tournament/${tournamentId}/matches`, {
+        data: selectedMatches,
+      });
+      setMessageState({
+        ...messageState,
+        deleteMessage: response.data.message,
+      });
+      setSelectedMatches([]);
+      updateMatches();
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
       }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
-
-    const data = await response.json();
-
-    setMessageState({
-      ...messageState,
-      deleteMessage: data.message,
-    });
-    setSelectedMatches([]);
-    updateMatches();
   };
 
   const handleSetScore = async () => {
-    const response = await fetch(
-      `http://localhost:3000/tournament/${tournamentId}/matches/${matchId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          matchValues,
-          numberOfSets,
-        }),
-        credentials: "include",
+    try {
+      const response = await api.put(
+        `/tournament/${tournamentId}/matches/${matchId}`,
+        { matchValues, numberOfSets }
+      );
+      setMessageState({
+        ...messageState,
+        scoreMessage: response.data.message,
+      });
+
+      updateMatches();
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
       }
-    );
-    if (response.status === 401) {
-      navigate("/login");
-      return;
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
-
-    const data = await response.json();
-    setMessageState({
-      ...messageState,
-      scoreMessage: data.message,
-    });
-
-    updateMatches();
   };
 
   const handleDialogOpen = () => {
@@ -280,14 +283,6 @@ export const Matches = () => {
     navigate(`/tournaments/${tournamentId}/matches`);
     setDialogState(false);
   };
-
-  const [matchValues, setMatchValues] = useState({
-    matchId: null,
-    firstPlayer: null,
-    firstPlayerElo: null,
-    secondPlayer: null,
-    secondPlayerElo: null,
-  });
 
   const handleButtonClick = (
     matchId,
@@ -321,7 +316,6 @@ export const Matches = () => {
   };
 
   const setsToRender = [];
-
   for (let i = 1; i <= numberOfSets; i++) {
     setsToRender.push(
       <Grid

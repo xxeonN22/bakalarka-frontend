@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 import { ContentNotLogged } from "../components/ContentNotLogged";
 import { ConfirmationChanges } from "../components/ConfirmationChanges";
+import { api } from "../axios/axios";
 
 import { Paper, Box, Typography, Grid, Button, Alert } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,21 +30,18 @@ export const Confirmation = () => {
 
   const fetchConfirmations = async (playerHash) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/confirmations/${playerHash}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      setConfirmations(data.confirmations);
+      const response = await api.get(`/confirmations/${playerHash}`);
+      setConfirmations(response.data.confirmations);
       setOrganizer(
-        `${data.tournamentData[0].first_name} ${data.tournamentData[0].last_name}`
+        `${response.data.tournamentData[0].first_name} ${response.data.tournamentData[0].last_name}`
       );
-      setTournamentName(`${data.tournamentData[0].name}`);
+      setTournamentName(`${response.data.tournamentData[0].name}`);
     } catch (error) {
-      setResponseMessage("Nepodarilo sa načítať dáta z databázy!");
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
   };
 
@@ -64,39 +62,34 @@ export const Confirmation = () => {
 
   const handleConfirmationChange = async (idConfirmation, idGameDay) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/confirmations/${playerHash}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ idConfirmation, idGameDay }),
-          credentials: "include",
-        }
-      );
-      const data = await response.json();
-      setResponseMessage(data.message);
+      const response = await api.put(`/confirmations/${playerHash}`, {
+        idConfirmation,
+        idGameDay,
+      });
+      setResponseMessage(response.data.message);
       fetchConfirmations(playerHash);
     } catch (error) {
-      setResponseMessage("Nastala interná chyba, stav nebol aktualizovaný!");
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
   };
 
   const handleInfoClick = async (idGameDay, event) => {
     try {
       event.stopPropagation();
-      const response = await fetch(
-        `http://localhost:3000/confirmations/${playerHash}/${idGameDay}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
+      const response = await api.get(
+        `/confirmations/${playerHash}/${idGameDay}`
       );
-      const data = await response.json();
-      setConfirmationChanges(data);
+      setConfirmationChanges(response.data);
     } catch (error) {
-      setResponseMessage("Nastala interná chyba!");
+      if (error.response) {
+        setResponseMessage("Nastala interná chyba!");
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
     }
   };
 
