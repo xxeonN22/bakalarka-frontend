@@ -1,4 +1,5 @@
-import { NavLink, useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation, useParams, useNavigate } from "react-router-dom";
 import { api } from "../axios/axios";
 import { Box, IconButton } from "@mui/material";
 import { SideBarTooltip } from "./SideBarTooltip";
@@ -38,6 +39,18 @@ const linkStyles = {
 export const SideBar = ({ screen }) => {
   const { tournamentId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [activeLink, setActiveLink] = useState("");
+
+  useEffect(() => {
+    const path = location.pathname;
+    links.forEach(({ to, title }) => {
+      if (path.startsWith(to)) {
+        setActiveLink(title);
+      }
+    });
+  }, []);
 
   const handleLogOut = async () => {
     try {
@@ -92,12 +105,6 @@ export const SideBar = ({ screen }) => {
     },
   ];
 
-  function getClassName({ isActive }) {
-    if (isActive) {
-      return true;
-    }
-  }
-
   return (
     <Box sx={sidebarStyles}>
       {links.map(({ title, to, icon, activeIcon, hidden }) => (
@@ -109,8 +116,10 @@ export const SideBar = ({ screen }) => {
           }}
         >
           <SideBarTooltip title={title}>
-            <NavLink to={to}>
-              <IconButton>{getClassName ? activeIcon : icon}</IconButton>
+            <NavLink to={to} onClick={() => setActiveLink(title)}>
+              <IconButton>
+                {activeLink === title ? activeIcon : icon}
+              </IconButton>
             </NavLink>
           </SideBarTooltip>
         </Box>

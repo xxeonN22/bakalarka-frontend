@@ -23,20 +23,6 @@ export const ChoosePairingSystem = (props) => {
     },
   ];
 
-  const sportNoSwitzerlandSystem = ["futbal", "volejbal"];
-
-  const filteredPairingSystems = sportNoSwitzerlandSystem.includes(
-    newTournament.selectedSport
-  )
-    ? pairingSystems.filter((system) => system.value !== "svajciarsky-system")
-    : pairingSystems;
-
-  const md = sportNoSwitzerlandSystem.includes(newTournament.selectedSport)
-    ? 6
-    : 4;
-  const lg = sportNoSwitzerlandSystem.includes(newTournament.selectedSport)
-    ? 6
-    : 4;
   return (
     <>
       {stepperMessage.selectPairingMessage && (
@@ -54,8 +40,8 @@ export const ChoosePairingSystem = (props) => {
         </Alert>
       )}
       <Grid container spacing={2}>
-        {filteredPairingSystems.map((system) => (
-          <Grid item xs={6} md={md} lg={lg} key={system.value}>
+        {pairingSystems.map((system) => (
+          <Grid item xs={12} sm={6} md={4} key={system.value}>
             <Paper
               sx={{
                 paddingBlock: "1rem",
@@ -71,7 +57,10 @@ export const ChoosePairingSystem = (props) => {
                 transition: "background-color 0.5s ease",
               }}
             >
-              <label style={{ textAlign: "center" }} htmlFor={system.value}>
+              <label
+                style={{ textAlign: "center", width: "100%" }}
+                htmlFor={system.value}
+              >
                 <input
                   style={{ display: "none" }}
                   checked={newTournament.selectedPairingStyle === system.value}

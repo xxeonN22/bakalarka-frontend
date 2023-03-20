@@ -75,8 +75,9 @@ export const ChooseSport = (props) => {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  paddingBlock: "1rem",
-                  paddingInline: "1rem",
+                  padding: "1rem",
+                  textAlign: "center",
+                  width: "100%",
                 }}
                 htmlFor={sport.name}
               >

@@ -21,7 +21,7 @@ export const DeleteTournament = (props) => {
           lineHeight: "1.6rem",
         }}
       >
-        <Typography>
+        <Typography textAlign="center">
           Naozaj chcete vymazať turnaj {tournamentName}? Tento krok sa nebude
           dať vrátiť späť a zmeny budú trvalé!
         </Typography>

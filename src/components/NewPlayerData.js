@@ -174,7 +174,7 @@ export const NewPlayerData = (props) => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 marginBottom: "1rem",
               }}
               spacing={2}

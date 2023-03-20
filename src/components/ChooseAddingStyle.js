@@ -71,6 +71,7 @@ export const ChooseAddingStyle = (props) => {
                   alignItems: "center",
                   padding: "1rem",
                   textAlign: "center",
+                  width: "100%",
                 }}
                 htmlFor={addingStyle.value}
               >
