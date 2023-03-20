@@ -88,10 +88,7 @@ export const StepperAddPlayer = (props) => {
           }
         }
 
-        if (
-          selectedStyle === "import-players-from-file" &&
-          selectedFile === ""
-        ) {
+        if (selectedStyle === "import-players-from-file" && !selectedFile) {
           setStepperMessage({
             ...stepperMessage,
             playersCredentialsMessage:
@@ -205,7 +202,7 @@ export const StepperAddPlayer = (props) => {
             variant="contained"
             onClick={handleNext}
           >
-            {activeStep === numberOfSteps ? "Potvrdiť pridanie" : "Ďalej"}
+            {activeStep === numberOfSteps ? "Pridať" : "Ďalej"}
           </Button>
         </Box>
       </Box>

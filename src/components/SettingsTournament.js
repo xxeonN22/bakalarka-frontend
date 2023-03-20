@@ -28,7 +28,7 @@ export const SettingsTournament = (props) => {
         </Alert>
       )}
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
             fullWidth
@@ -41,7 +41,7 @@ export const SettingsTournament = (props) => {
         </Grid>
         {sportsWithSets.includes(newTournament.selectedSport) && (
           <>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} sm={6}>
               <TextFieldIncrement
                 isRequired={true}
                 value={newTournament.maxNumberOfSets}
@@ -58,7 +58,7 @@ export const SettingsTournament = (props) => {
         )}
         {maxNumberPointsSports.includes(newTournament.selectedSport) && (
           <>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} sm={6}>
               <TextFieldIncrement
                 isRequired={true}
                 value={newTournament.maxNumberOfPoints}
@@ -73,7 +73,7 @@ export const SettingsTournament = (props) => {
             </Grid>
           </>
         )}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <TextFieldIncrement
             isRequired={true}
             value={newTournament.numberOfCourts}
@@ -88,7 +88,7 @@ export const SettingsTournament = (props) => {
             max={30}
           ></TextFieldIncrement>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <TextFieldIncrement
             isRequired={true}
             value={newTournament.numberOfGroups}
@@ -101,7 +101,7 @@ export const SettingsTournament = (props) => {
             max={10}
           ></TextFieldIncrement>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <TextFieldIncrement
             isRequired={true}
             value={newTournament.numberOfRounds}

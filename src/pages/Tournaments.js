@@ -158,7 +158,14 @@ export const Tournaments = () => {
         {createAlert("edditTournamentMessage", "success")}
         {createAlert("addPlayerMessage", "success")}
         {createAlert("copyPlayersMessage", "success")}
-        <Grid container sx={{ marginTop: "5rem" }} spacing={2}>
+        <Grid
+          container
+          sx={{
+            marginTop: "5rem",
+            [appTheme.breakpoints.down("sm")]: { marginTop: "2rem" },
+          }}
+          spacing={2}
+        >
           {filteredData.map((data) => (
             <Tournament
               key={data.id_tournament}

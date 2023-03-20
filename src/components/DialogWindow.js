@@ -1,4 +1,5 @@
 import { Dialog, DialogContent } from "@mui/material";
+import { appTheme } from "../themes/appTheme";
 
 export const DialogWindow = (props) => {
   const { open, handleCloseModal, handleClose, children } = props;
@@ -6,9 +7,11 @@ export const DialogWindow = (props) => {
     <div>
       <Dialog
         sx={{
-          "& .MuiDialog-paper": {
-            maxWidth: "100%",
-            margin: "1.5rem",
+          [appTheme.breakpoints.down("md")]: {
+            "& .MuiDialog-paper": {
+              maxWidth: "100%",
+              margin: "1.5rem",
+            },
           },
         }}
         open={open}

@@ -230,7 +230,7 @@ export const NewPlayerData = (props) => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 marginBottom: "1rem",
               }}
               spacing={2}
@@ -254,6 +254,7 @@ export const NewPlayerData = (props) => {
             bunka
           </Typography>
           <Input
+            sx={{ marginTop: "2rem" }}
             type="file"
             inputProps={{ accept: "text/csv" }}
             onChange={(e) => handleFileChange(e)}

@@ -153,6 +153,7 @@ export const Matches = () => {
     }
     const data = await response.json();
     setMatches(data.matchPair);
+    setSearchResults(data.matchPair);
   };
 
   const handleGenerateClick = async () => {
