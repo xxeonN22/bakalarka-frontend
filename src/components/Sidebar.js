@@ -1,4 +1,5 @@
 import { Link, useLocation, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box, IconButton } from "@mui/material";
 import { SideBarTooltip } from "./SideBarTooltip";
 
@@ -37,6 +38,17 @@ const linkStyles = {
 export const SideBar = ({ screen }) => {
   const { pathname } = useLocation();
   const { tournamentId } = useParams();
+  const navigate = useNavigate();
+
+  const handleLogOut = async () => {
+    const response = await fetch(`http://localhost:3000/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+    if (response.status === 200) {
+      navigate("/login");
+    }
+  };
 
   const links = [
     {
@@ -107,11 +119,9 @@ export const SideBar = ({ screen }) => {
         }}
       >
         <SideBarTooltip title={"Odhlásiť sa"}>
-          <Link to="/login">
-            <IconButton>
-              <LogoutIcon width={40} height={40} fill={"white"}></LogoutIcon>
-            </IconButton>
-          </Link>
+          <IconButton onClick={handleLogOut}>
+            <LogoutIcon width={40} height={40} fill={"white"}></LogoutIcon>
+          </IconButton>
         </SideBarTooltip>
       </Box>
     </Box>

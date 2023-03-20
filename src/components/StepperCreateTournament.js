@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { nanoid } from "nanoid";
+import { appTheme } from "../themes/appTheme";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { ChoosePairingSystem } from "./ChoosePairingSystem";
 import { ChooseSport } from "./ChooseSport";
@@ -19,6 +21,7 @@ export const StepperCreateTournament = ({
 }) => {
   const numberOfSteps = 4;
   const [activeStep, setActiveStep] = useState(1);
+  const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
 
   const [newTournament, setNewTournament] = useState({
     selectedSport: "",
@@ -267,7 +270,7 @@ export const StepperCreateTournament = ({
             variant="contained"
             onClick={handleNext}
           >
-            {activeStep === numberOfSteps ? "Potvrdiť pridanie" : "Ďalej"}
+            {activeStep === numberOfSteps ? "Vytvoriť" : "Ďalej"}
           </Button>
         </Box>
       </Box>

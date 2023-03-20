@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Alert, Button, Box, IconButton } from "@mui/material";
+import { Alert, Button, Box, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 export const DeleteTournament = (props) => {
@@ -16,13 +16,15 @@ export const DeleteTournament = (props) => {
         severity="error"
         sx={{
           marginTop: "1.5rem",
-          width: "400px",
+          width: "100%",
           fontSize: "1rem",
           lineHeight: "1.6rem",
         }}
       >
-        Naozaj chcete vymazať turnaj {tournamentName}? Tento krok sa nebude dať
-        vrátiť späť a zmeny budú trvalé!
+        <Typography>
+          Naozaj chcete vymazať turnaj {tournamentName}? Tento krok sa nebude
+          dať vrátiť späť a zmeny budú trvalé!
+        </Typography>
       </Alert>
       <Box
         sx={{
