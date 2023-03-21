@@ -19,7 +19,7 @@ export const EmailSettings = (props) => {
     setCheckedBoxes,
     setAllChecked,
     tournamentId,
-    setMessageAlert,
+    setResponseMessage,
   } = props;
   const [dialogState, setDialogState] = useState(false);
 
@@ -32,9 +32,9 @@ export const EmailSettings = (props) => {
       if (response.status === 200) {
         setCheckedBoxes([]);
         setAllChecked(false);
-        setMessageAlert(response.data);
+        setResponseMessage(response.data);
       } else {
-        setMessageAlert(response.data);
+        setResponseMessage(response.data);
       }
     } catch (error) {
       if (error.response) {

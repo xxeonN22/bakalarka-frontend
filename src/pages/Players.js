@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 import { api } from "../axios/axios";
 
+import { NewRound } from "../components/NewRound";
+import { AlertMessage } from "../components/AlertMessage";
 import { EmailSettings } from "../components/EmailSettings";
 import { ChooseGroup } from "../components/ChooseGroup";
 import { ContentLayout } from "../components/ContentLayout";
@@ -35,7 +37,7 @@ export const Players = () => {
   const [searchName, setSearchName] = useState("");
   const [searchGroup, setSearchGroup] = useState("");
 
-  const [messageAlert, setMessageAlert] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -237,31 +239,14 @@ export const Players = () => {
             lg={2.5}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
-            <Button
-              variant="contained"
-              sx={{
-                paddingBlock: "1rem",
-                width: "100%",
-              }}
-            >
-              Vytvoriť nové kolo
-            </Button>
+            <NewRound></NewRound>
           </Grid>
         </Grid>
 
-        <Box>
-          {messageAlert && (
-            <Alert
-              sx={{ marginBlock: "1rem" }}
-              severity={messageAlert.type === "success" ? "success" : "error"}
-              onClose={() => {
-                setMessageAlert(null);
-              }}
-            >
-              {messageAlert.message}
-            </Alert>
-          )}
-        </Box>
+        <AlertMessage
+          responseMessage={responseMessage}
+          setResponseMessage={setResponseMessage}
+        ></AlertMessage>
 
         <Grid
           container
@@ -279,7 +264,7 @@ export const Players = () => {
               setCheckedBoxes={setCheckedBoxes}
               setAllChecked={setAllChecked}
               tournamentId={tournamentId}
-              setMessageAlert={setMessageAlert}
+              setResponseMessage={setResponseMessage}
             ></EmailSettings>
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={2.5}>
