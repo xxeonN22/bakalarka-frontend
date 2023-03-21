@@ -53,14 +53,14 @@ const validationSchema = yup.object({
   firstName: yup
     .string()
     .matches(
-      /^[A-Z][a-zA-Z]{2,}$/,
+      /^[A-ZÁÄČĎÉĚÍĽĹŇÓÔŔŘŠŤÚŮÝŽ][a-zA-ZáäčďéěíľĺňóôŕřšťúůýžÁÄČĎÉĚÍĽĹŇÓÔŔŘŠŤÚŮÝŽ]{2,}$/,
       "Krstné meno musí začínať veľkým písmenom, musí mať aspoň 3 znaky a môže obsahovať len písmená abecedy"
     )
     .required("Meno musí byť vyplnené"),
   lastName: yup
     .string()
     .matches(
-      /^[A-Z][a-zA-Z]{2,}$/,
+      /^[A-ZÁÄČĎÉĚÍĽĹŇÓÔŔŘŠŤÚŮÝŽ][a-zA-ZáäčďéěíľĺňóôŕřšťúůýžÁÄČĎÉĚÍĽĹŇÓÔŔŘŠŤÚŮÝŽ]{2,}$/,
       "Priezvisko musí začínať veľkým písmenom, musí mať aspoň 3 znaky a môže obsahovať len písmená abecedy"
     )
     .required("Meno musí byť vyplnené"),
