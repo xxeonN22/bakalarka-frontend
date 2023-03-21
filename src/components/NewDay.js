@@ -10,12 +10,11 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import { LocalizationProvider, csCZ, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import "dayjs/locale/sk";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 export const NewDay = (props) => {
   /* Získame pristup k objektu do ktoreho ulozime data o hracich dnoch */
@@ -123,6 +122,10 @@ export const NewDay = (props) => {
                 <LocalizationProvider
                   dateAdapter={AdapterDayjs}
                   adapterLocale="sk"
+                  localeText={
+                    csCZ.components.MuiLocalizationProvider.defaultProps
+                      .localeText
+                  }
                 >
                   <DatePicker
                     sx={{ width: "100%", marginBottom: "1rem" }}
@@ -135,7 +138,14 @@ export const NewDay = (props) => {
                     }}
                   />
                 </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale="sk"
+                  localeText={
+                    csCZ.components.MuiLocalizationProvider.defaultProps
+                      .localeText
+                  }
+                >
                   <TimePicker
                     sx={{ width: "100%", marginBottom: "1rem" }}
                     label="Vyberte čas"

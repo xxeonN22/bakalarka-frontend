@@ -230,14 +230,14 @@ export const Players = () => {
             xs={12}
             sm={6}
             md={4}
-            lg={3}
+            lg={2.5}
             sx={{ display: "flex", justifyContent: "flex-end" }}
           >
             <Button
               variant="contained"
               sx={{
                 paddingBlock: "1rem",
-                [appTheme.breakpoints.down("md")]: { width: "100%" },
+                width: "100%",
               }}
             >
               Vytvoriť nové kolo

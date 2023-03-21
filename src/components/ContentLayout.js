@@ -24,6 +24,9 @@ export const ContentLayout = ({ screen, children, backGround }) => {
     [appTheme.breakpoints.up("sm")]: {
       paddingInline: "1rem",
     },
+    [appTheme.breakpoints.up("md")]: {
+      paddingInline: "3rem",
+    },
   };
 
   return (
