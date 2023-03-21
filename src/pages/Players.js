@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 import { api } from "../axios/axios";
 
+import { EmailSettings } from "../components/EmailSettings";
 import { ChooseGroup } from "../components/ChooseGroup";
 import { ContentLayout } from "../components/ContentLayout";
 import { SelectBox } from "../components/SelectBox";
@@ -16,6 +17,7 @@ import {
   Checkbox,
   Typography,
   TextField,
+  Alert,
 } from "@mui/material";
 
 export const Players = () => {
@@ -32,6 +34,8 @@ export const Players = () => {
   const [checkedBoxes, setCheckedBoxes] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [searchGroup, setSearchGroup] = useState("");
+
+  const [messageAlert, setMessageAlert] = useState("");
 
   const navigate = useNavigate();
 
@@ -210,23 +214,6 @@ export const Players = () => {
     }
   };
 
-  const handleSendEmail = async () => {
-    try {
-      const response = await api.post(
-        `/players/tournament/${tournamentId}/sendEmail`,
-        checkedBoxes
-      );
-      setCheckedBoxes([]);
-      setAllChecked(false);
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.data);
-      } else {
-        console.log(`Error: ${error.message}`);
-      }
-    }
-  };
-
   return (
     <>
       <ContentLayout>
@@ -262,6 +249,20 @@ export const Players = () => {
           </Grid>
         </Grid>
 
+        <Box>
+          {messageAlert && (
+            <Alert
+              sx={{ marginBlock: "1rem" }}
+              severity={messageAlert.type === "success" ? "success" : "error"}
+              onClose={() => {
+                setMessageAlert(null);
+              }}
+            >
+              {messageAlert.message}
+            </Alert>
+          )}
+        </Box>
+
         <Grid
           container
           spacing={2}
@@ -273,13 +274,13 @@ export const Players = () => {
           }}
         >
           <Grid item xs={12} sm={6} md={4} lg={2.5}>
-            <Button
-              onClick={handleSendEmail}
-              variant="contained"
-              sx={{ width: "100%", padding: "1rem" }}
-            >
-              Poslať email
-            </Button>
+            <EmailSettings
+              checkedBoxes={checkedBoxes}
+              setCheckedBoxes={setCheckedBoxes}
+              setAllChecked={setAllChecked}
+              tournamentId={tournamentId}
+              setMessageAlert={setMessageAlert}
+            ></EmailSettings>
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={2.5}>
             <ChooseGroup
