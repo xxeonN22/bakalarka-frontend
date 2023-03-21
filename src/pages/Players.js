@@ -210,6 +210,23 @@ export const Players = () => {
     }
   };
 
+  const handleSendEmail = async () => {
+    try {
+      const response = await api.post(
+        `/players/tournament/${tournamentId}/sendEmail`,
+        checkedBoxes
+      );
+      setCheckedBoxes([]);
+      setAllChecked(false);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
+  };
+
   return (
     <>
       <ContentLayout>
@@ -256,7 +273,11 @@ export const Players = () => {
           }}
         >
           <Grid item xs={12} sm={6} md={4} lg={2.5}>
-            <Button variant="contained" sx={{ width: "100%", padding: "1rem" }}>
+            <Button
+              onClick={handleSendEmail}
+              variant="contained"
+              sx={{ width: "100%", padding: "1rem" }}
+            >
               Poslať email
             </Button>
           </Grid>
