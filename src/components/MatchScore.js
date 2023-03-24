@@ -12,6 +12,7 @@ export const MatchScore = (props) => {
     firstPlayer,
     secondPlayer,
     handleSetScore,
+    buttonText,
   } = props;
 
   return (
@@ -79,7 +80,7 @@ export const MatchScore = (props) => {
                 handleDialogClose();
               }}
             >
-              Potvrdiť výsledok
+              {buttonText}
             </Button>
           </Grid>
         </Grid>

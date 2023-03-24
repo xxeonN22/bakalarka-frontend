@@ -554,6 +554,7 @@ export const Matches = () => {
         firstPlayer={match.firstPlayer}
         secondPlayer={match.secondPlayer}
         handleSetScore={handleSetScore}
+        buttonText="Potvrdiť výsledok"
       ></MatchScore>
     </>
   );
