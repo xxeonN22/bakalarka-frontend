@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { ContentLayout } from "../components/ContentLayout";
-import { SelectBox } from "../components/SelectBox";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../axios/axios";
 
-import { Box, Typography, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
+
+import { ContentLayout } from "../components/ContentLayout";
+import { Table } from "../components/Table/Table";
+import { SelectRound } from "../components/SelectBoxes/SelectRound";
+import { SelectGroup } from "../components/SelectBoxes/SelectGroup";
 
 export const TournamentTable = () => {
   const { tournamentId } = useParams();
@@ -70,7 +72,6 @@ export const TournamentTable = () => {
     })();
   }, [tournamentId, selectedGroup, selectedRound]);
 
-  console.log(tableData);
   return (
     <>
       <ContentLayout>
@@ -81,66 +82,21 @@ export const TournamentTable = () => {
           sx={{ marginBottom: "4rem" }}
         >
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2.3}>
-            <SelectBox
-              id="select-group"
-              labelContent="Vyberte skupinu"
-              labelId="select-group-label"
-              label="Vyberte skupinu"
-              onChangeFunction={handleGroupChange}
-              selectValue={selectedGroup}
-              itemArray={groups}
-            ></SelectBox>
+            <SelectGroup
+              handleGroupChange={handleGroupChange}
+              selectedGroup={selectedGroup}
+              groups={groups}
+            ></SelectGroup>
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2.3}>
-            <SelectBox
-              id="select-round"
-              labelContent="Vyberte kolo"
-              labelId="select-round-label"
-              label="Vyberte kolo"
-              onChangeFunction={handleRoundChange}
-              selectValue={selectedRound}
-              itemArray={rounds}
-            ></SelectBox>
+            <SelectRound
+              handleRoundChange={handleRoundChange}
+              selectedRound={selectedRound}
+              rounds={rounds}
+            ></SelectRound>
           </Grid>
         </Grid>
-        <Box
-          sx={{
-            backgroundColor: "#1f2736",
-            color: "white",
-            borderRadius: "5px",
-          }}
-        >
-          {tableData &&
-            tableData.map((data, index) => {
-              return (
-                <Box
-                  key={data.id}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    paddingBlock: "1.2rem",
-                    backgroundColor: index % 2 === 0 ? "#2e3650" : "",
-                  }}
-                >
-                  <Typography sx={{ flex: "1", textAlign: "center" }}>
-                    {index + 1}.
-                  </Typography>
-                  <Typography sx={{ flex: "3", textAlign: "center" }}>
-                    {data.name}
-                  </Typography>
-                  <Typography sx={{ flex: "1", textAlign: "center" }}>
-                    {data.elo}
-                  </Typography>
-                  <Typography sx={{ flex: "1", textAlign: "center" }}>
-                    {data?.pointsWon ?? 0}:{data?.pointsLost ?? 0}
-                  </Typography>
-                  <Typography sx={{ flex: "1", textAlign: "center" }}>
-                    {data?.setsWon ?? 0}:{data?.setsLost ?? 0}
-                  </Typography>
-                </Box>
-              );
-            })}
-        </Box>
+        <Table tableData={tableData}></Table>
       </ContentLayout>
     </>
   );

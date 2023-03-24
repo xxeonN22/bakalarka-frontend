@@ -1,19 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { Typography, Box, Button } from "@mui/material";
 
+const boxStyle = {
+  height: "100vh",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "column",
+  gap: "1rem",
+};
+
 export const NotFoundPage = () => {
   const navigate = useNavigate();
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: "1rem",
-      }}
-    >
+    <Box sx={boxStyle}>
       <Box
         sx={{
           display: "flex",
