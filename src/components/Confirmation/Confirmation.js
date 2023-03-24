@@ -1,9 +1,22 @@
 import { useState } from "react";
+
 import { Grid, Button, Box, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+
 import { ConfirmationChanges } from "../ConfirmationChanges.js";
+
+const confirmationBoxStyle = {
+  backgroundColor: "#1f2736",
+  width: "100%",
+  color: "white",
+  borderRadius: "4px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  paddingBlock: "1rem",
+};
 
 export const Confirmation = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -54,18 +67,7 @@ export const Confirmation = (props) => {
         }
         sx={{ width: "100%", padding: "0px" }}
       >
-        <Box
-          sx={{
-            backgroundColor: "#1f2736",
-            width: "100%",
-            color: "white",
-            borderRadius: "4px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            paddingBlock: "1rem",
-          }}
-        >
+        <Box sx={confirmationBoxStyle}>
           <Typography sx={{ textTransform: "none", marginTop: "1rem" }}>
             {" "}
             Dátum konania: {transformDate(confirmation.date)}

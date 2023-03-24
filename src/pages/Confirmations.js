@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
-import { ContentNotLogged } from "../components/ContentNotLogged";
 import { api } from "../axios/axios";
 
 import { Paper, Grid } from "@mui/material";
 
+import { ContentNotLogged } from "../components/ContentNotLogged";
 import { TypographySection } from "../components/Confirmation/TypographySection.js";
 import { AlertMessage } from "../components/Alert/AlertMessage.js";
 import { Confirmation } from "../components/Confirmation/Confirmation.js";

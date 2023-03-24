@@ -1,65 +1,26 @@
 import { useEffect, useState } from "react";
-import { appTheme } from "../themes/appTheme";
 import { useNavigate } from "react-router-dom";
-import { ContentNotLogged } from "../components/ContentNotLogged";
-import { ShowPasswordTextField } from "../components/ShowPasswordTextField";
-import { EmailTextField } from "../components/EmailTextField";
-import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
 import { Formik, Form } from "formik";
-import * as yup from "yup";
 import { api } from "../axios/axios";
 
+import { ContentNotLogged } from "../components/ContentNotLogged";
+import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
+import { AlertMessage } from "../components/Alert/AlertMessage.js";
+import { LoginTypography } from "../components/Typography/LoginTypography.js";
+import { EmailField } from "../components/Authentication/EmailField.js";
+import { PasswordField } from "../components/Authentication/PasswordField.js";
+import { Rememberme } from "../components/Authentication/Rememberme.js";
+
+import { Grid, Button, Container, Paper } from "@mui/material";
+
 import {
-  Typography,
-  Grid,
-  Button,
-  Checkbox,
-  Container,
-  Paper,
-  Alert,
-} from "@mui/material";
+  containerStyles,
+  gridContainerStyle,
+  gridItemStyle,
+} from "../components/Login/LoginStyles";
 
-const containerStyles = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "90vh",
-  [appTheme.breakpoints.down("md")]: {
-    paddingInline: "5rem",
-  },
-  [appTheme.breakpoints.down("sm")]: {
-    paddingInline: "2rem",
-  },
-};
-
-const gridContainerStyle = {
-  paddingBlock: "2rem",
-  rowGap: "2rem",
-  [appTheme.breakpoints.up("md")]: {
-    paddingInline: "10rem",
-  },
-  [appTheme.breakpoints.up("xs")]: {
-    paddingInline: "2rem",
-  },
-};
-
-const gridItemStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .required("Email musí byť zadaný")
-    .matches(
-      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-      "Neplatný tvar emailovej adresy"
-    ),
-  password: yup.string().required("Heslo musí byť zadané"),
-  rememberMe: yup.boolean(),
-});
+import { schema } from "../validationSchemas/Login/validationSchema";
+const validationSchema = schema;
 
 export const Login = () => {
   const [responseMessage, setResponseMessage] = useState("");
@@ -100,55 +61,30 @@ export const Login = () => {
               onSubmit={(values) => handleLoginUser(values)}
               validationSchema={validationSchema}
             >
-              {({ values, handleChange, errors, touched, handleBlur }) => (
+              {({ values, handleChange }) => (
                 <Form>
                   {responseMessage && (
-                    <Alert
-                      sx={{ marginBlock: "1rem" }}
-                      severity={
-                        responseMessage.type === "success" ? "success" : "error"
-                      }
-                      onClose={() => {
-                        setResponseMessage(null);
-                      }}
-                    >
-                      {responseMessage.message}
-                    </Alert>
+                    <AlertMessage
+                      typeOfResponse={responseMessage.type}
+                      responseMessage={responseMessage.message}
+                      setResponseMessage={setResponseMessage}
+                    ></AlertMessage>
                   )}
                   <Grid container sx={gridContainerStyle}>
                     <Grid item xs={12} sx={gridItemStyle}>
-                      <Typography
-                        variant="h2"
-                        fontSize="1.5rem"
-                        textTransform="uppercase"
-                        letterSpacing="0.2rem"
-                      >
-                        Prihlásenie používateľa
-                      </Typography>
+                      <LoginTypography></LoginTypography>
                     </Grid>
                     <Grid item xs={12}>
-                      <EmailTextField
-                        id="email"
-                        label="Zadajte email"
+                      <EmailField
                         name="email"
-                        value={values.email}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                      ></EmailTextField>
+                        label="Zadajte email"
+                      ></EmailField>
                     </Grid>
                     <Grid item xs={12}>
-                      <ShowPasswordTextField
-                        id="password"
-                        label="Zadajte heslo"
+                      <PasswordField
                         name="password"
-                        value={values.password}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        error={touched.password && Boolean(errors.password)}
-                        helperText={touched.password && errors.password}
-                      ></ShowPasswordTextField>
+                        label="Zadajte heslo"
+                      ></PasswordField>
                     </Grid>
                     <Grid item xs={12} sx={gridItemStyle}>
                       <AuthenticationPageLink
@@ -158,15 +94,10 @@ export const Login = () => {
                       ></AuthenticationPageLink>
                     </Grid>
                     <Grid item xs={12} md={6} sx={gridItemStyle}>
-                      <Checkbox
-                        id="rememberMe"
-                        name="rememberMe"
-                        checked={values.rememberMe}
-                        onChange={handleChange}
-                      ></Checkbox>
-                      <Typography variant="h2" fontSize="0.875rem">
-                        Zapamätať prihlásenie
-                      </Typography>
+                      <Rememberme
+                        values={values}
+                        handleChange={handleChange}
+                      ></Rememberme>
                     </Grid>
                     <Grid item xs={12} md={6} sx={gridItemStyle}>
                       <AuthenticationPageLink
