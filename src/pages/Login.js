@@ -57,14 +57,7 @@ const validationSchema = yup.object({
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
       "Neplatný tvar emailovej adresy"
     ),
-  password: yup
-    .string()
-    .required("Heslo musí byť zadané")
-    .min(8, "Heslo musí obsahovať aspoň 8 znakov")
-    .matches(
-      /^(?=.*[A-Z])(?=.*\d).+$/,
-      "Heslo musí obsahovať aspoň jedno veľké písmeno a jedno číslo"
-    ),
+  password: yup.string().required("Heslo musí byť zadané"),
   rememberMe: yup.boolean(),
 });
 
