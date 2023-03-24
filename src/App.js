@@ -12,7 +12,7 @@ import { ResetPassword } from "./pages/ResetPassword";
 import { NewPassword } from "./pages/NewPassword";
 import { PlayerProfile } from "./pages/PlayerProfile";
 import { MatchScore } from "./components/MatchScore";
-import { Confirmation } from "./pages/Confirmation";
+import { Confirmations } from "./pages/Confirmations";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 function App() {
@@ -25,7 +25,10 @@ function App() {
             path="/players/:id"
             element={<PlayerProfile></PlayerProfile>}
           ></Route>
-          <Route path="/confirmations/:hash" element={<Confirmation />}></Route>
+          <Route
+            path="/confirmations/:hash"
+            element={<Confirmations />}
+          ></Route>
           <Route path="/newpassword" element={<NewPassword />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
