@@ -1,89 +1,26 @@
 import { useState } from "react";
-import { appTheme } from "../themes/appTheme";
 import { useNavigate } from "react-router-dom";
-import { ContentNotLogged } from "../components/ContentNotLogged";
-import { ShowPasswordTextField } from "../components/ShowPasswordTextField";
-import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
-import { EmailTextField } from "../components/EmailTextField";
 import { Formik, Form } from "formik";
-import * as yup from "yup";
 import { api } from "../axios/axios";
 
+import { Grid, Button, Container, Paper } from "@mui/material";
+
+import { ContentNotLogged } from "../components/ContentNotLogged";
+import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
+import { EmailField } from "../components/Authentication/EmailField";
+import { PasswordField } from "../components/Authentication/PasswordField";
+import { FormikTextField } from "../components/FormikTextField";
+import { RegisterTypography } from "../components/Typography/RegisterTypography";
+import { AlertMessage } from "../components/Alert/AlertMessage";
+
 import {
-  TextField,
-  Typography,
-  Grid,
-  Button,
-  Container,
-  Paper,
-  Alert,
-} from "@mui/material";
+  containerStyle,
+  gridContainerStyle,
+  gridItemStyle,
+} from "../components/Register/registerStyles";
 
-const containerStyle = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  minHeight: "90vh",
-  [appTheme.breakpoints.down("md")]: {
-    paddingInline: "5rem",
-  },
-  [appTheme.breakpoints.down("sm")]: {
-    paddingInline: "2rem",
-  },
-};
-
-const gridContainerStyle = {
-  paddingBlock: "2rem",
-  rowGap: "2rem",
-  [appTheme.breakpoints.up("md")]: {
-    paddingInline: "10rem",
-  },
-  [appTheme.breakpoints.up("xs")]: {
-    paddingInline: "1rem",
-  },
-};
-
-const gridItemStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const validationSchema = yup.object({
-  firstName: yup
-    .string()
-    .matches(
-      /^[A-ZÁÄČĎÉĚÍĽĹŇÓÔŔŘŠŤÚŮÝŽ][a-zA-ZáäčďéěíľĺňóôŕřšťúůýžÁÄČĎÉĚÍĽĹŇÓÔŔŘŠŤÚŮÝŽ]{2,}$/,
-      "Krstné meno musí začínať veľkým písmenom, musí mať aspoň 3 znaky a môže obsahovať len písmená abecedy"
-    )
-    .required("Meno musí byť vyplnené"),
-  lastName: yup
-    .string()
-    .matches(
-      /^[A-ZÁÄČĎÉĚÍĽĹŇÓÔŔŘŠŤÚŮÝŽ][a-zA-ZáäčďéěíľĺňóôŕřšťúůýžÁÄČĎÉĚÍĽĹŇÓÔŔŘŠŤÚŮÝŽ]{2,}$/,
-      "Priezvisko musí začínať veľkým písmenom, musí mať aspoň 3 znaky a môže obsahovať len písmená abecedy"
-    )
-    .required("Meno musí byť vyplnené"),
-  email: yup
-    .string()
-    .required("Email musí byť vyplnený")
-    .matches(
-      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-      "Neplatný tvar emailovej adresy"
-    ),
-  password: yup
-    .string()
-    .required("Heslo musí byť vyplnené")
-    .min(8, "Heslo musí obsahovať aspoň 8 znakov")
-    .matches(
-      /^(?=.*[A-Z])(?=.*\d).+$/,
-      "Heslo musí obsahovať aspoň jedno veľké písmeno a jedno číslo"
-    ),
-  repeatPassword: yup
-    .string()
-    .required("Heslo musíte potvrdiť")
-    .oneOf([yup.ref("password")], "Heslá sa nezhodujú"),
-});
+import { schema } from "../validationSchemas/Register/validationSchema";
+const validationSchema = schema;
 
 export const Register = () => {
   const [responseMessage, setResponseMessage] = useState("");
@@ -122,106 +59,48 @@ export const Register = () => {
               onSubmit={(values) => handleRegisterUser(values)}
               validationSchema={validationSchema}
             >
-              {({ values, handleChange, errors, touched, handleBlur }) => (
+              {() => (
                 <Form>
                   {responseMessage && (
-                    <Alert
-                      sx={{ marginBlock: "1rem" }}
-                      severity={
-                        responseMessage.type === "success" ? "success" : "error"
-                      }
-                      onClose={() => {
-                        setResponseMessage(null);
-                      }}
-                    >
-                      {responseMessage.message}
-                    </Alert>
+                    <AlertMessage
+                      typeOfResponse={responseMessage.type}
+                      responseMessage={responseMessage.message}
+                      setResponseMessage={setResponseMessage}
+                    ></AlertMessage>
                   )}
                   <Grid container sx={gridContainerStyle}>
                     <Grid item xs={12} sx={gridItemStyle}>
-                      <Typography
-                        variant="h2"
-                        textTransform="uppercase"
-                        sx={{
-                          fontSize: "1.5rem",
-                          letterSpacing: "0.2rem",
-                          [appTheme.breakpoints.down("md")]: {
-                            fontSize: "1.1rem",
-                            letterSpacing: "0.1rem",
-                          },
-                        }}
-                      >
-                        Registrácia používateľa
-                      </Typography>
+                      <RegisterTypography></RegisterTypography>
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        required
-                        id="firstName"
+                      <FormikTextField
                         name="firstName"
-                        label="Zadajte meno"
-                        value={values.firstName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.firstName && Boolean(errors.firstName)}
-                        helperText={touched.firstName && errors.firstName}
-                        sx={{ width: "100%" }}
-                      ></TextField>
+                        label="Zadajte krstné meno"
+                      ></FormikTextField>
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        required
-                        id="lastName"
+                      <FormikTextField
                         name="lastName"
-                        value={values.lastName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.lastName && Boolean(errors.lastName)}
-                        helperText={touched.lastName && errors.lastName}
                         label="Zadajte priezvisko"
-                        sx={{ width: "100%" }}
-                      ></TextField>
+                      ></FormikTextField>
                     </Grid>
                     <Grid item xs={12}>
-                      <EmailTextField
-                        id="email"
-                        label="Zadajte email"
+                      <EmailField
                         name="email"
-                        value={values.email}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                      ></EmailTextField>
+                        label="Zadajte email"
+                      ></EmailField>
                     </Grid>
                     <Grid item xs={12}>
-                      <ShowPasswordTextField
-                        id="password"
-                        label="Zadajte heslo"
+                      <PasswordField
                         name="password"
-                        value={values.password}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        error={touched.password && Boolean(errors.password)}
-                        helperText={touched.password && errors.password}
-                      ></ShowPasswordTextField>
+                        label="Zadajte heslo"
+                      ></PasswordField>
                     </Grid>
                     <Grid item xs={12}>
-                      <ShowPasswordTextField
-                        id="repeatPassword"
-                        label="Zadajte heslo"
+                      <PasswordField
                         name="repeatPassword"
-                        value={values.repeatPassword}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        error={
-                          touched.repeatPassword &&
-                          Boolean(errors.repeatPassword)
-                        }
-                        helperText={
-                          touched.repeatPassword && errors.repeatPassword
-                        }
-                      ></ShowPasswordTextField>
+                        label="Zopakujte heslo"
+                      ></PasswordField>
                     </Grid>
                     <Grid item xs={12} md={12} sx={gridItemStyle}>
                       <AuthenticationPageLink
