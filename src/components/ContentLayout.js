@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import { appTheme } from "../themes/appTheme";
 import { SideBar } from "../components/Sidebar";
 import { Navbar } from "../components/Navbar";
-import { BottomNav } from "./BottomNav";
+import { BottomNav } from "./BottomNav/BottomNav";
 
 export const ContentLayout = ({ screen, children, backGround }) => {
   const boxStyle = {

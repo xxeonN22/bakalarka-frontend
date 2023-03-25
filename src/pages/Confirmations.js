@@ -26,7 +26,6 @@ export const Confirmations = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [confirmationChanges, setConfirmationChanges] = useState([]);
 
-  /* GETTING THE DATA FROM DATABASE - ORGANIZER NAME, TOURNAMENT NAME AND CONFIRMATIONS*/
   useEffect(() => {
     fetchConfirmations(playerHash);
   }, [playerHash]);

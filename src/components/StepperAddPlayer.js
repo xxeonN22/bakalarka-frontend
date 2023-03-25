@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChooseAddingStyle } from "./ChooseAddingStyle";
+import { ChooseAddingStyle } from "../components/AddPlayers/ChooseAddingStyle";
 import { NewPlayerData } from "./NewPlayerData";
 
 import { Stepper, Step, StepLabel, Button, Box } from "@mui/material";
