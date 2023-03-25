@@ -1,28 +1,17 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { appTheme } from "../themes/appTheme";
 import { api } from "../axios/axios";
 
-import { NewRound } from "../components/NewRound";
 import { AlertMessage } from "../components/AlertMessage";
-import { EmailSettings } from "../components/EmailSettings";
-import { ChooseGroup } from "../components/ChooseGroup";
 import { ContentLayout } from "../components/ContentLayout";
-import { SelectBox } from "../components/SelectBox";
-import {
-  Box,
-  Tab,
-  Tabs,
-  tabsClasses,
-  Grid,
-  Button,
-  Checkbox,
-  Typography,
-  TextField,
-  Alert,
-} from "@mui/material";
+import { PlayersDashboard } from "../components/Players/PlayersDashboard";
+import { PlayerDashboardTableHeader } from "../components/Players/PlayerDashboardTableHeader";
+import { GameDaysTabs } from "../components/Players/GameDaysTabs";
+import { ChooseRoundCreateRound } from "../components/Players/ChooseRoundCreateRound";
+import { PlayerDashboardActions } from "../components/Players/PlayerDashboardActions";
 
 export const Players = () => {
+  const navigate = useNavigate();
   const { tournamentId } = useParams();
   const [rounds, setRounds] = useState([]);
   const [selectedRound, setSelectedRound] = useState("");
@@ -36,10 +25,7 @@ export const Players = () => {
   const [checkedBoxes, setCheckedBoxes] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [searchGroup, setSearchGroup] = useState("");
-
   const [responseMessage, setResponseMessage] = useState("");
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -55,7 +41,7 @@ export const Players = () => {
           return;
         }
         if (error.response) {
-          console.log(error.response.data);
+          setResponseMessage(error.response.data);
         } else {
           console.log(`Error: ${error.message}`);
         }
@@ -78,7 +64,7 @@ export const Players = () => {
           return;
         }
         if (error.response) {
-          console.log(error.response.data);
+          setResponseMessage(error.response.data);
         } else {
           console.log(`Error: ${error.message}`);
         }
@@ -98,7 +84,7 @@ export const Players = () => {
         return;
       }
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -112,18 +98,6 @@ export const Players = () => {
       }
     })();
   }, [selectedGameDay, selectedRound, tournamentId]);
-
-  const handleSearchGroup = (event) => {
-    setSearchGroup(event.target.value);
-  };
-
-  const handleSearchName = (event) => {
-    setSearchName(event.target.value);
-  };
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   const handleCheck = (id) => {
     const index = checkedBoxes.indexOf(id);
@@ -143,6 +117,18 @@ export const Players = () => {
       setCheckedBoxes([]);
       setAllChecked(false);
     }
+  };
+
+  const handleSearchGroup = (event) => {
+    setSearchGroup(event.target.value);
+  };
+
+  const handleSearchName = (event) => {
+    setSearchName(event.target.value);
+  };
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   const handleGroupChange = (event) => {
@@ -169,29 +155,39 @@ export const Players = () => {
         { playerId, status, selectedRound, selectedGameDay }
       );
       fetchPlayersData();
-    } catch (error) {
-      if (error.response.status === 401) {
-        navigate("/login");
-        return;
-      }
-    }
-  };
-
-  const handleDeletePlayers = async () => {
-    try {
-      await api.delete(`/players/tournament/${tournamentId}/deletePlayers`, {
-        data: checkedBoxes,
-      });
-      fetchPlayersData();
-      setCheckedBoxes([]);
-      setAllChecked(false);
+      setResponseMessage(response.data);
     } catch (error) {
       if (error.response.status === 401) {
         navigate("/login");
         return;
       }
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
+  };
+
+  const handleDeletePlayers = async () => {
+    try {
+      const response = await api.delete(
+        `/players/tournament/${tournamentId}/deletePlayers`,
+        {
+          data: checkedBoxes,
+        }
+      );
+      fetchPlayersData();
+      setCheckedBoxes([]);
+      setAllChecked(false);
+      setResponseMessage(response.data);
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
+      }
+      if (error.response) {
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -200,16 +196,20 @@ export const Players = () => {
 
   const handleMovePlayers = async () => {
     try {
-      await api.put(`/players/tournament/${tournamentId}/movePlayers`, {
-        checkedBoxes,
-        selectedGroup,
-      });
+      const response = await api.put(
+        `/players/tournament/${tournamentId}/movePlayers`,
+        {
+          checkedBoxes,
+          selectedGroup,
+        }
+      );
       fetchPlayersData();
       setCheckedBoxes([]);
       setAllChecked(false);
+      setResponseMessage(response.data);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -219,327 +219,57 @@ export const Players = () => {
   return (
     <>
       <ContentLayout>
-        <Grid container justifyContent="space-between" spacing={2}>
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-            <SelectBox
-              id="select-round"
-              labelContent="Vyberte kolo"
-              labelId="select-round-label"
-              label="Vyberte kolo"
-              onChangeFunction={handleRoundChange}
-              selectValue={selectedRound}
-              itemArray={rounds}
-            ></SelectBox>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={2.5}
-            sx={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <NewRound></NewRound>
-          </Grid>
-        </Grid>
+        <ChooseRoundCreateRound
+          handleRoundChange={handleRoundChange}
+          selectedRound={selectedRound}
+          rounds={rounds}
+        ></ChooseRoundCreateRound>
 
         <AlertMessage
           responseMessage={responseMessage}
           setResponseMessage={setResponseMessage}
         ></AlertMessage>
 
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            marginTop: "1rem",
-            display: checkedBoxes.length > 0 ? "flex" : "none",
-            justifyContent: "space-between",
-            [appTheme.breakpoints.up("lg")]: { justifyContent: "flex-start" },
-          }}
-        >
-          <Grid item xs={12} sm={6} md={4} lg={2.5}>
-            <EmailSettings
-              checkedBoxes={checkedBoxes}
-              setCheckedBoxes={setCheckedBoxes}
-              setAllChecked={setAllChecked}
-              tournamentId={tournamentId}
-              setResponseMessage={setResponseMessage}
-            ></EmailSettings>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={2.5}>
-            <ChooseGroup
-              checkedBoxes={checkedBoxes}
-              groups={groups}
-              selectedGroup={selectedGroup}
-              handleGroupChange={handleGroupChange}
-              handleMovePlayers={handleMovePlayers}
-            ></ChooseGroup>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={2.5}
-            sx={{
-              [appTheme.breakpoints.up("lg")]: {
-                marginLeft: "auto",
-              },
-            }}
-          >
-            <Button
-              variant="contained"
-              sx={{
-                width: "100%",
-                padding: "1rem",
-              }}
-              onClick={() => handleDeletePlayers()}
-            >{`Odstrániť hráč${checkedBoxes.length > 1 ? "ov" : "a"}`}</Button>
-          </Grid>
-        </Grid>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "2rem",
-            [appTheme.breakpoints.down("md")]: { marginBottom: "4rem" },
-          }}
-        >
-          <Box
-            sx={{
-              width: "200px",
-              bgcolor: "background.paper",
-            }}
-          >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              variant="scrollable"
-              scrollButtons
-              aria-label="visible arrows tabs example"
-              sx={{
-                [`& .${tabsClasses.scrollButtons}`]: {
-                  "&.Mui-disabled": { opacity: 0.3 },
-                },
-              }}
-            >
-              {gameDays.length > 0 &&
-                gameDays.map((gameday) => {
-                  return (
-                    <Tab
-                      sx={{ width: "100%" }}
-                      onClick={() => handleGameDayChange(gameday)}
-                      key={gameday}
-                      label={gameday}
-                    />
-                  );
-                })}
-            </Tabs>
-          </Box>
-        </Box>
+        <PlayerDashboardActions
+          checkedBoxes={checkedBoxes}
+          setCheckedBoxes={setCheckedBoxes}
+          setAllChecked={setAllChecked}
+          tournamentId={tournamentId}
+          setResponseMessage={setResponseMessage}
+          groups={groups}
+          selectedGroup={selectedGroup}
+          handleGroupChange={handleGroupChange}
+          handleMovePlayers={handleMovePlayers}
+          handleDeletePlayers={handleDeletePlayers}
+        ></PlayerDashboardActions>
 
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            backgroundColor: "#303A53",
-            padding: "1rem",
-            marginBlock: "1rem",
-            color: "white",
-            textAlign: "center",
-            [appTheme.breakpoints.down("md")]: {
-              paddingInline: "0.3rem",
-              position: "relative",
-            },
-          }}
-        >
-          <Checkbox
-            sx={{
-              color: "white",
-              padding: "0px",
-              flex: "1",
-              [appTheme.breakpoints.down("sm")]: { flex: "0" },
-            }}
-            onChange={handleCheckAll}
-            checked={allChecked}
-          ></Checkbox>
-          <Typography
-            sx={{
-              flex: "1",
-              [appTheme.breakpoints.down("md")]: { display: "none" },
-            }}
-          >
-            Poradie
-          </Typography>
-          <Box
-            sx={{
-              flex: "3",
-              [appTheme.breakpoints.down("md")]: { flex: "2" },
-            }}
-          >
-            <Typography
-              sx={{
-                marginBottom: "0.5rem",
-                [appTheme.breakpoints.down("md")]: { marginBottom: "0" },
-              }}
-            >
-              Meno
-            </Typography>
-            <TextField
-              id="search-name"
-              label="Vyhľadať hráča"
-              variant="outlined"
-              size="small"
-              value={searchName}
-              onChange={handleSearchName}
-              sx={{
-                [appTheme.breakpoints.down("md")]: {
-                  position: "absolute",
-                  top: -50,
-                  left: 0,
-                  width: "30%",
-                },
-                [appTheme.breakpoints.down("sm")]: {
-                  width: "47%",
-                },
-              }}
-            />
-          </Box>
-          <Typography sx={{ flex: "1" }}>ELO</Typography>
-          <Box
-            sx={{
-              flex: "2",
-              [appTheme.breakpoints.down("md")]: { flex: "1" },
-            }}
-          >
-            <Typography
-              sx={{
-                marginBottom: "0.5rem",
-                [appTheme.breakpoints.down("md")]: { marginBottom: "0" },
-              }}
-            >
-              Skupina
-            </Typography>
-            <TextField
-              id="search-group"
-              label="Vyhľadať skupinu"
-              variant="outlined"
-              size="small"
-              value={searchGroup}
-              onChange={handleSearchGroup}
-              sx={{
-                [appTheme.breakpoints.down("md")]: {
-                  position: "absolute",
-                  top: -50,
-                  right: 0,
-                  width: "30%",
-                },
-                [appTheme.breakpoints.down("sm")]: {
-                  width: "47%",
-                },
-              }}
-            />
-          </Box>
-          <Typography sx={{ flex: "1" }}>Status</Typography>
-        </Box>
+        <GameDaysTabs
+          value={value}
+          handleChange={handleChange}
+          gameDays={gameDays}
+          handleGameDayChange={handleGameDayChange}
+        ></GameDaysTabs>
 
-        <Grid container>
-          {playersData &&
-            playersData
-              .filter(
-                (player) =>
-                  player.first_name
-                    .toLowerCase()
-                    .includes(searchName.toLowerCase()) ||
-                  player.last_name
-                    .toLowerCase()
-                    .includes(searchName.toLowerCase())
-              )
-              .filter((player) =>
-                player.group_name
-                  .substring(player.group_name.length - 1)
-                  .toLowerCase()
-                  .includes(searchGroup.toLowerCase())
-              )
-              .map((player, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  key={player.id_player}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    backgroundColor: index % 2 !== 0 ? "#303A53" : "#252E42",
-                    padding: "1rem",
-                    color: "white",
-                    textAlign: "center",
-                    [appTheme.breakpoints.down("md")]: {
-                      paddingInline: "0.3rem",
-                    },
-                  }}
-                >
-                  <Checkbox
-                    sx={{
-                      color: "white",
-                      padding: "0px",
-                      flex: "1",
-                      [appTheme.breakpoints.down("sm")]: { flex: "0" },
-                    }}
-                    onChange={() => handleCheck(player.id_player)}
-                    checked={checkedBoxes.includes(player.id_player)}
-                  ></Checkbox>
-                  <Typography
-                    sx={{
-                      flex: "1",
-                      [appTheme.breakpoints.down("md")]: { display: "none" },
-                    }}
-                  >
-                    {index + 1}
-                  </Typography>
-                  <Typography
-                    onClick={() =>
-                      navigate(
-                        `/tournaments/${tournamentId}/${player.id_player}`
-                      )
-                    }
-                    sx={{
-                      flex: "3",
-                      textDecoration: "underline",
-                      wordBreak: "break-all",
-                      cursor: "pointer",
-                      [appTheme.breakpoints.down("md")]: { flex: "2" },
-                    }}
-                  >
-                    {player.first_name} {player.last_name}
-                  </Typography>
-                  <Typography sx={{ flex: "1" }}>{player.elo}</Typography>
-                  <Typography
-                    sx={{
-                      flex: "2",
-                      [appTheme.breakpoints.down("md")]: { flex: "1" },
-                    }}
-                  >
-                    {player.group_name.substring(player.group_name.length - 1)}
-                  </Typography>
-                  <Typography
-                    onClick={() => {
-                      handleChangeStatus(
-                        player.id_player,
-                        player.status,
-                        selectedRound,
-                        selectedGameDay
-                      );
-                    }}
-                    sx={{ flex: "1", cursor: "pointer" }}
-                  >
-                    {player.status}
-                  </Typography>
-                </Grid>
-              ))}
-        </Grid>
+        <PlayerDashboardTableHeader
+          searchName={searchName}
+          handleSearchName={handleSearchName}
+          allChecked={allChecked}
+          handleCheckAll={handleCheckAll}
+          searchGroup={searchGroup}
+          handleSearchGroup={handleSearchGroup}
+        ></PlayerDashboardTableHeader>
+
+        <PlayersDashboard
+          playersData={playersData}
+          tournamentId={tournamentId}
+          checkedBoxes={checkedBoxes}
+          handleCheck={handleCheck}
+          handleChangeStatus={handleChangeStatus}
+          selectedRound={selectedRound}
+          selectedGameDay={selectedGameDay}
+          searchName={searchName}
+          searchGroup={searchGroup}
+        ></PlayersDashboard>
       </ContentLayout>
     </>
   );
