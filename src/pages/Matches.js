@@ -2,37 +2,16 @@ import { useState, useEffect } from "react";
 import { Outlet, useNavigate, Route, useParams } from "react-router-dom";
 import { api } from "../axios/axios";
 
+import { Grid } from "@mui/material";
+
 import { MatchScore } from "../components/MatchScore";
-import { MatchBox } from "../components/MatchBox";
-import { TextFieldIncrement } from "../components/TextFieldIncrement";
-import { SelectBox } from "../components/SelectBox";
 import { ContentLayout } from "../components/ContentLayout";
-import { appTheme } from "../themes/appTheme";
-
-import { Grid, Box, Button, TextField, Alert } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-
-const roundCourtsGridStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  [appTheme.breakpoints.up("md")]: {
-    justifyContent: "flex-start",
-  },
-};
-
-const generateMatchesGridStyle = {
-  display: "flex",
-  justifyContent: "center",
-};
-
-const generateMatches = {
-  paddingBlock: "1rem",
-  width: "32%",
-  marginBlock: "2rem",
-  [appTheme.breakpoints.down("md")]: {
-    width: "100%",
-  },
-};
+import { SetsToRender } from "../components/Matches/SetsToRender";
+import { SelectionSection } from "../components/Matches/SelectionSection";
+import { GenerateButton } from "../components/Matches/GenerateButton";
+import { AlertMessage } from "../components/Alert/AlertMessage.js";
+import { ActionButtons } from "../components/Matches/ActionButtons";
+import { GeneratedMatches } from "../components/Matches/GeneratedMatches";
 
 export const Matches = () => {
   const [groups, setGroups] = useState([]);
@@ -71,11 +50,7 @@ export const Matches = () => {
     secondPlayerElo: null,
   });
 
-  const [messageState, setMessageState] = useState({
-    responseMessage: "",
-    deleteMessage: "",
-    scoreMessage: "",
-  });
+  const [responseMessage, setResponseMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -173,10 +148,7 @@ export const Matches = () => {
       const response = await api.get(
         `/tournament/${tournamentId}/matches/${selectedGroup}/${selectedCourts}/${selectedRound}/${selectedGameDay}`
       );
-      setMessageState({
-        ...messageState,
-        responseMessage: response.data.message,
-      });
+      setResponseMessage(response.data);
       updateMatches();
     } catch (error) {
       if (error.response.status === 401) {
@@ -184,7 +156,7 @@ export const Matches = () => {
         return;
       }
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -231,10 +203,7 @@ export const Matches = () => {
       const response = await api.delete(`/tournament/${tournamentId}/matches`, {
         data: selectedMatches,
       });
-      setMessageState({
-        ...messageState,
-        deleteMessage: response.data.message,
-      });
+      setResponseMessage(response.data);
       setSelectedMatches([]);
       updateMatches();
     } catch (error) {
@@ -243,7 +212,7 @@ export const Matches = () => {
         return;
       }
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -256,11 +225,7 @@ export const Matches = () => {
         `/tournament/${tournamentId}/matches/${matchId}`,
         { matchValues, numberOfSets }
       );
-      setMessageState({
-        ...messageState,
-        scoreMessage: response.data.message,
-      });
-
+      setResponseMessage(response.data);
       updateMatches();
     } catch (error) {
       if (error.response.status === 401) {
@@ -268,7 +233,7 @@ export const Matches = () => {
         return;
       }
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -318,42 +283,13 @@ export const Matches = () => {
   const setsToRender = [];
   for (let i = 1; i <= numberOfSets; i++) {
     setsToRender.push(
-      <Grid
+      <SetsToRender
         key={i}
-        item
-        xs={12}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "1rem",
-          gap: "1rem",
-        }}
-      >
-        <TextFieldIncrement
-          value={matchValues[i]?.firstPlayerSet}
-          functionName={(value) =>
-            handleInputChange(
-              { target: { name: `firstPlayer-set${i}`, value } },
-              i
-            )
-          }
-          label={`Set ${i}`}
-          id={`firstPlayer-set${i}`}
-          max={maxPoints}
-        />
-        <TextFieldIncrement
-          value={matchValues[i]?.firstPlayerSet}
-          functionName={(value) =>
-            handleInputChange(
-              { target: { name: `secondPlayer-set${i}`, value } },
-              i
-            )
-          }
-          label={`Set ${i}`}
-          id={`secondPlayer-set${i}`}
-          max={maxPoints}
-        />
-      </Grid>
+        setNumber={i}
+        matchValues={matchValues}
+        maxPoints={maxPoints}
+        handleInputChange={handleInputChange}
+      ></SetsToRender>
     );
   }
 
@@ -371,181 +307,48 @@ export const Matches = () => {
           rowGap={2}
           sx={{ display: "flex", alignItems: "center" }}
         >
-          <Grid container item xs={12} spacing={2} sx={roundCourtsGridStyle}>
-            <Grid item xs={6} lg={3}>
-              <SelectBox
-                id="select-group"
-                labelContent="Vyberte skupinu"
-                labelId="select-group-label"
-                label="Vyberte skupinu"
-                onChangeFunction={handleGroupChange}
-                selectValue={selectedGroup}
-                itemArray={groups}
-              ></SelectBox>
-            </Grid>
-            <Grid item xs={6} lg={3}>
-              <SelectBox
-                id="select-round"
-                labelContent="Vyberte kolo"
-                labelId="select-round-label"
-                label="Vyberte kolo"
-                onChangeFunction={handleRoundChange}
-                selectValue={selectedRound}
-                itemArray={rounds}
-              ></SelectBox>
-            </Grid>
-            <Grid item xs={6} lg={3}>
-              <SelectBox
-                id="select-game-day"
-                labelContent="Vyberte hrací deň"
-                labelId="select-game-day-label"
-                label="Vyberte hrací deň"
-                onChangeFunction={handleGameDayChange}
-                selectValue={selectedGameDay}
-                itemArray={gameDays}
-              ></SelectBox>
-            </Grid>
-            <Grid item xs={6} lg={3}>
-              <TextFieldIncrement
-                value={1}
-                functionName={setSelectedCourts}
-                label="Počet kurtov"
-                id="number-of-courts"
-                max={numberOfCourts}
-                min={1}
-              ></TextFieldIncrement>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sx={generateMatchesGridStyle}>
-            <Button
-              startIcon={<AddIcon />}
-              variant="contained"
-              sx={generateMatches}
-              onClick={handleGenerateClick}
-            >
-              Vygenerovať zápasy
-            </Button>
-          </Grid>
+          <SelectionSection
+            handleGroupChange={handleGroupChange}
+            selectedGroup={selectedGroup}
+            groups={groups}
+            handleRoundChange={handleRoundChange}
+            selectedRound={selectedRound}
+            rounds={rounds}
+            handleGameDayChange={handleGameDayChange}
+            selectedGameDay={selectedGameDay}
+            gameDays={gameDays}
+            setSelectedCourts={setSelectedCourts}
+            numberOfCourts={numberOfCourts}
+          ></SelectionSection>
+
+          <GenerateButton
+            handleGenerateClick={handleGenerateClick}
+          ></GenerateButton>
         </Grid>
-        {messageState.scoreMessage && (
-          <Alert
-            sx={{ marginBlock: "1rem" }}
-            severity={"success"}
-            onClose={() => {
-              setMessageState({
-                ...messageState,
-                scoreMessage: null,
-              });
-            }}
-          >
-            {messageState.scoreMessage}
-          </Alert>
+
+        {responseMessage && (
+          <AlertMessage
+            typeOfResponse={responseMessage.type}
+            responseMessage={responseMessage.message}
+            setResponseMessage={setResponseMessage}
+          ></AlertMessage>
         )}
-        {messageState.deleteMessage && (
-          <Alert
-            sx={{ marginBlock: "1rem" }}
-            severity={"success"}
-            onClose={() => {
-              setMessageState({
-                ...messageState,
-                deleteMessage: null,
-              });
-            }}
-          >
-            {messageState.deleteMessage}
-          </Alert>
-        )}
-        {messageState.responseMessage && (
-          <Alert
-            sx={{ marginBlock: "1rem" }}
-            severity={
-              messageState.responseMessage === "Generovanie prebehlo úspešne"
-                ? "success"
-                : "error"
-            }
-            onClose={() => {
-              setMessageState({
-                ...messageState,
-                responseMessage: null,
-              });
-            }}
-          >
-            {messageState.responseMessage}
-          </Alert>
-        )}
+
         {matches.length > 0 && (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "start",
-              marginBottom: "1rem",
-              [appTheme.breakpoints.down("md")]: {
-                gap: "1rem",
-                justifyContent: `${
-                  selectedMatches.length === 0 ? "center" : "space-between"
-                }`,
-              },
-            }}
-          >
-            <TextField
-              label="Filter zápasov"
-              id="mach-filter"
-              value={searchQuery}
-              onChange={(event) => {
-                setSearchQuery(event.target.value);
-                handleSearch(event.target.value);
-              }}
-              sx={{
-                width: "34%",
-                marginBottom: "0.5rem",
-                [appTheme.breakpoints.down("md")]: {
-                  width: "50%",
-                },
-              }}
-            />
-            {selectedMatches.length > 0 && (
-              <Button
-                variant="contained"
-                sx={{
-                  paddingBlock: "1rem",
-                  [appTheme.breakpoints.down("md")]: {
-                    width: "50%",
-                  },
-                }}
-                color="error"
-                onClick={handleDeleteButtonClick}
-              >
-                {selectedMatches.length === 1
-                  ? `Vymazať zápas`
-                  : `Vymazať zápasy`}
-              </Button>
-            )}
-          </Box>
+          <ActionButtons
+            selectedMatches={selectedMatches}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+            handleDeleteButtonClick={handleDeleteButtonClick}
+          ></ActionButtons>
         )}
-        {searchResults.length > 0
-          ? searchResults.map((match) => {
-              const matchId = match[0];
-              return (
-                <MatchBox
-                  key={matchId}
-                  match={match}
-                  handleButtonClick={handleButtonClick}
-                  handleCheckboxClick={handleCheckboxClick}
-                ></MatchBox>
-              );
-            })
-          : matches.map((match) => {
-              const matchId = match[0];
-              return (
-                <MatchBox
-                  key={matchId}
-                  match={match}
-                  handleButtonClick={handleButtonClick}
-                  handleCheckboxClick={handleCheckboxClick}
-                ></MatchBox>
-              );
-            })}
+        <GeneratedMatches
+          searchResults={searchResults}
+          matches={matches}
+          handleButtonClick={handleButtonClick}
+          handleCheckboxClick={handleCheckboxClick}
+        ></GeneratedMatches>
       </ContentLayout>
       <MatchScore
         dialogState={dialogState}
