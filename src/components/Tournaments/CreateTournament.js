@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { appTheme } from "../themes/appTheme";
-import { api } from "../axios/axios";
+import { api } from "../../axios/axios";
 
-import { StepperCreateTournament } from "./StepperCreateTournament";
-
-import { Button, IconButton } from "@mui/material";
-import { DialogWindow } from "./DialogWindow";
-import AddIcon from "@mui/icons-material/Add";
+import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
+import { StepperCreateTournament } from "../StepperCreateTournament";
+import { DialogWindow } from "../DialogWindow";
+import { CreateTournamentButton } from "./CreateTournamentButton";
+
 export const CreateTournament = (props) => {
-  const { setMessage, message, setTournamentData } = props;
+  const { setResponseMessage, responseMessage, setTournamentData } = props;
   const [dialogState, setDialogState] = useState(false);
 
   const fetchTournaments = async () => {
@@ -19,7 +18,7 @@ export const CreateTournament = (props) => {
       setTournamentData(response.data);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -32,14 +31,11 @@ export const CreateTournament = (props) => {
         `/tournaments/createtournament`,
         newTournament
       );
-      setMessage({
-        ...message,
-        createdTournamentMessage: response.data.message,
-      });
+      setResponseMessage(response.data);
       fetchTournaments();
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -55,24 +51,9 @@ export const CreateTournament = (props) => {
   };
   return (
     <>
-      <Button
-        startIcon={<AddIcon></AddIcon>}
-        onClick={() => {
-          handleDialogOpen();
-        }}
-        sx={{
-          paddingBlock: "1rem",
-          [appTheme.breakpoints.down("lg")]: {
-            width: "90%",
-          },
-          [appTheme.breakpoints.down("sm")]: {
-            width: "100%",
-          },
-        }}
-        variant="contained"
-      >
-        Vytvoriť turnaj
-      </Button>
+      <CreateTournamentButton
+        handleDialogOpen={handleDialogOpen}
+      ></CreateTournamentButton>
 
       <DialogWindow open={dialogState} handleCloseModal={handleDialogClose}>
         <IconButton
@@ -82,8 +63,8 @@ export const CreateTournament = (props) => {
           <CloseIcon></CloseIcon>
         </IconButton>
         <StepperCreateTournament
-          setMessage={setMessage}
-          message={message}
+          setResponseMessage={setResponseMessage}
+          responseMessage={responseMessage}
           handleCloseModal={handleDialogClose}
           handleCreateTournamet={handleCreateTournamet}
         ></StepperCreateTournament>

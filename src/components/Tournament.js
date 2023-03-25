@@ -11,8 +11,7 @@ export const Tournament = ({
   playersNumber,
   setTournamentData,
   tournamentData,
-  setMessage,
-  message,
+  setResponseMessage,
 }) => {
   const navigate = useNavigate();
 
@@ -34,18 +33,14 @@ export const Tournament = ({
       const response = await api.delete(
         `/tournaments/deletetournament/${tournamentId}`
       );
-      setMessage({
-        ...message,
-        deleteTournamentMessage: response.data.message,
-      });
-
+      setResponseMessage(response.data);
       const updatedTournaments = tournamentData.filter(
         (tournament) => tournament.id_tournament !== tournamentId
       );
       setTournamentData(updatedTournaments);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -54,12 +49,6 @@ export const Tournament = ({
 
   const handleEditTournament = async (newSettings) => {
     if (newSettings.tournamentName === "") {
-      setMessage({
-        ...message,
-        errorMessage:
-          "Názov turnaja musí byť vyplnený! Nastavenia neboli zmenené!",
-      });
-      return;
     }
 
     if (
@@ -69,11 +58,6 @@ export const Tournament = ({
       newSettings.numberOfGroups === 0 ||
       newSettings.numberOfRounds === 0
     ) {
-      setMessage({
-        ...message,
-        errorMessage:
-          "Každá hodnota musí byť väčšia alebo rovná 1! Nastavenia neboli zmenené!",
-      });
       return;
     }
 
@@ -82,14 +66,11 @@ export const Tournament = ({
         `/tournaments/eddittournament/${tournamentId}`,
         newSettings
       );
-      setMessage({
-        ...message,
-        edditTournamentMessage: response.data.message,
-      });
+      setResponseMessage(response.data);
       fetchTournaments();
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -104,14 +85,11 @@ export const Tournament = ({
         `/tournaments/importplayers/${tournamentId}`,
         formData
       );
-      setMessage({
-        ...message,
-        addPlayerMessage: `${response.data.message}`,
-      });
+      setResponseMessage(response.data);
       fetchTournaments();
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -128,14 +106,11 @@ export const Tournament = ({
         `/tournaments/addplayers/${tournamentId}`,
         { selectedStyle, newPlayerData, newPlayersData }
       );
-      setMessage({
-        ...message,
-        addPlayerMessage: `${response.data.message}`,
-      });
+      setResponseMessage(response.data);
       fetchTournaments();
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -149,19 +124,16 @@ export const Tournament = ({
       );
       let stringToSave = "";
 
-      for (let i = 0; i < response.data.length; i++) {
-        let player = response.data[i];
+      for (let i = 0; i < response.data.getPlayers.length; i++) {
+        let player = response.data.getPlayers[i];
         let playerString = `${player.first_name}, ${player.last_name}, ${player.email}, ${player.group_name}, ${player.elo}; `;
         stringToSave += playerString;
       }
       navigator.clipboard.writeText(stringToSave);
-      setMessage({
-        ...message,
-        copyPlayersMessage: `Hráči boli úspešne skopírovaní`,
-      });
+      setResponseMessage(response.data.message);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data.message);
       } else {
         console.log(`Error: ${error.message}`);
       }

@@ -15,7 +15,7 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 export const StepperCreateTournament = ({
   handleCloseModal,
-  setMessage,
+  setResponseMessage,
   message,
   handleCreateTournamet,
 }) => {
