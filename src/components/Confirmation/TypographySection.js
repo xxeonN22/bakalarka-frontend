@@ -13,18 +13,21 @@ export const TypographySection = (props) => {
   const { organizer, tournamentName } = props;
   return (
     <>
-      <Grid item xs={12}>
-        <Typography>Zdravíme Vás, dnes je {getTodaysDate()}</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography>
-          {organizer} Váš pozýva, aby ste sa zúčastnili turnaja {tournamentName}
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography>
-          Prosím, potvrďte svoju účasť kliknutím na príslušný hrací deň!
-        </Typography>
+      <Grid container rowSpacing={3} sx={{ textAlign: "center" }}>
+        <Grid item xs={12}>
+          <Typography>Zdravíme Vás, dnes je {getTodaysDate()}</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography>
+            {organizer} Váš pozýva, aby ste sa zúčastnili turnaja{" "}
+            {tournamentName}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography>
+            Prosím, potvrďte svoju účasť kliknutím na príslušný hrací deň!
+          </Typography>
+        </Grid>
       </Grid>
     </>
   );

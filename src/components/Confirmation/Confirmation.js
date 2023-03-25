@@ -21,7 +21,7 @@ const confirmationBoxStyle = {
 export const Confirmation = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const {
-    confirmation,
+    confirmations,
     confirmationChanges,
     handleInfoClick,
     handleConfirmationChange,
@@ -47,61 +47,73 @@ export const Confirmation = (props) => {
 
   return (
     <Grid
-      key={confirmation.id_confirmation}
-      item
-      xs={12}
-      sm={6}
-      xl={4}
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      container
+      spacing={2}
+      sx={{ marginTop: "2rem", justifyContent: "center" }}
     >
-      <Button
-        onClick={() =>
-          handleConfirmationChange(
-            confirmation.id_confirmation,
-            confirmation.id_game_day
-          )
-        }
-        sx={{ width: "100%", padding: "0px" }}
-      >
-        <Box sx={confirmationBoxStyle}>
-          <Typography sx={{ textTransform: "none", marginTop: "1rem" }}>
-            {" "}
-            Dátum konania: {transformDate(confirmation.date)}
-          </Typography>
-          <Typography sx={{ textTransform: "none", marginBlock: "0.5rem" }}>
-            {" "}
-            Začiatok konania: {confirmation.time.substring(0, 5)}
-          </Typography>
-          <Box>
-            {confirmation.status === "nie" ? (
-              <CloseIcon sx={{ color: "red", fontSize: "3rem" }} />
-            ) : (
-              <CheckIcon sx={{ color: "green", fontSize: "3rem" }} />
-            )}
-          </Box>
-          <InfoOutlinedIcon
-            onClick={(e) => {
-              handleInfoClick(confirmation.id_game_day, e);
-              handleClickInfoIcon(e);
+      {confirmations.map((confirmation) => {
+        return (
+          <Grid
+            key={confirmation.id_confirmation}
+            item
+            xs={12}
+            sm={6}
+            xl={4}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
-            sx={{ position: "absolute", top: 5, right: 5 }}
-          ></InfoOutlinedIcon>
-          {confirmationChanges.length > 0 && (
-            <ConfirmationChanges
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              handleClosePopover={handleClosePopover}
-              confirmationChanges={confirmationChanges}
-              transformDate={transformDate}
-            ></ConfirmationChanges>
-          )}
-        </Box>
-      </Button>
+          >
+            <Button
+              onClick={() =>
+                handleConfirmationChange(
+                  confirmation.id_confirmation,
+                  confirmation.id_game_day
+                )
+              }
+              sx={{ width: "100%", padding: "0px" }}
+            >
+              <Box sx={confirmationBoxStyle}>
+                <Typography sx={{ textTransform: "none", marginTop: "1rem" }}>
+                  {" "}
+                  Dátum konania: {transformDate(confirmation.date)}
+                </Typography>
+                <Typography
+                  sx={{ textTransform: "none", marginBlock: "0.5rem" }}
+                >
+                  {" "}
+                  Začiatok konania: {confirmation.time.substring(0, 5)}
+                </Typography>
+                <Box>
+                  {confirmation.status === "nie" ? (
+                    <CloseIcon sx={{ color: "red", fontSize: "3rem" }} />
+                  ) : (
+                    <CheckIcon sx={{ color: "green", fontSize: "3rem" }} />
+                  )}
+                </Box>
+                <InfoOutlinedIcon
+                  onClick={(e) => {
+                    handleInfoClick(confirmation.id_game_day, e);
+                    handleClickInfoIcon(e);
+                  }}
+                  sx={{ position: "absolute", top: 5, right: 5 }}
+                ></InfoOutlinedIcon>
+                {confirmationChanges.length > 0 && (
+                  <ConfirmationChanges
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    handleClosePopover={handleClosePopover}
+                    confirmationChanges={confirmationChanges}
+                    transformDate={transformDate}
+                  ></ConfirmationChanges>
+                )}
+              </Box>
+            </Button>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 import { api } from "../axios/axios";
 
-import { Paper, Grid } from "@mui/material";
+import { Paper } from "@mui/material";
 
 import { ContentNotLogged } from "../components/ContentNotLogged";
 import { TypographySection } from "../components/Confirmation/TypographySection.js";
@@ -20,7 +20,6 @@ const paperElementStyle = {
 export const Confirmations = () => {
   const params = useParams();
   const playerHash = params.hash;
-
   const [confirmations, setConfirmations] = useState([]);
   const [organizer, setOrganizer] = useState("");
   const [tournamentName, setTournamentName] = useState("");
@@ -42,7 +41,7 @@ export const Confirmations = () => {
       setTournamentName(`${response.data.tournamentData[0].name}`);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -59,7 +58,7 @@ export const Confirmations = () => {
       fetchConfirmations(playerHash);
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -85,12 +84,10 @@ export const Confirmations = () => {
   return (
     <ContentNotLogged>
       <Paper sx={paperElementStyle}>
-        <Grid container rowSpacing={3} sx={{ textAlign: "center" }}>
-          <TypographySection
-            organizer={organizer}
-            tournamentName={tournamentName}
-          ></TypographySection>
-        </Grid>
+        <TypographySection
+          organizer={organizer}
+          tournamentName={tournamentName}
+        ></TypographySection>
         {responseMessage && (
           <AlertMessage
             typeOfResponse={responseMessage.type}
@@ -98,22 +95,12 @@ export const Confirmations = () => {
             setResponseMessage={setResponseMessage}
           ></AlertMessage>
         )}
-        <Grid
-          container
-          spacing={2}
-          sx={{ marginTop: "2rem", justifyContent: "center" }}
-        >
-          {confirmations.map((confirmation) => {
-            return (
-              <Confirmation
-                confirmation={confirmation}
-                confirmationChanges={confirmationChanges}
-                handleInfoClick={handleInfoClick}
-                handleConfirmationChange={handleConfirmationChange}
-              ></Confirmation>
-            );
-          })}
-        </Grid>
+        <Confirmation
+          confirmations={confirmations}
+          confirmationChanges={confirmationChanges}
+          handleInfoClick={handleInfoClick}
+          handleConfirmationChange={handleConfirmationChange}
+        ></Confirmation>
       </Paper>
     </ContentNotLogged>
   );
