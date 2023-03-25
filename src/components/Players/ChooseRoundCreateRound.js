@@ -1,7 +1,7 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 import { SelectRound } from "../../components/SelectBoxes/SelectRound";
-import { NewRound } from "../../components/NewRound";
+import { RoundAction } from "../../components/RoundAction";
 
 export const ChooseRoundCreateRound = (props) => {
   const { handleRoundChange, selectedRound, rounds } = props;
@@ -19,10 +19,26 @@ export const ChooseRoundCreateRound = (props) => {
         xs={12}
         sm={6}
         md={4}
-        lg={2.5}
+        lg={3}
+        xl={2}
+        sx={{ display: "flex", justifyContent: "flex-end", marginLeft: "auto" }}
+      >
+        <RoundAction buttonText="Upraviť kolo">
+          <Typography>Cau</Typography>
+        </RoundAction>
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={4}
+        lg={3}
+        xl={2}
         sx={{ display: "flex", justifyContent: "flex-end" }}
       >
-        <NewRound></NewRound>
+        <RoundAction buttonText="Vytvoriť nové kolo">
+          <Typography>Ahoj</Typography>
+        </RoundAction>
       </Grid>
     </Grid>
   );

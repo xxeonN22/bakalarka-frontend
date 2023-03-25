@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { DialogWindow } from "./DialogWindow";
 
-import { Button, Typography, IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-export const NewRound = (props) => {
+export const RoundAction = ({ buttonText, children }) => {
   const [dialogState, setDialogState] = useState(false);
 
   const handleDialogOpen = () => {
@@ -24,7 +24,7 @@ export const NewRound = (props) => {
           handleDialogOpen();
         }}
       >
-        Vytvoriť nové kolo
+        {buttonText}
       </Button>
       <DialogWindow open={dialogState} handleCloseModal={handleDialogClose}>
         <IconButton
@@ -33,9 +33,7 @@ export const NewRound = (props) => {
         >
           <CloseIcon></CloseIcon>
         </IconButton>
-        <Typography sx={{ marginBottom: "2rem", marginTop: "1rem" }}>
-          Pridajte nové kolo klinutím na tlačidlo nižšie
-        </Typography>
+        {children}
       </DialogWindow>
     </>
   );

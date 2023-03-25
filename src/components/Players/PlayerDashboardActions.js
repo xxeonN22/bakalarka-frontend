@@ -1,7 +1,7 @@
 import { appTheme } from "../../themes/appTheme";
 import { Grid, Button } from "@mui/material";
 
-import { ChooseGroup } from "../../components/ChooseGroup";
+import { ChooseGroup } from "../../components/MovePlayers/ChooseGroup";
 import { EmailSettings } from "../../components/EmailSettings";
 
 export const PlayerDashboardActions = (props) => {

@@ -1,60 +1,20 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
-import * as yup from "yup";
 import { api } from "../axios/axios";
 import { useNavigate } from "react-router-dom";
-import { appTheme } from "../themes/appTheme";
-import { ContentNotLogged } from "../components/ContentNotLogged";
-import { EmailTextField } from "../components/EmailTextField";
+
+import { Typography, Grid, Button, Paper, Container } from "@mui/material";
 
 import {
-  Typography,
-  Grid,
-  Button,
-  Paper,
-  Container,
-  Alert,
-} from "@mui/material";
-
-const containerStyle = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  minHeight: "90vh",
-  [appTheme.breakpoints.down("md")]: {
-    paddingInline: "5rem",
-  },
-  [appTheme.breakpoints.down("sm")]: {
-    paddingInline: "2rem",
-  },
-};
-
-const gridContainerStyle = {
-  paddingBlock: "2rem",
-  rowGap: "2rem",
-  [appTheme.breakpoints.up("md")]: {
-    paddingInline: "10rem",
-  },
-  [appTheme.breakpoints.up("xs")]: {
-    paddingInline: "2rem",
-  },
-};
-
-const gridItemStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .required("Email musí byť zadaný")
-    .matches(
-      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-      "Neplatný tvar emailovej adresy"
-    ),
-});
+  containerStyle,
+  gridContainerStyle,
+  gridItemStyle,
+} from "../components/ResetPassword/resetPasswordStyles";
+import { ContentNotLogged } from "../components/ContentNotLogged";
+import { EmailField } from "../components/Authentication/EmailField";
+import { AlertMessage } from "../components/Alert/AlertMessage";
+import { schema } from "../validationSchemas/ResetPassword/validationSchema.js";
+const validationSchema = schema;
 
 export const ResetPassword = () => {
   const [responseMessage, setResponseMessage] = useState("");
@@ -84,24 +44,18 @@ export const ResetPassword = () => {
         <Container maxWidth="md" sx={containerStyle}>
           <Paper>
             <Formik
-              initialValues={{ email: "", password: "", rememberMe: false }}
-              onSubmit={(values) => handleResetPassword(values)}
+              initialValues={{ email: "" }}
+              onSubmit={(values) => console.log(values)}
               validationSchema={validationSchema}
             >
-              {({ values, handleChange, errors, touched, handleBlur }) => (
+              {(values) => (
                 <Form>
                   {responseMessage && (
-                    <Alert
-                      sx={{ marginBlock: "1rem" }}
-                      severity={
-                        responseMessage.type === "success" ? "success" : "error"
-                      }
-                      onClose={() => {
-                        setResponseMessage(null);
-                      }}
-                    >
-                      {responseMessage.message}
-                    </Alert>
+                    <AlertMessage
+                      typeOfResponse={responseMessage.type}
+                      responseMessage={responseMessage.message}
+                      setResponseMessage={setResponseMessage}
+                    ></AlertMessage>
                   )}
                   <Grid container sx={gridContainerStyle}>
                     <Grid item xs={12} sx={gridItemStyle}>
@@ -115,16 +69,10 @@ export const ResetPassword = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                      <EmailTextField
-                        id="email"
-                        label="Zadajte email"
+                      <EmailField
                         name="email"
-                        value={values.email}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                      ></EmailTextField>
+                        label="Zadajte email"
+                      ></EmailField>
                     </Grid>
                     <Grid item xs={12} sx={gridItemStyle}>
                       <Button variant="contained">Obnoviť heslo</Button>
