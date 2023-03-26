@@ -14,6 +14,7 @@ import { PlayerProfile } from "./pages/PlayerProfile";
 import { MatchScore } from "./components/MatchScore";
 import { Confirmations } from "./pages/Confirmations";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { VerifyEmail } from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             path="/confirmations/:hash"
             element={<Confirmations />}
           ></Route>
+          <Route path="/verifyemail/:hash" element={<VerifyEmail />}></Route>
           <Route path="/resetpassword/:hash" element={<NewPassword />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
