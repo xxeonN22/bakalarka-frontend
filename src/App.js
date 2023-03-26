@@ -29,7 +29,7 @@ function App() {
             path="/confirmations/:hash"
             element={<Confirmations />}
           ></Route>
-          <Route path="/newpassword" element={<NewPassword />}></Route>
+          <Route path="/resetpassword/:hash" element={<NewPassword />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/resetpassword" element={<ResetPassword />}></Route>

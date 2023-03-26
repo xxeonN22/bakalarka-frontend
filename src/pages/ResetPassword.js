@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import { api } from "../axios/axios";
-import { useNavigate } from "react-router-dom";
 
 import { Typography, Grid, Button, Paper, Container } from "@mui/material";
 
@@ -13,22 +12,16 @@ import {
 import { ContentNotLogged } from "../components/ContentNotLogged";
 import { EmailField } from "../components/Authentication/EmailField";
 import { AlertMessage } from "../components/Alert/AlertMessage";
-import { schema } from "../validationSchemas/ResetPassword/validationSchema.js";
+import { schema } from "../validationSchemas/ResetPassword/validationSchema";
 const validationSchema = schema;
 
 export const ResetPassword = () => {
   const [responseMessage, setResponseMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleResetPassword = async (userCredentials) => {
     try {
       const response = await api.post(`/resetpassword`, userCredentials);
       setResponseMessage(response.data);
-      if (response.status === 200) {
-        setTimeout(() => {
-          navigate("/login", { credentials: "include" });
-        }, 1500);
-      }
     } catch (error) {
       if (error.response) {
         setResponseMessage(error.response.data);
@@ -45,10 +38,10 @@ export const ResetPassword = () => {
           <Paper>
             <Formik
               initialValues={{ email: "" }}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={(values) => handleResetPassword(values)}
               validationSchema={validationSchema}
             >
-              {(values) => (
+              {() => (
                 <Form>
                   {responseMessage && (
                     <AlertMessage
@@ -75,7 +68,13 @@ export const ResetPassword = () => {
                       ></EmailField>
                     </Grid>
                     <Grid item xs={12} sx={gridItemStyle}>
-                      <Button variant="contained">Obnoviť heslo</Button>
+                      <Button
+                        sx={{ padding: "1rem" }}
+                        variant="contained"
+                        type="submit"
+                      >
+                        Obnoviť heslo
+                      </Button>
                     </Grid>
                   </Grid>
                 </Form>

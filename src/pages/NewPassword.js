@@ -1,168 +1,89 @@
-import React, { useState } from "react";
-import { appTheme } from "../themes/appTheme";
-import { ContentNotLogged } from "../components/ContentNotLogged";
+import { useState } from "react";
+import { Formik, Form } from "formik";
+import { api } from "../axios/axios";
+import { useParams, useNavigate } from "react-router-dom";
 
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
+import { Paper, Container, Grid } from "@mui/material";
+
 import {
-  TextField,
-  Typography,
-  Grid,
-  Button,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
+  containerStyle,
+  gridContainerStyle,
+} from "../components/NewPassword/newPasswordStyles";
+import { ContentNotLogged } from "../components/ContentNotLogged";
+import { PasswordField } from "../components/Authentication/PasswordField.js";
+import { AlertMessage } from "../components/Alert/AlertMessage.js";
+import { NewPasswordTypography } from "../components/NewPassword/NewPasswordTypography";
+import { NewPasswordButton } from "../components/NewPassword/NewPasswordButton";
 
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { schema } from "../validationSchemas/NewPassword/validationSchema";
+const validationSchema = schema;
 
 export const NewPassword = () => {
-  const [formData, setFormData] = useState({
-    password: "",
-    repeatPassword: "",
-  });
+  const [responseMessage, setResponseMessage] = useState("");
+  const navigate = useNavigate();
+  const { hash } = useParams();
 
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const handleNewPassword = async (userCredentials) => {
+    try {
+      const response = await api.put(`/newpassword/${hash}`, userCredentials);
+      setResponseMessage(response.data);
+      if (response.status === 200) {
+        setTimeout(() => {
+          navigate("/login", { credentials: "include" });
+        }, 2000);
+      }
+    } catch (error) {
+      if (error.response) {
+        setResponseMessage(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
   };
 
   return (
     <>
       <ContentNotLogged>
-        <Container
-          maxWidth="md"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "90vh",
-            [appTheme.breakpoints.down("md")]: {
-              paddingInline: "5rem",
-            },
-            [appTheme.breakpoints.down("sm")]: {
-              paddingInline: "2rem",
-            },
-          }}
-        >
-          <Box sx={{ bgcolor: "white" }}>
-            <Grid
-              container
-              sx={{
-                paddingBlock: "2rem",
-                rowGap: "2rem",
-                [appTheme.breakpoints.up("md")]: {
-                  paddingInline: "10rem",
-                },
-                [appTheme.breakpoints.up("xs")]: {
-                  paddingInline: "2rem",
-                },
-              }}
-            >
-              <Grid
-                item
-                xs={12}
-                sx={{ display: "flex", justifyContent: "center" }}
-              >
-                <Typography
-                  variant="h2"
-                  fontSize="1.5rem"
-                  textTransform="uppercase"
-                  letterSpacing="0.2rem"
-                >
-                  Vytvorenie nového hesla
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id="user-password"
-                  label="Zadajte heslo"
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      password: event.target.value,
-                    })
-                  }
-                  type={showPassword ? "text" : "password"}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockOutlinedIcon />{" "}
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{ width: "100%" }}
-                ></TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id="user-password-repeat"
-                  label="Zadajte znovu heslo"
-                  onChange={(event) =>
-                    setFormData({
-                      ...formData,
-                      repeatPassword: event.target.value,
-                    })
-                  }
-                  type={showPassword ? "text" : "password"}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockOutlinedIcon />{" "}
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{ width: "100%" }}
-                ></TextField>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  variant="contained"
-                  onClick={() => console.log(formData)}
-                >
-                  Vytvoriť nové heslo
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
+        <Container maxWidth="md" sx={containerStyle}>
+          <Formik
+            initialValues={{ password: "", repeatPassword: "" }}
+            onSubmit={(values) => handleNewPassword(values)}
+            validationSchema={validationSchema}
+          >
+            {() => (
+              <Form>
+                <Paper>
+                  <Grid container sx={gridContainerStyle}>
+                    <NewPasswordTypography></NewPasswordTypography>
+
+                    <Grid item xs={12}>
+                      {responseMessage && (
+                        <AlertMessage
+                          typeOfResponse={responseMessage.type}
+                          responseMessage={responseMessage.message}
+                          setResponseMessage={setResponseMessage}
+                        ></AlertMessage>
+                      )}
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <PasswordField
+                        name="password"
+                        label="Zadajte heslo"
+                      ></PasswordField>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <PasswordField
+                        name="repeatPassword"
+                        label="Zopakujte heslo"
+                      ></PasswordField>
+                    </Grid>
+                    <NewPasswordButton></NewPasswordButton>
+                  </Grid>
+                </Paper>
+              </Form>
+            )}
+          </Formik>
         </Container>
       </ContentNotLogged>
     </>
