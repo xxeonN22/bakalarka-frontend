@@ -106,6 +106,7 @@ export const EditRound = (props) => {
             <Button
               onClick={() => {
                 handleDeleteGameDay(editGamedayId, editRoundId);
+                handleDialogClose();
               }}
               variant="contained"
               endIcon={<DeleteIcon />}

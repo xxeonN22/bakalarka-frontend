@@ -1,7 +1,10 @@
-import { Grid, Typography } from "@mui/material";
+import { useState } from "react";
+import { Grid, Button, IconButton } from "@mui/material";
+
+import { DialogWindow } from "../DialogWindow";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { SelectRound } from "../../components/SelectBoxes/SelectRound";
-import { RoundAction } from "../../components/RoundAction";
 import { EditRound } from "./EditRound";
 
 export const ChooseRoundCreateRound = (props) => {
@@ -13,6 +16,17 @@ export const ChooseRoundCreateRound = (props) => {
     selectedGameDay,
     handleDeleteGameDay,
   } = props;
+
+  const [dialogState, setDialogState] = useState(false);
+
+  const handleDialogOpen = () => {
+    setDialogState(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogState(false);
+  };
+
   return (
     <Grid container justifyContent="space-between" spacing={2}>
       <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
@@ -31,14 +45,30 @@ export const ChooseRoundCreateRound = (props) => {
         xl={2}
         sx={{ display: "flex", justifyContent: "flex-end", marginLeft: "auto" }}
       >
-        <RoundAction buttonText="Upraviť hrací deň">
+        <Button
+          variant="contained"
+          sx={{ width: "100%", padding: "1rem" }}
+          onClick={() => {
+            handleDialogOpen();
+          }}
+        >
+          Upraviť hrací deň
+        </Button>
+        <DialogWindow open={dialogState} handleCloseModal={handleDialogClose}>
+          <IconButton
+            sx={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleDialogClose}
+          >
+            <CloseIcon></CloseIcon>
+          </IconButton>
           <EditRound
             tournamentId={tournamentId}
             editRoundId={selectedRound}
             editGamedayId={selectedGameDay}
             handleDeleteGameDay={handleDeleteGameDay}
+            handleDialogClose={handleDialogClose}
           ></EditRound>
-        </RoundAction>
+        </DialogWindow>
       </Grid>
       <Grid
         item
@@ -48,11 +78,7 @@ export const ChooseRoundCreateRound = (props) => {
         lg={3}
         xl={2}
         sx={{ display: "flex", justifyContent: "flex-end" }}
-      >
-        <RoundAction buttonText="Vytvoriť nový hrací deň">
-          <Typography>Ahoj</Typography>
-        </RoundAction>
-      </Grid>
+      ></Grid>
     </Grid>
   );
 };
