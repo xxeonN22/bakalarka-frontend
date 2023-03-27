@@ -70,14 +70,18 @@ export const PlayerProfile = () => {
     })();
   }, [tournamentId, playerId]);
 
+  const fetchMatches = async () => {
+    const response = await api.get(
+      `/player/${tournamentId}/${playerId}/matches/${selectedRound}`
+    );
+    setMatches(response.data);
+  };
+
   useEffect(() => {
     (async () => {
       if (selectedRound) {
         try {
-          const response = await api.get(
-            `/player/${tournamentId}/${playerId}/matches/${selectedRound}`
-          );
-          setMatches(response.data);
+          fetchMatches();
         } catch (error) {
           if (error.response.status === 401) {
             navigate("/login");
@@ -118,6 +122,7 @@ export const PlayerProfile = () => {
         values
       );
       fetchData();
+      fetchMatches();
     } catch (error) {
       if (error.response.status === 401) {
         navigate("/login");

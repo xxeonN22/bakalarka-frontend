@@ -27,14 +27,18 @@ export const Players = () => {
   const [searchGroup, setSearchGroup] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
 
+  const fetchRoundsAndDates = async () => {
+    const response = await api.get(`/players/tournament/${tournamentId}`);
+    setRounds(response.data.rounds);
+    setSelectedRound(response.data.rounds[0].round_number);
+    setGroups(response.data.groups);
+    setSelectedGroup(response.data.groups[0].group_name);
+  };
+
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get(`/players/tournament/${tournamentId}`);
-        setRounds(response.data.rounds);
-        setSelectedRound(response.data.rounds[0].round_number);
-        setGroups(response.data.groups);
-        setSelectedGroup(response.data.groups[0].group_name);
+        await fetchRoundsAndDates();
       } catch (error) {
         if (error.response.status === 401) {
           navigate("/login");
@@ -49,15 +53,19 @@ export const Players = () => {
     })();
   }, [tournamentId]);
 
+  const fetchGameDays = async () => {
+    const response = await api.get(
+      `/players/tournament/${tournamentId}/${selectedRound}`
+    );
+    setGameDays(response.data);
+    setValue(0);
+    setSelectedGameDay(response.data[0]);
+  };
+
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get(
-          `/players/tournament/${tournamentId}/${selectedRound}`
-        );
-        setGameDays(response.data);
-        setValue(0);
-        setSelectedGameDay(response.data[0]);
+        await fetchGameDays();
       } catch (error) {
         if (error.response.status === 401) {
           navigate("/login");
@@ -94,7 +102,7 @@ export const Players = () => {
   useEffect(() => {
     (async () => {
       if (selectedGameDay) {
-        fetchPlayersData();
+        await fetchPlayersData();
       }
     })();
   }, [selectedGameDay, selectedRound, tournamentId]);
@@ -154,7 +162,7 @@ export const Players = () => {
         `/players/tournament/${tournamentId}/changeStatus`,
         { playerId, status, selectedRound, selectedGameDay }
       );
-      fetchPlayersData();
+      await fetchPlayersData();
       setResponseMessage(response.data);
     } catch (error) {
       if (error.response.status === 401) {
@@ -216,13 +224,34 @@ export const Players = () => {
     }
   };
 
+  const handleDeleteGameDay = async (gameDayId, roundId) => {
+    try {
+      const response = await api.delete(
+        `/players/tournament/${tournamentId}/deleteGameDay/${gameDayId}/${roundId}`
+      );
+      setResponseMessage(response.data);
+      fetchRoundsAndDates();
+      fetchGameDays();
+      fetchPlayersData();
+    } catch (error) {
+      if (error.response) {
+        setResponseMessage(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
+  };
+
   return (
     <>
       <ContentLayout>
         <ChooseRoundCreateRound
           handleRoundChange={handleRoundChange}
           selectedRound={selectedRound}
+          selectedGameDay={selectedGameDay}
           rounds={rounds}
+          tournamentId={tournamentId}
+          handleDeleteGameDay={handleDeleteGameDay}
         ></ChooseRoundCreateRound>
 
         <AlertMessage
