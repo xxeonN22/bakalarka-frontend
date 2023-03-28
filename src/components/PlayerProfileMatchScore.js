@@ -10,9 +10,7 @@ export const PlayerProfileMatchScore = ({
   tournamentId,
   playerId,
   handleDialogClose,
-  setResponseMessage,
-  fetchData,
-  fetchMatches,
+  handleEditScore,
 }) => {
   const navigate = useNavigate();
 
@@ -102,28 +100,6 @@ export const PlayerProfileMatchScore = ({
       />
     );
   }
-
-  const handleEditScore = async (matchId, newValues) => {
-    try {
-      const response = await api.put(
-        `/player/${tournamentId}/${playerId}/match/${matchId}/editScore`,
-        newValues
-      );
-      setResponseMessage(response.data);
-      fetchData();
-      fetchMatches();
-    } catch (error) {
-      if (error.response.status === 401) {
-        navigate("/login");
-        return;
-      }
-      if (error.response) {
-        console.log(error.response.data);
-      } else {
-        console.log(`Error: ${error.message}`);
-      }
-    }
-  };
 
   return (
     <>

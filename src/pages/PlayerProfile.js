@@ -121,6 +121,28 @@ export const PlayerProfile = () => {
     }
   };
 
+  const handleEditScore = async (matchId, newValues) => {
+    try {
+      const response = await api.put(
+        `/player/${tournamentId}/${playerId}/match/${matchId}/editScore`,
+        newValues
+      );
+      setResponseMessage(response.data);
+      fetchData();
+      fetchMatches();
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
+      }
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
+  };
+
   const handleRoundChange = (event) => {
     setSelectedRound(event.target.value);
   };
@@ -182,8 +204,7 @@ export const PlayerProfile = () => {
                 tournamentId={tournamentId}
                 playerId={playerId}
                 setResponseMessage={setResponseMessage}
-                fetchData={fetchData}
-                fetchMatches={fetchMatches}
+                handleEditScore={handleEditScore}
               ></PlayerProfileMatchBox>
             );
           })}
