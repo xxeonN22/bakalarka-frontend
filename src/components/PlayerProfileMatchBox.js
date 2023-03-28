@@ -1,10 +1,24 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { appTheme } from "../themes/appTheme";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, IconButton } from "@mui/material";
+import { useState } from "react";
+import { DialogWindow } from "./DialogWindow";
+import CloseIcon from "@mui/icons-material/Close";
+import { PlayerProfileMatchScore } from "./PlayerProfileMatchScore";
 
 export const PlayerProfileMatchBox = (props) => {
-  const { match, handleShowScore } = props;
+  const { match, tournamentId, playerId } = props;
   const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
+  const [dialogState, setDialogState] = useState(false);
+
+  const handleDialogOpen = () => {
+    setDialogState(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogState(false);
+  };
+
   return (
     <Box
       sx={{
@@ -37,11 +51,28 @@ export const PlayerProfileMatchBox = (props) => {
       </Typography>
       <Button
         variant="contained"
-        onClick={() => handleShowScore(match.matchId)}
+        onClick={() => {
+          handleDialogOpen();
+        }}
         sx={{ flex: 1 }}
       >
         {isTabletSize ? "Skóre" : "Zobraziť skóre"}
       </Button>
+
+      <DialogWindow open={dialogState} handleCloseModal={handleDialogClose}>
+        <IconButton
+          sx={{ position: "absolute", top: 0, right: 0 }}
+          onClick={handleDialogClose}
+        >
+          <CloseIcon></CloseIcon>
+        </IconButton>
+        <PlayerProfileMatchScore
+          matchId={match.matchId}
+          playerId={playerId}
+          tournamentId={tournamentId}
+        ></PlayerProfileMatchScore>
+      </DialogWindow>
+
       <Typography textAlign="center" sx={{ wordBreak: "break-all", flex: 2 }}>
         {match.secondPlayerData[0].first_name}{" "}
         {match.secondPlayerData[0].last_name}

@@ -17,7 +17,7 @@ const convertDate = (dateToConvert) => {
 };
 
 export const PlayerProfileAttendance = (props) => {
-  const { isLoading, playerAttendance } = props;
+  const { isLoading, playerAttendance, playerId } = props;
   return (
     <Accordion sx={{ width: "100%" }}>
       <AccordionSummary
@@ -52,7 +52,9 @@ export const PlayerProfileAttendance = (props) => {
                   >
                     <IconButton
                       sx={{ position: "absolute", top: 0, right: 0 }}
-                      onClick={() => console.log(attendance.id_confirmation)}
+                      onClick={() =>
+                        console.log(attendance.id_confirmation, playerId)
+                      }
                     >
                       <InfoOutlinedIcon></InfoOutlinedIcon>
                     </IconButton>

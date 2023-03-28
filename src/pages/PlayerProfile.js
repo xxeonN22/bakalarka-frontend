@@ -99,24 +99,6 @@ export const PlayerProfile = () => {
     })();
   }, [tournamentId, playerId, selectedRound]);
 
-  const handleShowScore = async (matchId) => {
-    try {
-      const response = await api.get(
-        `/player/${tournamentId}/${playerId}/match/${matchId}`
-      );
-    } catch (error) {
-      if (error.response.status === 401) {
-        navigate("/login");
-        return;
-      }
-      if (error.response) {
-        console.log(error.response.data);
-      } else {
-        console.log(`Error: ${error.message}`);
-      }
-    }
-  };
-
   const handleEditPlayer = async (values) => {
     try {
       const response = await api.post(
@@ -169,6 +151,7 @@ export const PlayerProfile = () => {
             <PlayerProfileAttendance
               isLoading={isLoading}
               playerAttendance={playerAttendance}
+              playerId={playerId}
             ></PlayerProfileAttendance>
           </Grid>
         </Grid>
@@ -196,7 +179,8 @@ export const PlayerProfile = () => {
               <PlayerProfileMatchBox
                 key={match.matchId}
                 match={match}
-                handleShowScore={handleShowScore}
+                tournamentId={tournamentId}
+                playerId={playerId}
               ></PlayerProfileMatchBox>
             );
           })}
