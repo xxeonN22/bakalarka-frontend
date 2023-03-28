@@ -79,7 +79,10 @@ export const PlayersDashboard = (props) => {
                   textDecoration: "underline",
                   wordBreak: "break-all",
                   cursor: "pointer",
-                  [appTheme.breakpoints.down("md")]: { flex: "2" },
+                  [appTheme.breakpoints.down("md")]: {
+                    flex: "2",
+                    marginInline: "0.4rem",
+                  },
                 }}
               >
                 {player.first_name} {player.last_name}

@@ -107,13 +107,14 @@ export const EditRound = (props) => {
           >
             <Button
               onClick={() => {
-                handleDeleteGameDay(editGamedayId, editRoundId);
+                console.log(editRoundId);
+                handleEditGameDay(editGamedayId, editRoundId, gameDayData);
                 handleCloseModal();
               }}
               variant="contained"
-              endIcon={<DeleteIcon />}
+              endIcon={<EditIcon />}
             >
-              Odstrániť hrací deň
+              Upraviť nastavenia
             </Button>
           </Box>
           <Paper
@@ -220,14 +221,13 @@ export const EditRound = (props) => {
           >
             <Button
               onClick={() => {
-                console.log(editRoundId);
-                handleEditGameDay(editGamedayId, editRoundId, gameDayData);
+                handleDeleteGameDay(editGamedayId, editRoundId);
                 handleCloseModal();
               }}
               variant="contained"
-              endIcon={<EditIcon />}
+              endIcon={<DeleteIcon />}
             >
-              Upraviť nastavenia
+              Odstrániť hrací deň
             </Button>
           </Box>
         </Box>

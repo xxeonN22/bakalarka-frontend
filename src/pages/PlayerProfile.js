@@ -12,6 +12,7 @@ import { PlayerProfileData } from "../components/Accordions/PlayerProfileData.js
 import { PlayerProfileAttendance } from "../components/Accordions/PlayerProfileAttendance.js";
 import { PlayerProfileTypography } from "../components/Typography/PlayerProfileTypography.js";
 import { PlayerProfileMatchBox } from "../components/PlayerProfileMatchBox.js";
+import { AlertMessage } from "../components/AlertMessage";
 
 const gridContainerStyle = {
   marginBlock: "4rem",
@@ -23,6 +24,7 @@ const gridContainerStyle = {
 };
 
 export const PlayerProfile = () => {
+  const [responseMessage, setResponseMessage] = useState("");
   const [rounds, setRounds] = useState([]);
   const [selectedRound, setSelectedRound] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -121,6 +123,7 @@ export const PlayerProfile = () => {
         `/player/${tournamentId}/${playerId}/editPlayer`,
         values
       );
+      setResponseMessage(response.data);
       fetchData();
       fetchMatches();
     } catch (error) {
@@ -129,7 +132,7 @@ export const PlayerProfile = () => {
         return;
       }
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
@@ -147,6 +150,11 @@ export const PlayerProfile = () => {
           tournamentId={tournamentId}
           playerData={playerData}
         ></PlayerProfileCrumbs>
+
+        <AlertMessage
+          responseMessage={responseMessage}
+          setResponseMessage={setResponseMessage}
+        ></AlertMessage>
 
         <Grid container spacing={2} sx={{ marginTop: "2rem" }}>
           <Grid item xs={12} md={6}>

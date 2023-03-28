@@ -93,7 +93,7 @@ export const PlayerDashboardTableHeader = (props) => {
           right={0}
         ></SearchField>
       </Box>
-      <Typography sx={{ flex: "1" }}>Status</Typography>
+      <Typography sx={{ flex: "1" }}>Účasť</Typography>
     </Box>
   );
 };

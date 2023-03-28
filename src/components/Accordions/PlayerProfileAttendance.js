@@ -5,8 +5,10 @@ import {
   Typography,
   Grid,
   Paper,
+  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const convertDate = (dateToConvert) => {
   const dateObject = new Date(dateToConvert);
@@ -45,8 +47,15 @@ export const PlayerProfileAttendance = (props) => {
                       justifyContent: "center",
                       alignItems: "center",
                       paddingBlock: "0.4rem",
+                      position: "relative",
                     }}
                   >
+                    <IconButton
+                      sx={{ position: "absolute", top: 0, right: 0 }}
+                      onClick={() => console.log(attendance.id_confirmation)}
+                    >
+                      <InfoOutlinedIcon></InfoOutlinedIcon>
+                    </IconButton>
                     <Typography>
                       {" "}
                       Dátum: {convertDate(attendance.date)}
