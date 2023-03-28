@@ -35,7 +35,7 @@ export const ChooseRoundCreateRound = (props) => {
 
   return (
     <Grid container justifyContent="space-between" spacing={2}>
-      <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+      <Grid item xs={12} sm={6} md={4} lg={3}>
         <SelectRound
           handleRoundChange={handleRoundChange}
           selectedRound={selectedRound}
@@ -48,7 +48,6 @@ export const ChooseRoundCreateRound = (props) => {
         sm={6}
         md={4}
         lg={3}
-        xl={2}
         sx={{ display: "flex", justifyContent: "flex-end", marginLeft: "auto" }}
       >
         <Button
@@ -87,8 +86,7 @@ export const ChooseRoundCreateRound = (props) => {
         sm={6}
         md={4}
         lg={3}
-        xl={2}
-        sx={{ display: "flex", justifyContent: "flex-end", marginLeft: "auto" }}
+        sx={{ display: "flex", justifyContent: "flex-end" }}
       >
         <Button
           variant="contained"
