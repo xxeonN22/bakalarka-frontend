@@ -9,6 +9,10 @@ export const PlayerProfileMatchScore = ({
   matchId,
   tournamentId,
   playerId,
+  handleDialogClose,
+  setResponseMessage,
+  fetchData,
+  fetchMatches,
 }) => {
   const navigate = useNavigate();
 
@@ -18,6 +22,29 @@ export const PlayerProfileMatchScore = ({
     secondPlayer: "",
     sets: [],
   });
+  const [maxPoints, setMaxPoints] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await api.get(
+          `/player/${tournamentId}/${playerId}/maxPoints`
+        );
+        setMaxPoints(response.data);
+      } catch (error) {
+        if (error.response.status === 401) {
+          navigate("/login");
+          return;
+        }
+        if (error.response) {
+          console.log(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
+      }
+    })();
+  });
+
   const [loaded, setLoaded] = useState(false);
   // TODO FETC MAX POINTS IN tournament
 
@@ -48,8 +75,6 @@ export const PlayerProfileMatchScore = ({
     })();
   }, []);
 
-  console.log(matchData);
-
   function handleInputChange(index, newPointsWon, property) {
     const newSets = [...matchData.sets];
 
@@ -70,12 +95,35 @@ export const PlayerProfileMatchScore = ({
       <PlayerProfileSetsToRender
         key={i}
         setNumber={i}
+        max={maxPoints}
         firstPlayerPoints={matchData.sets[i].points_won}
         secondPlayerPoints={matchData.sets[i].points_lost}
         handleInputChange={handleInputChange}
       />
     );
   }
+
+  const handleEditScore = async (matchId, newValues) => {
+    try {
+      const response = await api.put(
+        `/player/${tournamentId}/${playerId}/match/${matchId}/editScore`,
+        newValues
+      );
+      setResponseMessage(response.data);
+      fetchData();
+      fetchMatches();
+    } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+        return;
+      }
+      if (error.response) {
+        console.log(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
+  };
 
   return (
     <>
@@ -128,7 +176,15 @@ export const PlayerProfileMatchScore = ({
                 marginTop: "2rem",
               }}
             >
-              <Button variant="contained">Upraviť výsledok</Button>
+              <Button
+                onClick={() => {
+                  handleEditScore(matchData.matchId, matchData);
+                  handleDialogClose();
+                }}
+                variant="contained"
+              >
+                Upraviť výsledok
+              </Button>
             </Grid>
           </Grid>
         </Box>

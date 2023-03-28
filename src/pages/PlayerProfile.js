@@ -181,6 +181,9 @@ export const PlayerProfile = () => {
                 match={match}
                 tournamentId={tournamentId}
                 playerId={playerId}
+                setResponseMessage={setResponseMessage}
+                fetchData={fetchData}
+                fetchMatches={fetchMatches}
               ></PlayerProfileMatchBox>
             );
           })}

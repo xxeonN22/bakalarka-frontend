@@ -6,6 +6,7 @@ export const PlayerProfileSetsToRender = ({
   secondPlayerPoints,
   setNumber,
   handleInputChange,
+  max,
 }) => {
   return (
     <Grid
@@ -22,7 +23,7 @@ export const PlayerProfileSetsToRender = ({
         value={firstPlayerPoints}
         label={`Set ${setNumber + 1}`}
         id={`firstPlayer-set${setNumber + 1}`}
-        max={22}
+        max={max}
         functionName={(value) =>
           handleInputChange(setNumber, value, "points_won")
         }
@@ -31,7 +32,7 @@ export const PlayerProfileSetsToRender = ({
         value={secondPlayerPoints}
         label={`Set ${setNumber + 1}`}
         id={`firstPlayer-set${setNumber + 1}`}
-        max={22}
+        max={max}
         functionName={(value) =>
           handleInputChange(setNumber, value, "points_lost")
         }
