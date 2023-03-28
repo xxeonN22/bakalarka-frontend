@@ -81,14 +81,14 @@ export const TournamentTable = () => {
           justifyContent="center"
           sx={{ marginBottom: "4rem" }}
         >
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2.3}>
+          <Grid item xs={6} sm={6} md={4} lg={3} xl={2.3}>
             <SelectGroup
               handleGroupChange={handleGroupChange}
               selectedGroup={selectedGroup}
               groups={groups}
             ></SelectGroup>
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2.3}>
+          <Grid item xs={6} sm={6} md={4} lg={3} xl={2.3}>
             <SelectRound
               handleRoundChange={handleRoundChange}
               selectedRound={selectedRound}

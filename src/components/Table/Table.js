@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { appTheme } from "../../themes/appTheme";
 
 export const Table = ({ tableData }) => {
   return (
@@ -9,6 +10,29 @@ export const Table = ({ tableData }) => {
         borderRadius: "5px",
       }}
     >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          paddingBlock: "1.2rem",
+          backgroundColor: "#2e3650",
+        }}
+      >
+        <Typography sx={{ flex: "1", textAlign: "center" }}>Poradie</Typography>
+        <Typography sx={{ flex: "3", textAlign: "center" }}>Meno</Typography>
+        <Typography sx={{ flex: "1", textAlign: "center" }}>ELO</Typography>
+        <Typography sx={{ flex: "1", textAlign: "center" }}>Skóre</Typography>
+        <Typography
+          sx={{
+            flex: "1",
+            textAlign: "center",
+            [appTheme.breakpoints.down("sm")]: { display: "none" },
+          }}
+        >
+          V:P
+        </Typography>
+        <Typography sx={{ flex: "1", textAlign: "center" }}>Body</Typography>
+      </Box>
       {tableData &&
         tableData.map((data, index) => {
           return (
@@ -18,13 +42,15 @@ export const Table = ({ tableData }) => {
                 display: "flex",
                 justifyContent: "space-between",
                 paddingBlock: "1.2rem",
-                backgroundColor: index % 2 === 0 ? "#2e3650" : "",
+                backgroundColor: index % 2 === 0 ? "" : "#2e3650",
               }}
             >
               <Typography sx={{ flex: "1", textAlign: "center" }}>
                 {index + 1}.
               </Typography>
-              <Typography sx={{ flex: "3", textAlign: "center" }}>
+              <Typography
+                sx={{ flex: "3", textAlign: "center", wordBreak: "break-all" }}
+              >
                 {data.name}
               </Typography>
               <Typography sx={{ flex: "1", textAlign: "center" }}>
@@ -33,8 +59,17 @@ export const Table = ({ tableData }) => {
               <Typography sx={{ flex: "1", textAlign: "center" }}>
                 {data?.pointsWon ?? 0}:{data?.pointsLost ?? 0}
               </Typography>
-              <Typography sx={{ flex: "1", textAlign: "center" }}>
+              <Typography
+                sx={{
+                  flex: "1",
+                  textAlign: "center",
+                  [appTheme.breakpoints.down("sm")]: { display: "none" },
+                }}
+              >
                 {data?.setsWon ?? 0}:{data?.setsLost ?? 0}
+              </Typography>
+              <Typography sx={{ flex: "1", textAlign: "center" }}>
+                {data?.setsWon}
               </Typography>
             </Box>
           );
