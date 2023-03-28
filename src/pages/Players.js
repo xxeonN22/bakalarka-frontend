@@ -283,16 +283,18 @@ export const Players = () => {
   return (
     <>
       <ContentLayout>
-        <ChooseRoundCreateRound
-          handleRoundChange={handleRoundChange}
-          selectedRound={selectedRound}
-          selectedGameDay={selectedGameDay}
-          rounds={rounds}
-          tournamentId={tournamentId}
-          handleDeleteGameDay={handleDeleteGameDay}
-          handleEditGameDay={handleEditGameDay}
-          handleNewGameDay={handleNewGameDay}
-        ></ChooseRoundCreateRound>
+        {selectedRound !== "" && (
+          <ChooseRoundCreateRound
+            handleRoundChange={handleRoundChange}
+            selectedRound={selectedRound}
+            selectedGameDay={selectedGameDay}
+            rounds={rounds}
+            tournamentId={tournamentId}
+            handleDeleteGameDay={handleDeleteGameDay}
+            handleEditGameDay={handleEditGameDay}
+            handleNewGameDay={handleNewGameDay}
+          ></ChooseRoundCreateRound>
+        )}
 
         <AlertMessage
           responseMessage={responseMessage}
@@ -312,12 +314,14 @@ export const Players = () => {
           handleDeletePlayers={handleDeletePlayers}
         ></PlayerDashboardActions>
 
-        <GameDaysTabs
-          value={value}
-          handleChange={handleChange}
-          gameDays={gameDays}
-          handleGameDayChange={handleGameDayChange}
-        ></GameDaysTabs>
+        {gameDays.length > 0 && (
+          <GameDaysTabs
+            value={value}
+            handleChange={handleChange}
+            gameDays={gameDays}
+            handleGameDayChange={handleGameDayChange}
+          ></GameDaysTabs>
+        )}
 
         <PlayerDashboardTableHeader
           searchName={searchName}
@@ -328,17 +332,19 @@ export const Players = () => {
           handleSearchGroup={handleSearchGroup}
         ></PlayerDashboardTableHeader>
 
-        <PlayersDashboard
-          playersData={playersData}
-          tournamentId={tournamentId}
-          checkedBoxes={checkedBoxes}
-          handleCheck={handleCheck}
-          handleChangeStatus={handleChangeStatus}
-          selectedRound={selectedRound}
-          selectedGameDay={selectedGameDay}
-          searchName={searchName}
-          searchGroup={searchGroup}
-        ></PlayersDashboard>
+        {playersData.length > 0 && (
+          <PlayersDashboard
+            playersData={playersData}
+            tournamentId={tournamentId}
+            checkedBoxes={checkedBoxes}
+            handleCheck={handleCheck}
+            handleChangeStatus={handleChangeStatus}
+            selectedRound={selectedRound}
+            selectedGameDay={selectedGameDay}
+            searchName={searchName}
+            searchGroup={searchGroup}
+          ></PlayersDashboard>
+        )}
       </ContentLayout>
     </>
   );
