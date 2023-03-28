@@ -6,6 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { SelectRound } from "../../components/SelectBoxes/SelectRound";
 import { EditRound } from "./EditRound";
+import { NewGameDay } from "./NewGameDay";
 
 export const ChooseRoundCreateRound = (props) => {
   const {
@@ -16,16 +17,20 @@ export const ChooseRoundCreateRound = (props) => {
     selectedGameDay,
     handleDeleteGameDay,
     handleEditGameDay,
+    handleNewGameDay,
   } = props;
 
-  const [dialogState, setDialogState] = useState(false);
+  const [dialogState, setDialogState] = useState({
+    editGameDay: false,
+    newGameDay: false,
+  });
 
-  const handleDialogOpen = () => {
-    setDialogState(true);
+  const handleDialogOpen = (dialogName) => {
+    setDialogState((prevState) => ({ ...prevState, [dialogName]: true }));
   };
 
-  const handleDialogClose = () => {
-    setDialogState(false);
+  const handleDialogClose = (dialogName) => {
+    setDialogState((prevState) => ({ ...prevState, [dialogName]: false }));
   };
 
   return (
@@ -50,15 +55,18 @@ export const ChooseRoundCreateRound = (props) => {
           variant="contained"
           sx={{ width: "100%", padding: "1rem" }}
           onClick={() => {
-            handleDialogOpen();
+            handleDialogOpen("editGameDay");
           }}
         >
           Upraviť hrací deň
         </Button>
-        <DialogWindow open={dialogState} handleCloseModal={handleDialogClose}>
+        <DialogWindow
+          open={dialogState.editGameDay}
+          handleCloseModal={() => handleDialogClose("editGameDay")}
+        >
           <IconButton
             sx={{ position: "absolute", top: 0, right: 0 }}
-            onClick={handleDialogClose}
+            onClick={() => handleDialogClose("editGameDay")}
           >
             <CloseIcon></CloseIcon>
           </IconButton>
@@ -68,10 +76,11 @@ export const ChooseRoundCreateRound = (props) => {
             editGamedayId={selectedGameDay}
             handleDeleteGameDay={handleDeleteGameDay}
             handleEditGameDay={handleEditGameDay}
-            handleDialogClose={handleDialogClose}
+            handleCloseModal={() => handleDialogClose("editGameDay")}
           ></EditRound>
         </DialogWindow>
       </Grid>
+
       <Grid
         item
         xs={12}
@@ -79,8 +88,34 @@ export const ChooseRoundCreateRound = (props) => {
         md={4}
         lg={3}
         xl={2}
-        sx={{ display: "flex", justifyContent: "flex-end" }}
-      ></Grid>
+        sx={{ display: "flex", justifyContent: "flex-end", marginLeft: "auto" }}
+      >
+        <Button
+          variant="contained"
+          sx={{ width: "100%", padding: "1rem" }}
+          onClick={() => {
+            handleDialogOpen("newGameDay");
+          }}
+        >
+          Vytvoriť nový hrací deň
+        </Button>
+        <DialogWindow
+          open={dialogState.newGameDay}
+          handleCloseModal={() => handleDialogClose("newGameDay")}
+        >
+          <IconButton
+            sx={{ position: "absolute", top: 0, right: 0 }}
+            onClick={() => handleDialogClose("newGameDay")}
+          >
+            <CloseIcon></CloseIcon>
+          </IconButton>
+          <NewGameDay
+            tournamentId={tournamentId}
+            handleNewGameDay={handleNewGameDay}
+            handleCloseModal={() => handleDialogClose("newGameDay")}
+          ></NewGameDay>
+        </DialogWindow>
+      </Grid>
     </Grid>
   );
 };

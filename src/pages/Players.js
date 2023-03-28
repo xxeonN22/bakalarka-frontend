@@ -262,6 +262,25 @@ export const Players = () => {
     }
   };
 
+  const handleNewGameDay = async (newValues) => {
+    try {
+      const response = await api.put(
+        `/players/tournament/${tournamentId}/newGameDay`,
+        newValues
+      );
+      setResponseMessage(response.data);
+      fetchRoundsAndDates();
+      fetchGameDays();
+      fetchPlayersData();
+    } catch (error) {
+      if (error.response) {
+        setResponseMessage(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
+  };
+
   return (
     <>
       <ContentLayout>
@@ -273,6 +292,7 @@ export const Players = () => {
           tournamentId={tournamentId}
           handleDeleteGameDay={handleDeleteGameDay}
           handleEditGameDay={handleEditGameDay}
+          handleNewGameDay={handleNewGameDay}
         ></ChooseRoundCreateRound>
 
         <AlertMessage

@@ -19,7 +19,7 @@ export const EditRound = (props) => {
     editGamedayId,
     handleDeleteGameDay,
     handleEditGameDay,
-    handleDialogClose,
+    handleCloseModal,
   } = props;
   const navigate = useNavigate();
 
@@ -108,7 +108,7 @@ export const EditRound = (props) => {
             <Button
               onClick={() => {
                 handleDeleteGameDay(editGamedayId, editRoundId);
-                handleDialogClose();
+                handleCloseModal();
               }}
               variant="contained"
               endIcon={<DeleteIcon />}
@@ -222,7 +222,7 @@ export const EditRound = (props) => {
               onClick={() => {
                 console.log(editRoundId);
                 handleEditGameDay(editGamedayId, editRoundId, gameDayData);
-                handleDialogClose();
+                handleCloseModal();
               }}
               variant="contained"
               endIcon={<EditIcon />}
