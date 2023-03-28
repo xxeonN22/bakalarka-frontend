@@ -18,6 +18,7 @@ export const EditRound = (props) => {
     editRoundId,
     editGamedayId,
     handleDeleteGameDay,
+    handleEditGameDay,
     handleDialogClose,
   } = props;
   const navigate = useNavigate();
@@ -44,13 +45,14 @@ export const EditRound = (props) => {
         const newGroups = response.data.groupsGameDay.map(
           (group) => group.group_name
         );
+        console.log(response.data);
         setGameDayData({
           ...gameDayData,
           rounds: response.data.rounds,
           groups: response.data.groups,
           selectedGroups: newGroups,
           selectedRound: response.data.roundName[0].round_name,
-          selectedDate: response.data.gameDayDate,
+          selectedDate: response.data.currentDate,
           selectedTime: transformTime(response.data.gameDayTime[0].time),
         });
 
@@ -176,9 +178,7 @@ export const EditRound = (props) => {
                 sx={{ width: "100%", marginBottom: "1rem" }}
                 label="Vyberte dátum"
                 format="DD/MM/YYYY"
-                value={dayjs(
-                  gameDayData.selectedDate[0]?.date || gameDayData.selectedDate
-                )}
+                value={dayjs(gameDayData.selectedDate)}
                 onChange={(newValue) => {
                   setGameDayData({
                     ...gameDayData,
@@ -218,7 +218,15 @@ export const EditRound = (props) => {
               marginTop: "2rem",
             }}
           >
-            <Button variant="contained" endIcon={<EditIcon />}>
+            <Button
+              onClick={() => {
+                console.log(editRoundId);
+                handleEditGameDay(editGamedayId, editRoundId, gameDayData);
+                handleDialogClose();
+              }}
+              variant="contained"
+              endIcon={<EditIcon />}
+            >
               Upraviť nastavenia
             </Button>
           </Box>

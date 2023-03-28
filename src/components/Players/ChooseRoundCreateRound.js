@@ -15,6 +15,7 @@ export const ChooseRoundCreateRound = (props) => {
     tournamentId,
     selectedGameDay,
     handleDeleteGameDay,
+    handleEditGameDay,
   } = props;
 
   const [dialogState, setDialogState] = useState(false);
@@ -66,6 +67,7 @@ export const ChooseRoundCreateRound = (props) => {
             editRoundId={selectedRound}
             editGamedayId={selectedGameDay}
             handleDeleteGameDay={handleDeleteGameDay}
+            handleEditGameDay={handleEditGameDay}
             handleDialogClose={handleDialogClose}
           ></EditRound>
         </DialogWindow>
