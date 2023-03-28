@@ -271,7 +271,6 @@ export const Players = () => {
       setResponseMessage(response.data);
       fetchRoundsAndDates();
       fetchGameDays();
-      fetchPlayersData();
     } catch (error) {
       if (error.response) {
         setResponseMessage(error.response.data);
