@@ -17,6 +17,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useMediaQuery } from "@mui/material";
 import { Table } from "../components/Table/Table";
+import { AlertMessage } from "../components/Alert/AlertMessage.js";
 
 export const TournamentProfile = () => {
   const [responseMessage, setResponseMessage] = useState("");
@@ -68,6 +69,7 @@ export const TournamentProfile = () => {
             `/table/tournament/${tournamentId}/${tournamentData.selectedGroup}/${tournamentData.selectedRound}`
           );
           setTableData(response.data);
+          setTableDataLoaded(true);
         } catch (error) {
           if (error.response) {
             console.log(error.response.data);
@@ -97,11 +99,12 @@ export const TournamentProfile = () => {
     });
   };
 
-  console.log(tournamentData.matches);
-  console.log(tableData);
-
   return (
-    <ContentNotLogged backGround="white" position="flex-start">
+    <ContentNotLogged
+      backGround="white"
+      position="flex-start"
+      setResponseMessage={setResponseMessage}
+    >
       {dataLoaded && (
         <Box
           sx={{
@@ -113,6 +116,13 @@ export const TournamentProfile = () => {
             },
           }}
         >
+          {responseMessage && (
+            <AlertMessage
+              typeOfResponse={responseMessage.type}
+              responseMessage={responseMessage.message}
+              setResponseMessage={setResponseMessage}
+            ></AlertMessage>
+          )}
           <Accordion sx={{ width: "100%" }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -244,11 +254,13 @@ export const TournamentProfile = () => {
             </Grid>
           </Grid>
           <Box sx={{ marginBlock: "2rem" }}>
-            <Table
-              tableData={tableData}
-              status="loggedOff"
-              tournamentId={tournamentId}
-            ></Table>
+            {tableDataLoaded && (
+              <Table
+                tableData={tableData}
+                status="loggedOff"
+                tournamentId={tournamentId}
+              ></Table>
+            )}
           </Box>
         </Box>
       )}
