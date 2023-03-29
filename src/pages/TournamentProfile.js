@@ -16,10 +16,14 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useMediaQuery } from "@mui/material";
+import { Table } from "../components/Table/Table";
 
 export const TournamentProfile = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const { id: tournamentId } = useParams();
+
+  const [tableData, setTableData] = useState([]);
+  const [tableDataLoaded, setTableDataLoaded] = useState(false);
 
   const [tournamentData, setTournamentData] = useState({
     groups: [],
@@ -46,7 +50,6 @@ export const TournamentProfile = () => {
           matches: response.data.matchPair,
         });
         setDataLoaded(true);
-        console.log(response.data);
       } catch (error) {
         if (error.response) {
           setResponseMessage(error.response.data);
@@ -56,6 +59,29 @@ export const TournamentProfile = () => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (tournamentData.selectedGroup && tournamentData.selectedRound) {
+        try {
+          const response = await api.get(
+            `/table/tournament/${tournamentId}/${tournamentData.selectedGroup}/${tournamentData.selectedRound}`
+          );
+          setTableData(response.data);
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response.data);
+          } else {
+            console.log(`Error: ${error.message}`);
+          }
+        }
+      }
+    })();
+  }, [
+    tournamentId,
+    tournamentData.selectedGroup,
+    tournamentData.selectedRound,
+  ]);
 
   const handleGroupChange = (event) => {
     setTournamentData({
@@ -71,7 +97,8 @@ export const TournamentProfile = () => {
     });
   };
 
-  console.log(tournamentData);
+  console.log(tournamentData.matches);
+  console.log(tableData);
 
   return (
     <ContentNotLogged backGround="white" position="flex-start">
@@ -82,7 +109,7 @@ export const TournamentProfile = () => {
             maxWidth: "85%",
             marginTop: "2rem",
             [appTheme.breakpoints.down("md")]: {
-              maxWidth: "100%",
+              maxWidth: "95%",
             },
           }}
         >
@@ -98,7 +125,7 @@ export const TournamentProfile = () => {
             <AccordionDetails>
               <Grid container spacing={1}>
                 {tournamentData.matches.map((match) => (
-                  <Grid item xs={12}>
+                  <Grid item xs={12} key={match[0]}>
                     <Box
                       sx={{
                         display: "flex",
@@ -191,6 +218,34 @@ export const TournamentProfile = () => {
               </Grid>
             </AccordionDetails>
           </Accordion>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              marginTop: "2rem",
+              [appTheme.breakpoints.up("md")]: {
+                justifyContent: "space-between",
+              },
+            }}
+          >
+            <Grid item xs={12} sm={6} md={4}>
+              <SelectGroup
+                handleGroupChange={handleGroupChange}
+                selectedGroup={tournamentData.selectedGroup}
+                groups={tournamentData.groups}
+              ></SelectGroup>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <SelectRound
+                handleRoundChange={handleRoundChange}
+                selectedRound={tournamentData.selectedRound}
+                rounds={tournamentData.rounds}
+              ></SelectRound>
+            </Grid>
+          </Grid>
+          <Box sx={{ marginBlock: "2rem" }}>
+            <Table tableData={tableData}></Table>
+          </Box>
         </Box>
       )}
     </ContentNotLogged>
