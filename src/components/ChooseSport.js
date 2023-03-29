@@ -6,6 +6,7 @@ import TenisSportIcon from "../icons/TenisSportIcon";
 import TableTenisSportIcon from "../icons/TableTenisSportIcon";
 import VolleyballSportIcon from "../icons/VolleyballSportIcon";
 import FootballSportIcon from "../icons/FootballSportIcon";
+import SquashIcon from "../icons/SquashIcon";
 
 export const ChooseSport = (props) => {
   const {
@@ -24,16 +25,22 @@ export const ChooseSport = (props) => {
       icon: <TenisSportIcon width={40} height={40} fill={"black"} />,
     },
     {
-      name: "stolny-tenis",
+      name: "stolny tenis",
       icon: <TableTenisSportIcon width={40} height={40} fill={"black"} />,
     },
-    {
+    /*{
       name: "volejbal",
       icon: <VolleyballSportIcon width={40} height={40} fill={"black"} />,
+      disabled: true,
     },
     {
       name: "futbal",
       icon: <FootballSportIcon width={40} height={40} fill={"black"} />,
+      disabled: true,
+    },*/
+    {
+      name: "squash",
+      icon: <SquashIcon width={40} height={40} fill={"black"} />,
     },
   ];
 
@@ -59,7 +66,7 @@ export const ChooseSport = (props) => {
             <Paper
               sx={{
                 width: "100%",
-                display: "flex",
+                display: sport.disabled ? "none" : "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",

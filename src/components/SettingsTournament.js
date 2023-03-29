@@ -9,7 +9,13 @@ export const SettingsTournament = (props) => {
     newTournament,
   } = props;
 
-  const sportsWithSets = ["badminton", "volejbal", "tenis", "stolny-tenis"];
+  const sportsWithSets = [
+    "badminton",
+    "volejbal",
+    "tenis",
+    "stolny tenis",
+    "squash",
+  ];
   const maxNumberPointsSports = ["badminton", "volejbal"];
   return (
     <>
@@ -65,7 +71,7 @@ export const SettingsTournament = (props) => {
                 functionName={(value) =>
                   handleTournamentSettingsChange("maxNumberOfPoints", value)
                 }
-                label={`Počet bodov v sete`}
+                label={`Max. počet bodov v sete`}
                 id={`max-points`}
                 min={1}
                 max={100}
