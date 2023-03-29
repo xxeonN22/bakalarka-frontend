@@ -3,8 +3,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
 export const AutoCompleteSearch = (props) => {
-  const { style, id, filteredData, searchText, setSearchText, placeholder } =
-    props;
+  const {
+    style,
+    id,
+    filteredData,
+    searchText,
+    setSearchText,
+    placeholder,
+    handleSearchTournament,
+  } = props;
   const handleClearClick = () => {
     setSearchText("");
   };
@@ -16,6 +23,11 @@ export const AutoCompleteSearch = (props) => {
       disableClearable
       options={filteredData.map((data) => data.name)}
       value={searchText}
+      onChange={(event, value) => {
+        if (handleSearchTournament) {
+          handleSearchTournament(value);
+        }
+      }}
       onInputChange={(event, newValue) => {
         setSearchText(newValue);
       }}
@@ -25,6 +37,11 @@ export const AutoCompleteSearch = (props) => {
           sx={{
             backgroundColor: "white",
             borderRadius: "4px",
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && handleSearchTournament) {
+              handleSearchTournament(event.target.value);
+            }
           }}
           placeholder={placeholder}
           InputProps={{

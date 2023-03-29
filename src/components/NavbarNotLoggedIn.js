@@ -82,6 +82,10 @@ export const NavbarNotLoggedIn = () => {
     setAnchorEl(null);
   };
 
+  const handleSearchTournament = (tournamentName) => {
+    console.log(tournamentName);
+  };
+
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -100,6 +104,7 @@ export const NavbarNotLoggedIn = () => {
                 searchText={searchText}
                 setSearchText={setSearchText}
                 filteredData={filteredData}
+                handleSearchTournament={handleSearchTournament}
                 style={{
                   backgroundColor: "white",
                   borderRadius: "4px",
