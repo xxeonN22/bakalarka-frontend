@@ -42,14 +42,14 @@ export const TournamentProfile = () => {
         const response = await api.get(
           `/searchtournament/${tournamentId}/matches`
         );
-        setTournamentData({
+        setTournamentData((tournamentData) => ({
           ...tournamentData,
           groups: response.data.groups,
           selectedGroup: response.data.groups[0].group_name,
           rounds: response.data.rounds,
           selectedRound: response.data.rounds[0].round_number,
           matches: response.data.matchPair,
-        });
+        }));
         setDataLoaded(true);
       } catch (error) {
         if (error.response) {
@@ -59,7 +59,7 @@ export const TournamentProfile = () => {
         }
       }
     })();
-  }, []);
+  }, [tournamentId]);
 
   useEffect(() => {
     (async () => {

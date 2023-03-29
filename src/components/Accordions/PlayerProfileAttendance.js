@@ -51,14 +51,14 @@ export const PlayerProfileAttendance = (props) => {
                     }}
                   >
                     <IconButton
-                      sx={{ position: "absolute", top: 0, right: 0 }}
+                      sx={{ position: "absolute", top: 0 }}
                       onClick={() =>
                         console.log(attendance.id_confirmation, playerId)
                       }
                     >
                       <InfoOutlinedIcon></InfoOutlinedIcon>
                     </IconButton>
-                    <Typography>
+                    <Typography sx={{ marginTop: "1.7rem" }}>
                       {" "}
                       Dátum: {convertDate(attendance.date)}
                     </Typography>
