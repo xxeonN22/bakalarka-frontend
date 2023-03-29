@@ -1,22 +1,30 @@
 import Box from "@mui/material/Box";
 import { NavbarNotLoggedIn } from "./NavbarNotLoggedIn";
 
-const boxStyle = {
-  paddingTop: "70px",
-  minHeight: "100vh",
-  backgroundColor: "#252E42",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+const boxStyle = (backGround = "#252E42", position = "center") => {
+  return {
+    paddingTop: "70px",
+    minHeight: "100vh",
+    backgroundColor: backGround,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: position,
+  };
 };
 
-export const ContentNotLogged = ({ screen, children, setResponseMessage }) => {
+export const ContentNotLogged = ({
+  screen,
+  children,
+  setResponseMessage,
+  backGround,
+  position,
+}) => {
   return (
     <>
       <NavbarNotLoggedIn
         setResponseMessage={setResponseMessage}
       ></NavbarNotLoggedIn>
-      <Box sx={boxStyle}>{children}</Box>
+      <Box sx={boxStyle(backGround, position)}>{children}</Box>
     </>
   );
 };
