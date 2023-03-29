@@ -244,7 +244,11 @@ export const TournamentProfile = () => {
             </Grid>
           </Grid>
           <Box sx={{ marginBlock: "2rem" }}>
-            <Table tableData={tableData}></Table>
+            <Table
+              tableData={tableData}
+              status="loggedOff"
+              tournamentId={tournamentId}
+            ></Table>
           </Box>
         </Box>
       )}

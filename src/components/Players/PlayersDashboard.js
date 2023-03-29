@@ -72,7 +72,9 @@ export const PlayersDashboard = (props) => {
               </Typography>
               <Typography
                 onClick={() =>
-                  navigate(`/tournaments/${tournamentId}/${player.id_player}`)
+                  navigate(
+                    `/tournaments/${tournamentId}/${player.id_player}/loggedIn`
+                  )
                 }
                 sx={{
                   flex: "3",

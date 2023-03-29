@@ -48,7 +48,7 @@ function App() {
             element={<Players />}
           ></Route>
           <Route
-            path="/tournaments/:tournamentId/:playerId"
+            path="/tournaments/:tournamentId/:playerId/:loginStatus"
             element={<PlayerProfile />}
           ></Route>
           <Route

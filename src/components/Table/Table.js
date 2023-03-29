@@ -1,7 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { appTheme } from "../../themes/appTheme";
 
-export const Table = ({ tableData }) => {
+export const Table = ({ tableData, status, tournamentId }) => {
+  const navigate = useNavigate();
   return (
     <Box
       sx={{
@@ -49,7 +51,16 @@ export const Table = ({ tableData }) => {
                 {index + 1}.
               </Typography>
               <Typography
-                sx={{ flex: "3", textAlign: "center", wordBreak: "break-all" }}
+                sx={{
+                  flex: "3",
+                  textAlign: "center",
+                  wordBreak: "break-all",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                onClick={() =>
+                  navigate(`/tournaments/${tournamentId}/${data.id}/${status}`)
+                }
               >
                 {data.name}
               </Typography>

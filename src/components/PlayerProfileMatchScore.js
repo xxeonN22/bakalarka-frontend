@@ -11,6 +11,7 @@ export const PlayerProfileMatchScore = ({
   playerId,
   handleDialogClose,
   handleEditScore,
+  status,
 }) => {
   const navigate = useNavigate();
 
@@ -152,15 +153,17 @@ export const PlayerProfileMatchScore = ({
                 marginTop: "2rem",
               }}
             >
-              <Button
-                onClick={() => {
-                  handleEditScore(matchData.matchId, matchData);
-                  handleDialogClose();
-                }}
-                variant="contained"
-              >
-                Upraviť výsledok
-              </Button>
+              {status !== "notLoggedIn" && (
+                <Button
+                  onClick={() => {
+                    handleEditScore(matchData.matchId, matchData);
+                    handleDialogClose();
+                  }}
+                  variant="contained"
+                >
+                  Upraviť výsledok
+                </Button>
+              )}
             </Grid>
           </Grid>
         </Box>

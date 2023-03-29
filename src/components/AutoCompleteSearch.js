@@ -1,6 +1,16 @@
-import { TextField, Autocomplete, InputAdornment } from "@mui/material";
+import {
+  TextField,
+  Autocomplete,
+  InputAdornment,
+  createFilterOptions,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
+
+const OPTIONS_LIMIT = 3;
+const filterOptions = createFilterOptions({
+  limit: OPTIONS_LIMIT,
+});
 
 export const AutoCompleteSearch = (props) => {
   const {
@@ -18,6 +28,7 @@ export const AutoCompleteSearch = (props) => {
   return (
     <Autocomplete
       sx={style}
+      filterOptions={filterOptions}
       freeSolo
       id={id}
       disableClearable

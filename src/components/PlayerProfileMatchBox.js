@@ -7,8 +7,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import { PlayerProfileMatchScore } from "./PlayerProfileMatchScore";
 
 export const PlayerProfileMatchBox = (props) => {
-  const { match, tournamentId, playerId, setResponseMessage, handleEditScore } =
-    props;
+  const {
+    match,
+    tournamentId,
+    playerId,
+    setResponseMessage,
+    handleEditScore,
+    status,
+  } = props;
   const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
   const [dialogState, setDialogState] = useState(false);
 
@@ -74,6 +80,7 @@ export const PlayerProfileMatchBox = (props) => {
           handleDialogClose={handleDialogClose}
           setResponseMessage={setResponseMessage}
           handleEditScore={handleEditScore}
+          status={status}
         ></PlayerProfileMatchScore>
       </DialogWindow>
 

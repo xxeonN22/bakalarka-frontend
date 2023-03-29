@@ -3,8 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { appTheme } from "../themes/appTheme";
 import { api } from "../axios/axios";
 
-import { Grid } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 
+import { ContentNotLogged } from "../components/ContentNotLogged";
 import { ContentLayout } from "../components/ContentLayout";
 import { SelectBox } from "../components/SelectBox";
 import { PlayerProfileCrumbs } from "../components/BreadCrumbs/PlayerProfileCrumbs.js";
@@ -37,7 +38,7 @@ export const PlayerProfile = () => {
     elo: 10,
   });
 
-  const { tournamentId, playerId } = useParams();
+  const { tournamentId, playerId, loginStatus } = useParams();
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -149,66 +150,118 @@ export const PlayerProfile = () => {
 
   return (
     <>
-      <ContentLayout>
-        <PlayerProfileCrumbs
-          tournamentId={tournamentId}
-          playerData={playerData}
-        ></PlayerProfileCrumbs>
+      {loginStatus === "loggedIn" ? (
+        <ContentLayout>
+          <PlayerProfileCrumbs
+            tournamentId={tournamentId}
+            playerData={playerData}
+          ></PlayerProfileCrumbs>
 
-        <AlertMessage
-          responseMessage={responseMessage}
-          setResponseMessage={setResponseMessage}
-        ></AlertMessage>
+          <AlertMessage
+            responseMessage={responseMessage}
+            setResponseMessage={setResponseMessage}
+          ></AlertMessage>
 
-        <Grid container spacing={2} sx={{ marginTop: "2rem" }}>
-          <Grid item xs={12} md={6}>
-            <PlayerProfileData
-              isLoading={isLoading}
-              handleEditPlayer={handleEditPlayer}
-              playerData={playerData}
-            ></PlayerProfileData>
-          </Grid>
+          <Grid container spacing={2} sx={{ marginTop: "2rem" }}>
+            <Grid item xs={12} md={6}>
+              <PlayerProfileData
+                isLoading={isLoading}
+                handleEditPlayer={handleEditPlayer}
+                playerData={playerData}
+              ></PlayerProfileData>
+            </Grid>
 
-          <Grid item xs={12} md={6}>
-            <PlayerProfileAttendance
-              isLoading={isLoading}
-              playerAttendance={playerAttendance}
-              playerId={playerId}
-            ></PlayerProfileAttendance>
-          </Grid>
-        </Grid>
-        <Grid container gap={2} sx={gridContainerStyle}>
-          <Grid item xs={12} md={5}>
-            <PlayerProfileTypography
-              playerData={playerData}
-            ></PlayerProfileTypography>
-          </Grid>
-          <Grid item xs={6} md={5} lg={2.5}>
-            <SelectBox
-              id="select-round"
-              labelContent="Vyberte kolo"
-              labelId="select-round-label"
-              label="Vyberte kolo"
-              onChangeFunction={handleRoundChange}
-              selectValue={selectedRound}
-              itemArray={rounds}
-            ></SelectBox>
-          </Grid>
-        </Grid>
-        {matches &&
-          matches.map((match) => {
-            return (
-              <PlayerProfileMatchBox
-                key={match.matchId}
-                match={match}
-                tournamentId={tournamentId}
+            <Grid item xs={12} md={6}>
+              <PlayerProfileAttendance
+                isLoading={isLoading}
+                playerAttendance={playerAttendance}
                 playerId={playerId}
-                setResponseMessage={setResponseMessage}
-                handleEditScore={handleEditScore}
-              ></PlayerProfileMatchBox>
-            );
-          })}
-      </ContentLayout>
+              ></PlayerProfileAttendance>
+            </Grid>
+          </Grid>
+          <Grid container gap={2} sx={gridContainerStyle}>
+            <Grid item xs={12} md={5}>
+              <PlayerProfileTypography
+                playerData={playerData}
+              ></PlayerProfileTypography>
+            </Grid>
+            <Grid item xs={6} md={5} lg={2.5}>
+              <SelectBox
+                id="select-round"
+                labelContent="Vyberte kolo"
+                labelId="select-round-label"
+                label="Vyberte kolo"
+                onChangeFunction={handleRoundChange}
+                selectValue={selectedRound}
+                itemArray={rounds}
+              ></SelectBox>
+            </Grid>
+          </Grid>
+          {matches &&
+            matches.map((match) => {
+              return (
+                <PlayerProfileMatchBox
+                  key={match.matchId}
+                  match={match}
+                  tournamentId={tournamentId}
+                  playerId={playerId}
+                  setResponseMessage={setResponseMessage}
+                  handleEditScore={handleEditScore}
+                ></PlayerProfileMatchBox>
+              );
+            })}
+        </ContentLayout>
+      ) : (
+        <ContentNotLogged
+          position="center"
+          backGround="white"
+          flexDirection="column"
+          justifyContent="flex-start"
+        >
+          <Box
+            sx={{
+              width: "100%",
+              maxWidth: "85%",
+              [appTheme.breakpoints.down("md")]: {
+                maxWidth: "95%",
+              },
+            }}
+          >
+            <Grid container gap={2} sx={gridContainerStyle}>
+              <Grid item xs={12} md={5}>
+                <PlayerProfileTypography
+                  playerData={playerData}
+                ></PlayerProfileTypography>
+              </Grid>
+              <Grid item xs={6} md={5} lg={2.5}>
+                <SelectBox
+                  id="select-round"
+                  labelContent="Vyberte kolo"
+                  labelId="select-round-label"
+                  label="Vyberte kolo"
+                  onChangeFunction={handleRoundChange}
+                  selectValue={selectedRound}
+                  itemArray={rounds}
+                ></SelectBox>
+              </Grid>
+            </Grid>
+            <Box sx={{ width: "100%" }}>
+              {matches &&
+                matches.map((match) => {
+                  return (
+                    <PlayerProfileMatchBox
+                      key={match.matchId}
+                      match={match}
+                      tournamentId={tournamentId}
+                      playerId={playerId}
+                      status="notLoggedIn"
+                    ></PlayerProfileMatchBox>
+                  );
+                })}
+            </Box>
+          </Box>
+        </ContentNotLogged>
+      )}
     </>
   );
 };

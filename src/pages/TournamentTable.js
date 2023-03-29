@@ -96,7 +96,11 @@ export const TournamentTable = () => {
             ></SelectRound>
           </Grid>
         </Grid>
-        <Table tableData={tableData}></Table>
+        <Table
+          tableData={tableData}
+          tournamentId={tournamentId}
+          status="loggedIn"
+        ></Table>
       </ContentLayout>
     </>
   );
