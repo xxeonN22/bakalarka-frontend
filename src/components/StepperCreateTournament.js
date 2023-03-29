@@ -28,7 +28,7 @@ export const StepperCreateTournament = ({
     selectedPairingStyle: "",
     tournamentName: "",
     maxNumberOfSets: 1,
-    maxNumberOfPoints: 1,
+    maxNumberOfPoints: 999,
     numberOfCourts: 1,
     numberOfGroups: 1,
     numberOfRounds: 1,

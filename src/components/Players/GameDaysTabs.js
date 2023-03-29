@@ -15,7 +15,6 @@ export const GameDaysTabs = (props) => {
       <Box
         sx={{
           width: "200px",
-          bgcolor: "background.paper",
         }}
       >
         <Tabs
