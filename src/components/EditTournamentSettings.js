@@ -20,7 +20,13 @@ export const EditTournamentSettings = ({
   handleEditTournament,
 }) => {
   const [loading, setLoading] = useState(true);
-  const sportsWithSets = ["badminton", "volejbal", "tenis", "stolny-tenis"];
+  const sportsWithSets = [
+    "badminton",
+    "volejbal",
+    "tenis",
+    "stolny tenis",
+    "squash",
+  ];
   const maxNumberPointsSports = ["badminton", "volejbal"];
   const [tournamentData, setTournamentData] = useState({
     tournamentId: tournamentId,
