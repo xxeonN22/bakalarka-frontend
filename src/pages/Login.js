@@ -53,7 +53,7 @@ export const Login = () => {
 
   return (
     <>
-      <ContentNotLogged>
+      <ContentNotLogged setResponseMessage={setResponseMessage}>
         <Container maxWidth="md" sx={containerStyles}>
           <Paper>
             <Formik

@@ -10,10 +10,12 @@ const boxStyle = {
   alignItems: "center",
 };
 
-export const ContentNotLogged = ({ screen, children }) => {
+export const ContentNotLogged = ({ screen, children, setResponseMessage }) => {
   return (
     <>
-      <NavbarNotLoggedIn></NavbarNotLoggedIn>
+      <NavbarNotLoggedIn
+        setResponseMessage={setResponseMessage}
+      ></NavbarNotLoggedIn>
       <Box sx={boxStyle}>{children}</Box>
     </>
   );

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../axios/axios";
 import { AutoCompleteSearch } from "./AutoCompleteSearch";
+import { useNavigate } from "react-router-dom";
 
 import { appTheme } from "../themes/appTheme";
 
@@ -43,12 +44,13 @@ const underlineEffect = {
   },
 };
 
-export const NavbarNotLoggedIn = () => {
+export const NavbarNotLoggedIn = ({ setResponseMessage }) => {
   const [searchText, setSearchText] = useState("");
   const [tournamentData, setTournamentData] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -82,8 +84,17 @@ export const NavbarNotLoggedIn = () => {
     setAnchorEl(null);
   };
 
-  const handleSearchTournament = (tournamentName) => {
-    console.log(tournamentName);
+  const handleSearchTournament = async (tournamentName) => {
+    try {
+      const response = await api.get(`/searchtournament/${tournamentName}`);
+      navigate(`/searchtournament/${response.data}`);
+    } catch (error) {
+      if (error.response) {
+        setResponseMessage(error.response.data);
+      } else {
+        console.log(`Error: ${error.message}`);
+      }
+    }
   };
 
   return (

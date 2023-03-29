@@ -15,6 +15,7 @@ import { MatchScore } from "./components/MatchScore";
 import { Confirmations } from "./pages/Confirmations";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { VerifyEmail } from "./pages/VerifyEmail";
+import { TournamentProfile } from "./pages/TournamentProfile";
 
 function App() {
   return (
@@ -29,6 +30,10 @@ function App() {
           <Route
             path="/confirmations/:hash"
             element={<Confirmations />}
+          ></Route>
+          <Route
+            path="/searchtournament/:id"
+            element={<TournamentProfile />}
           ></Route>
           <Route path="/verifyemail/:hash" element={<VerifyEmail />}></Route>
           <Route path="/resetpassword/:hash" element={<NewPassword />}></Route>
