@@ -10,15 +10,11 @@ export const ChoosePairingSystem = (props) => {
 
   const pairingSystems = [
     {
-      name: "Švajčiarsky systém",
+      name: "Švajčiarsky systém (každý s každým 1x)",
       value: "svajciarsky-system",
     },
     {
-      name: "Každý s každým 1x",
-      value: "kazdy-s-kazdym",
-    },
-    {
-      name: "Každý s každým 2x",
+      name: "Švajčiarsky systém (každý s každým 2x)",
       value: "kazdy-s-kazdym-2x",
     },
   ];
@@ -41,7 +37,7 @@ export const ChoosePairingSystem = (props) => {
       )}
       <Grid container spacing={2}>
         {pairingSystems.map((system) => (
-          <Grid item xs={12} sm={6} md={4} key={system.value}>
+          <Grid item xs={12} sm={6} key={system.value}>
             <Paper
               sx={{
                 paddingBlock: "1rem",
