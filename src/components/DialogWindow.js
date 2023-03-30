@@ -7,6 +7,7 @@ export const DialogWindow = (props) => {
     <div>
       <Dialog
         sx={{
+          backdropFilter: "blur(5px)",
           [appTheme.breakpoints.down("md")]: {
             "& .MuiDialog-paper": {
               maxWidth: "100%",

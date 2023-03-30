@@ -4,7 +4,6 @@ import { api } from "../axios/axios";
 import { Box, IconButton } from "@mui/material";
 import { SideBarTooltip } from "./SideBarTooltip";
 
-import ProfileIcon from "../icons/ProfileIcon";
 import BadmintonPlayerIcon from "../icons/BadmintonPlayerIcon";
 import MatchesIcon from "../icons/MatchesIcon";
 import TableIcon from "../icons/TableIcon";
@@ -68,12 +67,6 @@ export const SideBar = ({ screen }) => {
   };
 
   const links = [
-    {
-      title: "Profil",
-      to: "/profile",
-      icon: <ProfileIcon width={40} height={40} fill={"white"} />,
-      activeIcon: <ProfileIcon width={40} height={40} fill={"#415375"} />,
-    },
     {
       title: "Turnaje",
       to: `/tournaments`,

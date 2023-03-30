@@ -3,7 +3,6 @@ import { ThemeProvider } from "@mui/material/styles";
 import { appTheme } from "./themes/appTheme";
 import { Matches } from "./pages/Matches";
 import { Players } from "./pages/Players";
-import { Profile } from "./pages/Profile";
 import { Tournaments } from "./pages/Tournaments";
 import { TournamentTable } from "./pages/TournamentTable";
 import { Login } from "./pages/Login";
@@ -42,7 +41,6 @@ function App() {
           <Route path="/resetpassword" element={<ResetPassword />}></Route>
           <Route path="/" element={<Login />}></Route>
           <Route exact path="/tournaments" element={<Tournaments />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
           <Route
             path="/tournaments/:tournamentId"
             element={<Players />}
