@@ -147,24 +147,56 @@ export const TournamentProfile = () => {
             },
           }}
         >
-          <Box
+          <Grid
+            container
+            spacing={2}
             sx={{
               marginBottom: "2rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              [appTheme.breakpoints.down("md")]: { textAlign: "center" },
             }}
           >
-            <Typography variant="h2" fontSize="1.5rem">
-              Názov turnaja: {tournamentName}
-            </Typography>
-            <Typography variant="h2" fontSize="1.1rem">
-              Organizátor: {adminData.firstName} {adminData.lastName}
-            </Typography>
-            <Typography variant="h2" fontSize="1.1rem">
-              Kontakt: {adminData.email}
-            </Typography>
-          </Box>
+            <Grid item xs={12} sm={6} lg={4}>
+              <Typography variant="h2" fontSize="1.5rem">
+                Názov turnaja: {tournamentName}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              lg={4}
+              sx={{
+                justifyContent: "center",
+                display: "flex",
+                [appTheme.breakpoints.down("lg")]: {
+                  justifyContent: "flex-end",
+                },
+                [appTheme.breakpoints.down("sm")]: {
+                  justifyContent: "center",
+                },
+              }}
+            >
+              <Typography variant="h2" fontSize="1.1rem">
+                Organizátor: {adminData.firstName} {adminData.lastName}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              lg={4}
+              sx={{
+                justifyContent: "right",
+                display: "flex",
+                [appTheme.breakpoints.down("lg")]: {
+                  justifyContent: "center",
+                },
+              }}
+            >
+              <Typography variant="h2" fontSize="1.1rem">
+                Kontakt: {adminData.email}
+              </Typography>
+            </Grid>
+          </Grid>
           {responseMessage && (
             <AlertMessage
               typeOfResponse={responseMessage.type}
