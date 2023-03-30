@@ -11,7 +11,6 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
-  Button,
   Grid,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -26,6 +25,14 @@ export const TournamentProfile = () => {
   const [tableData, setTableData] = useState([]);
   const [tableDataLoaded, setTableDataLoaded] = useState(false);
 
+  const [tournamentName, setTournamentName] = useState("");
+
+  const [adminData, setAdminData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+
   const [tournamentData, setTournamentData] = useState({
     groups: [],
     selectedGroup: "",
@@ -34,7 +41,28 @@ export const TournamentProfile = () => {
     matches: [],
   });
   const [dataLoaded, setDataLoaded] = useState(false);
-  const isTabletSize = useMediaQuery((theme) => theme.breakpoints.down("xl"));
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await api.get(
+          `/searchtournament/${tournamentId}/data`
+        );
+        setTournamentName(response.data.tournamentName);
+        setAdminData({
+          firstName: response.data.adminData[0].first_name,
+          lastName: response.data.adminData[0].last_name,
+          email: response.data.adminData[0].email,
+        });
+      } catch (error) {
+        if (error.response) {
+          setResponseMessage(error.response.data);
+        } else {
+          console.log(`Error: ${error.message}`);
+        }
+      }
+    })();
+  }, [tournamentId]);
 
   useEffect(() => {
     (async () => {
@@ -99,6 +127,9 @@ export const TournamentProfile = () => {
     });
   };
 
+  console.log(tournamentName);
+  console.log(adminData);
+
   return (
     <ContentNotLogged
       backGround="white"
@@ -116,6 +147,24 @@ export const TournamentProfile = () => {
             },
           }}
         >
+          <Box
+            sx={{
+              marginBottom: "2rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography variant="h2" fontSize="1.5rem">
+              Názov turnaja: {tournamentName}
+            </Typography>
+            <Typography variant="h2" fontSize="1.1rem">
+              Organizátor: {adminData.firstName} {adminData.lastName}
+            </Typography>
+            <Typography variant="h2" fontSize="1.1rem">
+              Kontakt: {adminData.email}
+            </Typography>
+          </Box>
           {responseMessage && (
             <AlertMessage
               typeOfResponse={responseMessage.type}
@@ -188,16 +237,6 @@ export const TournamentProfile = () => {
                       >
                         {match[2][0].first_name} {match[2][0].last_name}
                       </Typography>
-                      <Button
-                        disabled
-                        variant="contained"
-                        sx={{
-                          flex: 1,
-                          [appTheme.breakpoints.down("md")]: { flex: 0 },
-                        }}
-                      >
-                        {isTabletSize ? "Skore" : "Zapísať skore"}
-                      </Button>
                       <Typography
                         sx={{
                           flex: 3,
