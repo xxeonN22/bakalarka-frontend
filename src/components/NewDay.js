@@ -64,7 +64,7 @@ export const NewDay = (props) => {
           {stepperMessage.gameDaysMessage}
         </Alert>
       )}
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center">
         {newTournament.gameDays.map((gameDay, index) => {
           const selectedGroups = gameDay.groups || [];
           return (

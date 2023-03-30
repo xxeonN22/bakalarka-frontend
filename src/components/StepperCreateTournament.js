@@ -69,7 +69,7 @@ export const StepperCreateTournament = ({
           setStepperMessage({
             ...stepperMessage,
             tournamentSettingsMessage:
-              "Prosím, názov turnaja predtým, ako budete pokračovať na ďalší krok!",
+              "Prosím, zadajte názov turnaja predtým, ako budete pokračovať na ďalší krok!",
           });
           return false;
         }
