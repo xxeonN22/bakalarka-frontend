@@ -3,7 +3,7 @@ import { appTheme } from "../themes/appTheme";
 import { useNavigate } from "react-router-dom";
 import { api } from "../axios/axios";
 
-import { Grid } from "@mui/material";
+import { Grid, Fab, IconButton } from "@mui/material";
 
 import { ContentLayout } from "../components/ContentLayout";
 import { CreateTournament } from "../components/Tournaments/CreateTournament";
@@ -11,6 +11,10 @@ import { AlertMessage } from "../components/Alert/AlertMessage.js";
 import { TournamentData } from "../components/Tournaments/TournamentData";
 import { TournamentSearchBar } from "../components/Tournaments/TournamentSearchBar";
 import { TournamentsTypography } from "../components/Typography/TournamentsTypography";
+import { DialogWindow } from "../components/DialogWindow";
+import { EditUserProfile } from "../components/EditUserProfile";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 const gridContainerStyle = {
   rowGap: "5rem",
@@ -24,6 +28,7 @@ export const Tournaments = () => {
   const [tournamentData, setTournamentData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
+  const [dialogState, setDialogState] = useState(false);
 
   const filteredData = tournamentData.filter((data) =>
     data.name.toLowerCase().includes(searchText.toLowerCase())
@@ -47,6 +52,14 @@ export const Tournaments = () => {
       }
     })();
   }, [navigate]);
+
+  const handleDialogOpen = () => {
+    setDialogState(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogState(false);
+  };
 
   return (
     <>
@@ -80,6 +93,32 @@ export const Tournaments = () => {
           tournamentData={tournamentData}
           setResponseMessage={setResponseMessage}
         ></TournamentData>
+        <Fab
+          color="primary"
+          aria-label="settings"
+          size="small"
+          onClick={() => handleDialogOpen()}
+          sx={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            [appTheme.breakpoints.down("md")]: { display: "none" },
+          }}
+        >
+          <SettingsOutlinedIcon />
+        </Fab>
+        <DialogWindow open={dialogState} handleCloseModal={handleDialogClose}>
+          <IconButton
+            sx={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleDialogClose}
+          >
+            <CloseIcon></CloseIcon>
+          </IconButton>
+          <EditUserProfile
+            setResponseMessage={setResponseMessage}
+            handleDialogClose={handleDialogClose}
+          ></EditUserProfile>
+        </DialogWindow>
       </ContentLayout>
     </>
   );

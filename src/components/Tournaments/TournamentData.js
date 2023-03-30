@@ -15,6 +15,7 @@ export const TournamentData = (props) => {
       container
       sx={{
         marginTop: "5rem",
+        marginBottom: "2rem",
         [appTheme.breakpoints.down("sm")]: { marginTop: "2rem" },
       }}
       spacing={2}

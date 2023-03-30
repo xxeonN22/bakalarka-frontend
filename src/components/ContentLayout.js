@@ -11,6 +11,7 @@ export const ContentLayout = ({ screen, children, backGround }) => {
     padding: "3rem",
     backgroundColor: backGround,
     minHeight: "100vh",
+    position: "relative",
     [appTheme.breakpoints.down("md")]: {
       marginBlock: "70px",
       marginLeft: "0px",
