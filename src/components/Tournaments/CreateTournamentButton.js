@@ -10,6 +10,7 @@ export const CreateTournamentButton = ({ handleDialogOpen }) => {
   return (
     <Grid item xs={12} sm={6} md={6} lg={4} sx={gridItemStyle}>
       <Button
+        color="sunglow"
         startIcon={<AddIcon></AddIcon>}
         onClick={() => {
           handleDialogOpen();

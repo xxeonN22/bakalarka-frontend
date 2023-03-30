@@ -7,7 +7,7 @@ const boxStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  backgroundColor: "#303A53",
+  backgroundColor: appTheme.palette.primary.dark,
   padding: "1rem",
   marginBlock: "1rem",
   color: "white",
@@ -31,7 +31,6 @@ export const PlayerDashboardTableHeader = (props) => {
     <Box sx={boxStyle}>
       <Checkbox
         sx={{
-          color: "white",
           padding: "0px",
           flex: "1",
           [appTheme.breakpoints.down("sm")]: { flex: "0" },

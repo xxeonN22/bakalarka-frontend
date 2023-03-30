@@ -1,3 +1,4 @@
+import { appTheme } from "../themes/appTheme";
 import {
   TextField,
   Autocomplete,
@@ -48,6 +49,7 @@ export const AutoCompleteSearch = (props) => {
           sx={{
             backgroundColor: "white",
             borderRadius: "4px",
+            color: appTheme.palette.primary.main,
           }}
           onKeyDown={(event) => {
             if (event.key === "Enter" && handleSearchTournament) {
@@ -60,7 +62,7 @@ export const AutoCompleteSearch = (props) => {
             startAdornment: (
               <>
                 <InputAdornment position="start" sx={{ marginLeft: "0.5rem" }}>
-                  <SearchIcon />
+                  <SearchIcon color="primary" />
                 </InputAdornment>
                 {params.InputProps.startAdornment}
               </>
@@ -71,9 +73,9 @@ export const AutoCompleteSearch = (props) => {
                   <InputAdornment
                     position="end"
                     onClick={handleClearClick}
-                    sx={{ cursor: "pointer" }}
+                    sx={{ cursor: "pointer", marginRight: "0.5rem" }}
                   >
-                    <ClearIcon />
+                    <ClearIcon color="primary" />
                   </InputAdornment>
                 )}
                 {params.InputProps.endAdornment}

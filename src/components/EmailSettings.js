@@ -56,6 +56,7 @@ export const EmailSettings = (props) => {
   return (
     <>
       <Button
+        color="sunglow"
         variant="contained"
         sx={{ width: "100%", padding: "1rem" }}
         onClick={() => {

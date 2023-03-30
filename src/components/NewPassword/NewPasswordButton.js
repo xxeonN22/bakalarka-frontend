@@ -11,7 +11,12 @@ export const NewPasswordButton = () => {
         alignItems: "center",
       }}
     >
-      <Button sx={{ padding: "1rem" }} variant="contained" type="submit">
+      <Button
+        color="sunglow"
+        sx={{ padding: "1rem" }}
+        variant="contained"
+        type="submit"
+      >
         Vytvoriť nové heslo
       </Button>
     </Grid>

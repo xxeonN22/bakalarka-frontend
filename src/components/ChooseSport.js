@@ -72,7 +72,7 @@ export const ChooseSport = (props) => {
                 justifyContent: "center",
                 backgroundColor:
                   newTournament.selectedSport === sport.name
-                    ? "#3f51b5"
+                    ? "#1f2736"
                     : "inherit",
                 transition: "background-color 0.5s ease",
               }}

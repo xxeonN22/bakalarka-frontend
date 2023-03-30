@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { appTheme } from "../../themes/appTheme";
 
@@ -7,7 +7,7 @@ export const Table = ({ tableData, status, tournamentId }) => {
   return (
     <Box
       sx={{
-        backgroundColor: "#1f2736",
+        backgroundColor: appTheme.palette.primary.dark,
         color: "white",
         borderRadius: "5px",
       }}
@@ -17,7 +17,7 @@ export const Table = ({ tableData, status, tournamentId }) => {
           display: "flex",
           justifyContent: "space-between",
           paddingBlock: "1.2rem",
-          backgroundColor: "#2e3650",
+          backgroundColor: appTheme.palette.primary.main,
         }}
       >
         <Typography sx={{ flex: "1", textAlign: "center" }}>Poradie</Typography>
@@ -44,7 +44,13 @@ export const Table = ({ tableData, status, tournamentId }) => {
                 display: "flex",
                 justifyContent: "space-between",
                 paddingBlock: "1.2rem",
-                backgroundColor: index % 2 === 0 ? "" : "#2e3650",
+                transition: "background-color 0.4s ease-in-out",
+                "&:hover": {
+                  backgroundColor: appTheme.palette.sunglow.main,
+                  color: appTheme.palette.primary.main,
+                },
+                backgroundColor:
+                  index % 2 === 0 ? "" : appTheme.palette.primary.main,
               }}
             >
               <Typography sx={{ flex: "1", textAlign: "center" }}>

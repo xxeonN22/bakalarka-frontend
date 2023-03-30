@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { appTheme } from "../themes/appTheme";
 
 export const AuthenticationPageLink = (props) => {
   const { text, to, boldText } = props;
@@ -11,7 +12,7 @@ export const AuthenticationPageLink = (props) => {
         style={{
           textDecoration: "none",
           fontWeight: "500",
-          color: "inherit",
+          color: appTheme.palette.sunglow.main,
         }}
       >
         {" "}

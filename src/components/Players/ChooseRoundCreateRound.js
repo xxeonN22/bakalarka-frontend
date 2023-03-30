@@ -51,6 +51,7 @@ export const ChooseRoundCreateRound = (props) => {
         sx={{ display: "flex", justifyContent: "flex-end", marginLeft: "auto" }}
       >
         <Button
+          color="sunglow"
           variant="contained"
           sx={{ width: "100%", padding: "1rem" }}
           onClick={() => {
@@ -89,6 +90,7 @@ export const ChooseRoundCreateRound = (props) => {
         sx={{ display: "flex", justifyContent: "flex-end" }}
       >
         <Button
+          color="sunglow"
           variant="contained"
           sx={{ width: "100%", padding: "1rem" }}
           onClick={() => {

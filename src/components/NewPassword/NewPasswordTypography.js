@@ -1,3 +1,4 @@
+import { appTheme } from "../../themes/appTheme";
 import { Grid, Typography } from "@mui/material";
 
 export const NewPasswordTypography = () => {
@@ -8,6 +9,7 @@ export const NewPasswordTypography = () => {
         fontSize="1.5rem"
         textTransform="uppercase"
         letterSpacing="0.2rem"
+        sx={{ color: appTheme.palette.sunglow.main }}
       >
         Vytvorenie nového hesla
       </Typography>

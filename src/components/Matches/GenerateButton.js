@@ -21,6 +21,7 @@ export const GenerateButton = (props) => {
   return (
     <Grid item xs={12} sx={generateMatchesGridStyle}>
       <Button
+        color="sunglow"
         startIcon={<AddIcon />}
         variant="contained"
         sx={generateMatches}

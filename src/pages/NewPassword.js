@@ -1,3 +1,4 @@
+import { appTheme } from "../themes/appTheme";
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import { api } from "../axios/axios";
@@ -52,7 +53,12 @@ export const NewPassword = () => {
           >
             {() => (
               <Form>
-                <Paper>
+                <Paper
+                  sx={{
+                    backgroundColor: appTheme.palette.primary.main,
+                    color: "white",
+                  }}
+                >
                   <Grid container sx={gridContainerStyle}>
                     <NewPasswordTypography></NewPasswordTypography>
 

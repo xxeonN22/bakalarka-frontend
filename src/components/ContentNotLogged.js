@@ -1,8 +1,9 @@
 import Box from "@mui/material/Box";
+import { appTheme } from "../themes/appTheme";
 import { NavbarNotLoggedIn } from "./NavbarNotLoggedIn";
 
 const boxStyle = (
-  backGround = "#252E42",
+  backGround = appTheme.palette.primary.dark,
   position = "center",
   flexDirection = "row",
   justifyContent = "center"

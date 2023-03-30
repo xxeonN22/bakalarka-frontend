@@ -20,6 +20,7 @@ import {
 } from "../components/Register/registerStyles";
 
 import { schema } from "../validationSchemas/Register/validationSchema";
+import { appTheme } from "../themes/appTheme";
 const validationSchema = schema;
 
 export const Register = () => {
@@ -33,7 +34,7 @@ export const Register = () => {
       if (response.status === 200) {
         setTimeout(() => {
           navigate("/login");
-        }, 1500);
+        }, 4000);
       }
     } catch (error) {
       if (error.response) {
@@ -47,7 +48,12 @@ export const Register = () => {
     <>
       <ContentNotLogged>
         <Container maxWidth="md" sx={containerStyle}>
-          <Paper>
+          <Paper
+            sx={{
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+            }}
+          >
             <Formik
               initialValues={{
                 firstName: "",
@@ -111,6 +117,7 @@ export const Register = () => {
                     </Grid>
                     <Grid item xs={12} sx={gridItemStyle}>
                       <Button
+                        color="sunglow"
                         sx={{ padding: "1rem" }}
                         variant="contained"
                         type="submit"

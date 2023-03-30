@@ -45,13 +45,13 @@ export const TournamentPopover = ({
   return (
     <>
       <IconButton
+        color="sunglow"
         aria-describedby={id}
         onClick={handleClick}
         sx={{
           position: "absolute",
           top: "0",
           right: "0",
-          color: "white",
         }}
       >
         <MoreVertIcon />

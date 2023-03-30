@@ -3,6 +3,7 @@ import { api } from "../axios/axios";
 import { Paper, Button, Typography, Grid } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { TournamentPopover } from "./TournamentPopover";
+import { appTheme } from "../themes/appTheme";
 
 export const Tournament = ({
   tournamentId,
@@ -149,7 +150,7 @@ export const Tournament = ({
           flexDirection: "column",
           alignItems: "center",
           paddingBlock: "2rem",
-          backgroundColor: "#303A53",
+          backgroundColor: appTheme.palette.primary.main,
           color: "white",
           position: "relative",
         }}
@@ -161,6 +162,7 @@ export const Tournament = ({
           Počet hráčov: {playersNumber}
         </Typography>
         <Button
+          color="sunglow"
           sx={{ paddingBlock: "0.5rem" }}
           variant="contained"
           endIcon={<ArrowForwardIcon />}

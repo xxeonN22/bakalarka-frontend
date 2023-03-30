@@ -76,7 +76,9 @@ export const Navbar = ({ screen }) => {
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
           >
-            <ManageAccountsOutlinedIcon></ManageAccountsOutlinedIcon>
+            <ManageAccountsOutlinedIcon
+              sx={{ color: "#FCCE36" }}
+            ></ManageAccountsOutlinedIcon>
           </IconButton>
         </Box>
         <Menu

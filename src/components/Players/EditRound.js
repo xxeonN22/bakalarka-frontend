@@ -220,6 +220,7 @@ export const EditRound = (props) => {
             }}
           >
             <Button
+              color="error"
               onClick={() => {
                 handleDeleteGameDay(editGamedayId, editRoundId);
                 handleCloseModal();

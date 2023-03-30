@@ -99,9 +99,15 @@ export const Tournaments = () => {
           size="small"
           onClick={() => handleDialogOpen()}
           sx={{
-            position: "absolute",
-            top: 10,
-            right: 10,
+            backgroundColor: "#FCCE36",
+            color: "#1f2736",
+            "&:hover": {
+              backgroundColor: "#1f2736",
+              color: "#FCCE36",
+            },
+            position: "fixed",
+            bottom: 10,
+            right: 5,
             [appTheme.breakpoints.down("md")]: { display: "none" },
           }}
         >

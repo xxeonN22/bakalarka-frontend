@@ -20,6 +20,7 @@ import {
 } from "../components/Login/LoginStyles";
 
 import { schema } from "../validationSchemas/Login/validationSchema";
+import { appTheme } from "../themes/appTheme";
 const validationSchema = schema;
 
 export const Login = () => {
@@ -55,7 +56,12 @@ export const Login = () => {
     <>
       <ContentNotLogged setResponseMessage={setResponseMessage}>
         <Container maxWidth="md" sx={containerStyles}>
-          <Paper>
+          <Paper
+            sx={{
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+            }}
+          >
             <Formik
               initialValues={{ email: "", password: "", rememberMe: false }}
               onSubmit={(values) => handleLoginUser(values)}
@@ -108,6 +114,7 @@ export const Login = () => {
                     </Grid>
                     <Grid item xs={12} sx={gridItemStyle}>
                       <Button
+                        color="sunglow"
                         sx={{ padding: "1rem" }}
                         variant="contained"
                         type="submit"

@@ -10,10 +10,10 @@ export const SideBarTooltip = ({ children, title }) => {
       componentsProps={{
         tooltip: {
           sx: {
-            bgcolor: "white",
+            bgcolor: "#FCCE36",
             color: "#1f2736",
             "& .MuiTooltip-arrow": {
-              color: "white",
+              color: "#FCCE36",
             },
           },
         },

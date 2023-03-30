@@ -33,7 +33,7 @@ export const BottomNavLink = (props) => {
           {activeLink === title ? activeIcon : icon}
           <Typography
             sx={{
-              color: title === activeLink ? "#a1abc4" : "white",
+              color: title === activeLink ? "#FCCE36" : "white",
               marginTop: "0.5rem",
             }}
           >

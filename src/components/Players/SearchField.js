@@ -12,6 +12,23 @@ export const SearchField = (props) => {
       value={value}
       onChange={handleChange}
       sx={{
+        [appTheme.breakpoints.up("md")]: {
+          ".MuiInputLabel-outlined": { color: "white" },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
+            "& input": {
+              color: "white",
+            },
+          },
+        },
         [appTheme.breakpoints.down("md")]: {
           position: "absolute",
           top: -50,

@@ -43,7 +43,10 @@ export const PlayersDashboard = (props) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                backgroundColor: index % 2 !== 0 ? "#303A53" : "#252E42",
+                backgroundColor:
+                  index % 2 !== 0
+                    ? appTheme.palette.primary.dark
+                    : appTheme.palette.primary.main,
                 padding: "1rem",
                 color: "white",
                 textAlign: "center",
@@ -54,7 +57,6 @@ export const PlayersDashboard = (props) => {
             >
               <Checkbox
                 sx={{
-                  color: "white",
                   padding: "0px",
                   flex: "1",
                   [appTheme.breakpoints.down("sm")]: { flex: "0" },

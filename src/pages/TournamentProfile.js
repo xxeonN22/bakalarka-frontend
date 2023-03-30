@@ -156,8 +156,21 @@ export const TournamentProfile = () => {
             }}
           >
             <Grid item xs={12} sm={6} lg={4}>
-              <Typography variant="h2" fontSize="1.5rem">
-                Názov turnaja: {tournamentName}
+              <Typography
+                variant="h2"
+                fontSize="1.2rem"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                Názov turnaja:{" "}
+                <span
+                  style={{
+                    fontWeight: "500",
+                    marginLeft: "0.5rem",
+                    fontSize: "1.5rem",
+                  }}
+                >
+                  {tournamentName}
+                </span>
               </Typography>
             </Grid>
             <Grid
@@ -167,6 +180,7 @@ export const TournamentProfile = () => {
               lg={4}
               sx={{
                 justifyContent: "center",
+                alignItems: "center",
                 display: "flex",
                 [appTheme.breakpoints.down("lg")]: {
                   justifyContent: "flex-end",
@@ -187,6 +201,7 @@ export const TournamentProfile = () => {
               sx={{
                 justifyContent: "right",
                 display: "flex",
+                alignItems: "center",
                 [appTheme.breakpoints.down("lg")]: {
                   justifyContent: "center",
                 },
@@ -204,9 +219,15 @@ export const TournamentProfile = () => {
               setResponseMessage={setResponseMessage}
             ></AlertMessage>
           )}
-          <Accordion sx={{ width: "100%" }}>
+          <Accordion
+            sx={{
+              width: "100%",
+              background: appTheme.palette.primary.main,
+              color: "white",
+            }}
+          >
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon color="sunglow" />}
               aria-controls="player-credentials"
               id="player-credentials-header"
               sx={{ textAlign: "center" }}
@@ -215,14 +236,17 @@ export const TournamentProfile = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={1}>
-                {tournamentData.matches.map((match) => (
+                {tournamentData.matches.map((match, index) => (
                   <Grid item xs={12} key={match[0]}>
                     <Box
                       sx={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        backgroundColor: "#303A53",
+                        backgroundColor:
+                          index % 2 === 0
+                            ? appTheme.palette.primary.dark
+                            : appTheme.palette.primary.main,
                         color: "white",
                         padding: "1rem",
                         borderRadius: "4px",

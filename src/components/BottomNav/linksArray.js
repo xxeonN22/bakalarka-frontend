@@ -9,14 +9,14 @@ export const linksArray = (screen, tournamentId, size) => {
       title: "Turnaje",
       to: `/tournaments`,
       icon: <HomeIcon width={size} height={size} fill={"white"} />,
-      activeIcon: <HomeIcon width={size} height={size} fill={"#415375"} />,
+      activeIcon: <HomeIcon width={size} height={size} fill={"#FCCE36"} />,
     },
     {
       title: "Hráči",
       to: `/tournaments/${tournamentId}`,
       icon: <BadmintonPlayerIcon width={size} height={size} fill={"white"} />,
       activeIcon: (
-        <BadmintonPlayerIcon width={size} height={size} fill={"#415375"} />
+        <BadmintonPlayerIcon width={size} height={size} fill={"#FCCE36"} />
       ),
       hidden: screen === "tournaments" || screen === "profile",
     },
@@ -24,14 +24,14 @@ export const linksArray = (screen, tournamentId, size) => {
       title: "Zápasy",
       to: `/tournaments/${tournamentId}/matches`,
       icon: <MatchesIcon width={size} height={size} fill={"white"} />,
-      activeIcon: <MatchesIcon width={size} height={size} fill={"#415375"} />,
+      activeIcon: <MatchesIcon width={size} height={size} fill={"#FCCE36"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
     {
       title: "Tabuľka",
       to: `/tournaments/${tournamentId}/table`,
       icon: <TableIcon width={size} height={size} fill={"white"} />,
-      activeIcon: <TableIcon width={size} height={size} fill={"#415375"} />,
+      activeIcon: <TableIcon width={size} height={size} fill={"#FCCE36"} />,
       hidden: screen === "tournaments" || screen === "profile",
     },
   ];

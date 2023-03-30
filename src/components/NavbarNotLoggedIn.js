@@ -25,9 +25,9 @@ const underlineEffect = {
   alignItems: "center",
   position: "relative",
   paddingBottom: "0.5rem",
-  color: "white",
+  color: appTheme.palette.sunglow.main,
   "&:hover": {
-    color: "#4d80e8",
+    color: appTheme.palette.sunglow.dark,
   },
   "&::before, &::after": {
     content: "''",
@@ -35,7 +35,7 @@ const underlineEffect = {
     bottom: 0,
     left: 0,
     height: "1px",
-    backgroundColor: "#4d80e8",
+    backgroundColor: appTheme.palette.sunglow.dark,
     transition: "width 0.5s ease",
     width: 0,
   },
@@ -118,6 +118,7 @@ export const NavbarNotLoggedIn = ({ setResponseMessage }) => {
                 handleSearchTournament={handleSearchTournament}
                 style={{
                   backgroundColor: "white",
+                  color: appTheme.palette.primary.main,
                   borderRadius: "4px",
                   width: "60%",
                   [appTheme.breakpoints.down("lg")]: {
@@ -143,7 +144,7 @@ export const NavbarNotLoggedIn = ({ setResponseMessage }) => {
           >
             <IconButton
               sx={{
-                color: "white",
+                color: appTheme.palette.sunglow.main,
                 paddingBlock: "0.5rem",
                 [appTheme.breakpoints.up("md")]: {
                   display: "none",
@@ -191,6 +192,12 @@ export const NavbarNotLoggedIn = ({ setResponseMessage }) => {
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
+          PaperProps={{
+            style: {
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+            },
+          }}
         >
           <MenuItem onClick={handleClose}>
             <LoginIcon sx={{ marginRight: "0.5rem" }} />

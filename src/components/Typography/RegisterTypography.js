@@ -9,8 +9,10 @@ export const RegisterTypography = () => {
       sx={{
         fontSize: "1.5rem",
         letterSpacing: "0.2rem",
-        [appTheme.breakpoints.down("md")]: {
-          fontSize: "1.1rem",
+        textAlign: "center",
+        color: appTheme.palette.sunglow.main,
+        [appTheme.breakpoints.down("sm")]: {
+          fontSize: "1.2rem",
           letterSpacing: "0.1rem",
         },
       }}

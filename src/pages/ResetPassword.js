@@ -1,8 +1,10 @@
+import { appTheme } from "../themes/appTheme";
 import { useState } from "react";
 import { Formik, Form } from "formik";
 import { api } from "../axios/axios";
 
 import { Typography, Grid, Button, Paper, Container } from "@mui/material";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 import {
   containerStyle,
@@ -35,7 +37,12 @@ export const ResetPassword = () => {
     <>
       <ContentNotLogged>
         <Container maxWidth="md" sx={containerStyle}>
-          <Paper>
+          <Paper
+            sx={{
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+            }}
+          >
             <Formik
               initialValues={{ email: "" }}
               onSubmit={(values) => handleResetPassword(values)}
@@ -57,6 +64,7 @@ export const ResetPassword = () => {
                         fontSize="1.5rem"
                         textTransform="uppercase"
                         letterSpacing="0.2rem"
+                        sx={{ color: appTheme.palette.sunglow.main }}
                       >
                         Obnova hesla
                       </Typography>
@@ -69,9 +77,11 @@ export const ResetPassword = () => {
                     </Grid>
                     <Grid item xs={12} sx={gridItemStyle}>
                       <Button
+                        color="sunglow"
                         sx={{ padding: "1rem" }}
                         variant="contained"
                         type="submit"
+                        endIcon={<RestartAltIcon />}
                       >
                         Obnoviť heslo
                       </Button>

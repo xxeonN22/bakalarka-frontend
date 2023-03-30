@@ -59,6 +59,7 @@ export const PlayerDashboardActions = (props) => {
         }}
       >
         <Button
+          color="error"
           variant="contained"
           sx={{
             width: "100%",
