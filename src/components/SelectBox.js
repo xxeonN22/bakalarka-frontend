@@ -20,6 +20,14 @@ export const SelectBox = (props) => {
         onChange={onChangeFunction}
         label={label}
       >
+        {id === "select-pairing" &&
+          itemArray.map((pairingSystem) => {
+            return (
+              <MenuItem key={pairingSystem} value={pairingSystem}>
+                {pairingSystem}
+              </MenuItem>
+            );
+          })}
         {id === "select-group" &&
           itemArray.map((group) => {
             return (

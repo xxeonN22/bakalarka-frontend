@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
+import { SelectPairingSystem } from "./SelectBoxes/SelectPairingSystem";
 
 export const EditTournamentSettings = ({
   tournamentId,
@@ -37,7 +38,8 @@ export const EditTournamentSettings = ({
     numberOfGroups: 0,
     numberOfCourts: 0,
     sportType: "",
-    pairingSystem: "",
+    selectedPairingSystem: "",
+    pairingSystems: ["Každý s každým 1x", "Každý s každým 2x"],
   });
 
   useEffect(() => {
@@ -46,7 +48,9 @@ export const EditTournamentSettings = ({
         const response = await api.get(
           `/tournaments/eddittournament/${tournamentId}`
         );
+        console.log(response.data);
         setTournamentData({
+          ...tournamentData,
           tournamentName: response.data[0].name,
           maxSets: response.data[0].max_sets,
           maxPoints: response.data[0].max_points,
@@ -54,7 +58,10 @@ export const EditTournamentSettings = ({
           numberOfGroups: response.data[1].groups,
           numberOfRounds: response.data[2].rounds,
           sportType: response.data[0].sport_type,
-          pairingSystem: response.data[0].pairing_system,
+          selectedPairingSystem:
+            response.data[0].pairing_system === `svajciarsky-system`
+              ? "Každý s každým 1x"
+              : "Každý s každým 2x",
         });
         setLoading(false);
       } catch (error) {
@@ -74,9 +81,18 @@ export const EditTournamentSettings = ({
     }));
   };
 
+  const handlePairingChange = (event) => {
+    setTournamentData({
+      ...tournamentData,
+      selectedPairingSystem: event.target.value,
+    });
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  console.log(tournamentData);
 
   return (
     <>
@@ -181,6 +197,13 @@ export const EditTournamentSettings = ({
             min={1}
             max={10}
           ></TextFieldIncrement>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <SelectPairingSystem
+            handlePairingChange={handlePairingChange}
+            selectedPairing={tournamentData.selectedPairingSystem}
+            pairingSystems={tournamentData.pairingSystems}
+          ></SelectPairingSystem>
         </Grid>
       </Grid>
       <Box
