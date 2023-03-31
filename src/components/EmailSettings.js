@@ -38,7 +38,7 @@ export const EmailSettings = (props) => {
       }
     } catch (error) {
       if (error.response) {
-        console.log(error.response.data);
+        setResponseMessage(error.response.data);
       } else {
         console.log(`Error: ${error.message}`);
       }
