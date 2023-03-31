@@ -1,3 +1,4 @@
+import { appTheme } from "../themes/appTheme";
 import {
   Button,
   Paper,
@@ -104,7 +105,23 @@ export const NewDay = (props) => {
                       (selected) => selected.label === option.label
                     )
                   }
-                  sx={{ width: "100%", marginBottom: "1rem" }}
+                  sx={{
+                    width: "100%",
+                    marginBottom: "1rem",
+                    "& .MuiChip-root": {
+                      color: "white",
+                      backgroundColor: appTheme.palette.primary.main,
+                      "& .MuiChip-deleteIcon": {
+                        color: "white",
+                        ":hover": {
+                          color: "white",
+                        },
+                      },
+                    },
+                    "& .MuiAutocomplete-clearIndicator": {
+                      color: appTheme.palette.primary.main,
+                    },
+                  }}
                 />
 
                 <Autocomplete
@@ -118,7 +135,13 @@ export const NewDay = (props) => {
                     handleGameDayChange(gameDay.id, "round", value)
                   }
                   value={gameDay?.round}
-                  sx={{ width: "100%", marginBottom: "1rem" }}
+                  sx={{
+                    width: "100%",
+                    marginBottom: "1rem",
+                    "& .MuiAutocomplete-clearIndicator": {
+                      color: appTheme.palette.primary.main,
+                    },
+                  }}
                 />
                 <LocalizationProvider
                   dateAdapter={AdapterDayjs}
