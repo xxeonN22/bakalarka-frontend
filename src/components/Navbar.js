@@ -99,8 +99,24 @@ export const Navbar = ({ screen, setResponseMessage }) => {
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
+          PaperProps={{
+            style: {
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+            },
+          }}
         >
-          <MenuItem onClick={() => handleDialogOpen()}>
+          <MenuItem
+            onClick={() => handleDialogOpen()}
+            sx={{
+              backgroundColor: appTheme.palette.primary.main,
+              transition: "background-color 0.8s ease",
+              "&:hover": {
+                backgroundColor: appTheme.palette.sunglow.main,
+                color: appTheme.palette.primary.main,
+              },
+            }}
+          >
             <SettingsOutlinedIcon sx={{ marginRight: "0.5rem" }} />
             Nastavenia profilu
           </MenuItem>
@@ -108,6 +124,14 @@ export const Navbar = ({ screen, setResponseMessage }) => {
             onClick={() => {
               handleClose();
               handleLogOut();
+            }}
+            sx={{
+              backgroundColor: appTheme.palette.primary.main,
+              transition: "background-color 0.8s ease",
+              "&:hover": {
+                backgroundColor: appTheme.palette.sunglow.main,
+                color: appTheme.palette.primary.main,
+              },
             }}
           >
             <LogoutOutlinedIcon sx={{ marginRight: "0.5rem" }} />
