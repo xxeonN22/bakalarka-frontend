@@ -7,7 +7,7 @@ import { schema } from "../validationSchemas/EditUserProfile/validationSchema";
 const validationSchema = schema;
 
 export const EditUserProfile = (props) => {
-  const { setResponseMessage, handleDialogClose } = props;
+  const { setResponseMessage, handleDialogClose, handleClose } = props;
   const [adminData, setAdminData] = useState({
     firstName: "",
     lastName: "",
@@ -60,6 +60,9 @@ export const EditUserProfile = (props) => {
           onSubmit={(values) => {
             handleEditUserData(values);
             handleDialogClose();
+            if (handleClose) {
+              handleClose();
+            }
           }}
           validationSchema={validationSchema}
         >

@@ -13,8 +13,12 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+
+import { DialogWindow } from "../components/DialogWindow";
+import { EditUserProfile } from "../components/EditUserProfile";
+import CloseIcon from "@mui/icons-material/Close";
+
 const navbarStyle = {
   display: "none",
   width: "100%",
@@ -23,7 +27,8 @@ const navbarStyle = {
   },
 };
 
-export const Navbar = ({ screen }) => {
+export const Navbar = ({ screen, setResponseMessage }) => {
+  const [dialogState, setDialogState] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const isTabletSize = useMediaQuery(appTheme.breakpoints.down("md"));
@@ -57,6 +62,14 @@ export const Navbar = ({ screen }) => {
     setAnchorEl(null);
   };
 
+  const handleDialogOpen = () => {
+    setDialogState(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogState(false);
+  };
+
   return (
     <AppBar position="fixed">
       <Toolbar sx={navbarStyle}>
@@ -87,13 +100,9 @@ export const Navbar = ({ screen }) => {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={() => handleDialogOpen()}>
             <SettingsOutlinedIcon sx={{ marginRight: "0.5rem" }} />
             Nastavenia profilu
-          </MenuItem>
-          <MenuItem onClick={handleClose}>
-            <DarkModeOutlinedIcon sx={{ marginRight: "0.5rem" }} />
-            Prepnúť vzhľad
           </MenuItem>
           <MenuItem
             onClick={() => {
@@ -105,6 +114,23 @@ export const Navbar = ({ screen }) => {
             Odhlásiť sa
           </MenuItem>
         </Menu>
+        <DialogWindow
+          handleClose={handleClose}
+          open={dialogState}
+          handleCloseModal={handleDialogClose}
+        >
+          <IconButton
+            sx={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleDialogClose}
+          >
+            <CloseIcon></CloseIcon>
+          </IconButton>
+          <EditUserProfile
+            setResponseMessage={setResponseMessage}
+            handleDialogClose={handleDialogClose}
+            handleClose={handleClose}
+          ></EditUserProfile>
+        </DialogWindow>
       </Toolbar>
     </AppBar>
   );

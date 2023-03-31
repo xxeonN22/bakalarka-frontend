@@ -63,7 +63,10 @@ export const Tournaments = () => {
 
   return (
     <>
-      <ContentLayout screen={"tournaments"}>
+      <ContentLayout
+        screen={"tournaments"}
+        setResponseMessage={setResponseMessage}
+      >
         <Grid container sx={gridContainerStyle}>
           <TournamentsTypography></TournamentsTypography>
           <CreateTournament

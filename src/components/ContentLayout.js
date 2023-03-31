@@ -4,7 +4,12 @@ import { SideBar } from "../components/Sidebar";
 import { Navbar } from "../components/Navbar";
 import { BottomNav } from "./BottomNav/BottomNav";
 
-export const ContentLayout = ({ screen, children, backGround }) => {
+export const ContentLayout = ({
+  screen,
+  children,
+  backGround,
+  setResponseMessage,
+}) => {
   const boxStyle = {
     marginTop: "0px",
     marginLeft: "100px",
@@ -33,7 +38,7 @@ export const ContentLayout = ({ screen, children, backGround }) => {
   return (
     <>
       <SideBar screen={screen}></SideBar>
-      <Navbar screen={screen}></Navbar>
+      <Navbar screen={screen} setResponseMessage={setResponseMessage}></Navbar>
       <Box sx={boxStyle}>{children}</Box>
       <BottomNav screen={screen}></BottomNav>
     </>
