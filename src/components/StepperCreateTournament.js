@@ -269,7 +269,7 @@ export const StepperCreateTournament = ({
           }}
         >
           <Button
-            color="sunglow"
+            color="primary"
             variant="contained"
             disabled={activeStep === 1}
             onClick={handleBack}
@@ -278,7 +278,7 @@ export const StepperCreateTournament = ({
             Späť
           </Button>
           <Button
-            color={activeStep === numberOfSteps ? "success" : "sunglow"}
+            color="sunglow"
             endIcon={
               activeStep === numberOfSteps ? (
                 <DoneIcon />

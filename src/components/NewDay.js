@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/sk";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import AddIcon from "@mui/icons-material/Add";
 
 export const NewDay = (props) => {
   /* Získame pristup k objektu do ktoreho ulozime data o hracich dnoch */
@@ -189,7 +190,12 @@ export const NewDay = (props) => {
       <Box
         sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
       >
-        <Button color="sunglow" variant="contained" onClick={handleAddGameDay}>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handleAddGameDay}
+          startIcon={<AddIcon />}
+        >
           Pridať hrací deň
         </Button>
       </Box>
