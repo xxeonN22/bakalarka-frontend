@@ -67,7 +67,7 @@ export const Tournaments = () => {
         screen={"tournaments"}
         setResponseMessage={setResponseMessage}
       >
-        <Grid container sx={gridContainerStyle}>
+        <Grid container spacing={2} sx={gridContainerStyle}>
           <TournamentsTypography></TournamentsTypography>
           <CreateTournament
             setResponseMessage={setResponseMessage}

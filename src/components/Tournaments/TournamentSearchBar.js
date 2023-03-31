@@ -25,9 +25,6 @@ export const TournamentSearchBar = (props) => {
         style={{
           width: "50%",
           [appTheme.breakpoints.down("lg")]: {
-            width: "90%",
-          },
-          [appTheme.breakpoints.down("sm")]: {
             width: "100%",
           },
         }}

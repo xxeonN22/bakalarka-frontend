@@ -13,10 +13,11 @@ export const gridItemStyle = {
 
 export const createTournamentStyle = {
   paddingBlock: "1rem",
-  [appTheme.breakpoints.down("lg")]: {
-    width: "90%",
+  width: "50%",
+  [appTheme.breakpoints.down("xl")]: {
+    width: "70%",
   },
-  [appTheme.breakpoints.down("sm")]: {
+  [appTheme.breakpoints.down("lg")]: {
     width: "100%",
   },
 };
