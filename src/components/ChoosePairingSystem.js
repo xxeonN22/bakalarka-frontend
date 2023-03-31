@@ -1,3 +1,4 @@
+import { appTheme } from "../themes/appTheme";
 import { Grid, Paper, Alert } from "@mui/material";
 
 export const ChoosePairingSystem = (props) => {
@@ -48,7 +49,7 @@ export const ChoosePairingSystem = (props) => {
                 justifyContent: "center",
                 backgroundColor:
                   newTournament.selectedPairingStyle === system.value
-                    ? "#1f2736"
+                    ? appTheme.palette.sunglow.main
                     : "inherit",
                 transition: "background-color 0.5s ease",
               }}

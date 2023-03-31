@@ -1,3 +1,4 @@
+import { appTheme } from "../../themes/appTheme";
 import React from "react";
 import { Grid, Paper } from "@mui/material";
 
@@ -11,7 +12,9 @@ const paperStyle = (selectedStyle, addingStyle) => {
     justifyContent: "center",
     minHeight: "190px",
     backgroundColor:
-      selectedStyle === addingStyle.value ? "#3f51b5" : "inherit",
+      selectedStyle === addingStyle.value
+        ? appTheme.palette.primary.main
+        : "inherit",
     transition: "background-color 0.5s ease",
     color: selectedStyle === addingStyle.value ? "white" : "inherit",
   };
@@ -46,9 +49,22 @@ export const AddingStyle = (props) => {
           {React.cloneElement(addingStyle.icon, {
             width: 40,
             height: 40,
-            fill: selectedStyle === addingStyle.value ? "white" : "black",
+            fill:
+              selectedStyle === addingStyle.value
+                ? "white"
+                : appTheme.palette.primary.main,
           })}
-          <span style={{ marginTop: "0.5rem" }}>{addingStyle.name}</span>
+          <span
+            style={{
+              marginTop: "0.5rem",
+              color:
+                selectedStyle === addingStyle.value
+                  ? "white"
+                  : appTheme.palette.primary.main,
+            }}
+          >
+            {addingStyle.name}
+          </span>
         </label>
       </Paper>
     </Grid>

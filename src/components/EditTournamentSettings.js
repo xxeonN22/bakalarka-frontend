@@ -92,8 +92,6 @@ export const EditTournamentSettings = ({
     return <div>Loading...</div>;
   }
 
-  console.log(tournamentData);
-
   return (
     <>
       <IconButton
@@ -116,7 +114,7 @@ export const EditTournamentSettings = ({
         {`Upraviť údaje pre turnaj ${tournamentData.tournamentName}`}
       </Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
             label="Názov turnaja"
@@ -130,7 +128,7 @@ export const EditTournamentSettings = ({
           />
         </Grid>
         {sportsWithSets.includes(sportType) && (
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextFieldIncrement
               isRequired={true}
               value={tournamentData.maxSets}
@@ -145,7 +143,7 @@ export const EditTournamentSettings = ({
           </Grid>
         )}
         {maxNumberPointsSports.includes(sportType) && (
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <TextFieldIncrement
               isRequired={true}
               value={tournamentData.maxPoints}
@@ -159,7 +157,7 @@ export const EditTournamentSettings = ({
             ></TextFieldIncrement>
           </Grid>
         )}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <TextFieldIncrement
             isRequired={true}
             value={tournamentData.numberOfCourts}
@@ -172,7 +170,7 @@ export const EditTournamentSettings = ({
             max={20}
           ></TextFieldIncrement>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <TextFieldIncrement
             isRequired={true}
             value={tournamentData.numberOfGroups}
@@ -185,7 +183,7 @@ export const EditTournamentSettings = ({
             max={10}
           ></TextFieldIncrement>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <TextFieldIncrement
             isRequired={true}
             value={tournamentData.numberOfRounds}
@@ -198,7 +196,7 @@ export const EditTournamentSettings = ({
             max={10}
           ></TextFieldIncrement>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <SelectPairingSystem
             handlePairingChange={handlePairingChange}
             selectedPairing={tournamentData.selectedPairingSystem}
@@ -210,9 +208,13 @@ export const EditTournamentSettings = ({
         sx={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}
       >
         <Button
+          color="sunglow"
           startIcon={<EditIcon></EditIcon>}
           variant="contained"
           onClick={() => {
+            if (tournamentData.tournamentName === "") {
+              return;
+            }
             handleEditTournament(tournamentData);
             handleCloseModal();
             handleClose();

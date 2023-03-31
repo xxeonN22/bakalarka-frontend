@@ -82,12 +82,14 @@ export const Register = () => {
                       <FormikTextField
                         name="firstName"
                         label="Zadajte krstné meno"
+                        color="white"
                       ></FormikTextField>
                     </Grid>
                     <Grid item xs={12}>
                       <FormikTextField
                         name="lastName"
                         label="Zadajte priezvisko"
+                        color="white"
                       ></FormikTextField>
                     </Grid>
                     <Grid item xs={12}>

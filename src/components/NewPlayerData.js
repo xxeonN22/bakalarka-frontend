@@ -1,3 +1,4 @@
+import { appTheme } from "../themes/appTheme";
 import { useEffect, useState } from "react";
 import { api } from "../axios/axios";
 import {
@@ -181,7 +182,13 @@ export const NewPlayerData = (props) => {
             >
               {groups.map((group) => (
                 <Grid key={group.group_name} item xs={4}>
-                  <Paper sx={{ padding: "0.3rem" }}>
+                  <Paper
+                    sx={{
+                      padding: "0.3rem",
+                      backgroundColor: appTheme.palette.primary.main,
+                      color: "white",
+                    }}
+                  >
                     <Typography sx={{ textAlign: "center" }}>
                       {group.group_name}
                     </Typography>
@@ -241,7 +248,13 @@ export const NewPlayerData = (props) => {
             >
               {groups.map((group) => (
                 <Grid key={group.group_name} item xs={6} sm={4}>
-                  <Paper sx={{ padding: "0.3rem" }}>
+                  <Paper
+                    sx={{
+                      padding: "0.3rem",
+                      backgroundColor: appTheme.palette.primary.main,
+                      color: "white",
+                    }}
+                  >
                     <Typography sx={{ textAlign: "center" }}>
                       {group.group_name}
                     </Typography>

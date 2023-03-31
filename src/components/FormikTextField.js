@@ -2,7 +2,7 @@ import { appTheme } from "../themes/appTheme";
 import { Field } from "formik";
 import { TextField } from "@mui/material";
 
-export const FormikTextField = ({ name, label, ...rest }) => {
+export const FormikTextField = ({ name, label, color, ...rest }) => {
   return (
     <Field name={name}>
       {({ field, form }) => (
@@ -15,9 +15,9 @@ export const FormikTextField = ({ name, label, ...rest }) => {
           sx={{
             width: "100%",
             ".MuiInputLabel-outlined": {
-              color: "white",
+              color: color,
               "&.Mui-focused": {
-                color: "white",
+                color: color,
               },
               "&.Mui-error": {
                 color: appTheme.palette.error.main,
@@ -28,16 +28,16 @@ export const FormikTextField = ({ name, label, ...rest }) => {
                 borderColor: appTheme.palette.error.main,
               },
               "& fieldset": {
-                borderColor: "white",
+                borderColor: color,
               },
               "&:hover fieldset": {
-                borderColor: "white",
+                borderColor: color,
               },
               "&.Mui-focused fieldset": {
-                borderColor: "white",
+                borderColor: color,
               },
               "& input": {
-                color: "white",
+                color: color,
               },
             },
           }}
