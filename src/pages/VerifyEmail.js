@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { api } from "../axios/axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { appTheme } from "../themes/appTheme";
 
 import { Paper, Container, Button, Typography, Box } from "@mui/material";
 
@@ -37,8 +38,10 @@ export const VerifyEmail = () => {
         <Container maxWidth="md" sx={containerStyle}>
           <Paper
             sx={{
-              padding: "2rem",
-              width: "90%",
+              paddingBlock: "4rem",
+              paddingInline: "6rem",
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
             }}
           >
             <Typography textAlign="center" variant="h2" fontSize="1.5rem">
@@ -66,7 +69,11 @@ export const VerifyEmail = () => {
                 marginTop: "2rem",
               }}
             >
-              <Button variant="contained" onClick={handleVerifyEmail}>
+              <Button
+                color="sunglow"
+                variant="contained"
+                onClick={handleVerifyEmail}
+              >
                 Overiť email
               </Button>
             </Box>
