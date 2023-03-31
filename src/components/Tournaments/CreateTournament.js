@@ -60,7 +60,7 @@ export const CreateTournament = (props) => {
           sx={{ position: "absolute", top: 0, right: 0 }}
           onClick={handleDialogClose}
         >
-          <CloseIcon></CloseIcon>
+          <CloseIcon color="primary"></CloseIcon>
         </IconButton>
         <StepperCreateTournament
           setResponseMessage={setResponseMessage}

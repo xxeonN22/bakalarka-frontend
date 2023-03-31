@@ -49,7 +49,7 @@ export const ChoosePairingSystem = (props) => {
                 justifyContent: "center",
                 backgroundColor:
                   newTournament.selectedPairingStyle === system.value
-                    ? appTheme.palette.sunglow.main
+                    ? appTheme.palette.primary.main
                     : "inherit",
                 transition: "background-color 0.5s ease",
               }}
