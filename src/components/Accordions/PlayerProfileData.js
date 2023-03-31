@@ -1,13 +1,16 @@
+import { appTheme } from "../../themes/appTheme";
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
   Grid,
-  TextField,
   Box,
   Button,
 } from "@mui/material";
+
+import { FormikTextField } from "../../components/FormikTextField";
+import { EmailField } from "../../components/Authentication/EmailField";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -19,9 +22,15 @@ const validationSchema = schema;
 export const PlayerProfileData = (props) => {
   const { isLoading, handleEditPlayer, playerData } = props;
   return (
-    <Accordion sx={{ width: "100%" }}>
+    <Accordion
+      sx={{
+        width: "100%",
+        backgroundColor: appTheme.palette.primary.main,
+        color: "white",
+      }}
+    >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={<ExpandMoreIcon color="sunglow" />}
         aria-controls="player-credentials"
         id="player-credentials-header"
         sx={{ textAlign: "center" }}
@@ -46,66 +55,35 @@ export const PlayerProfileData = (props) => {
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        id="firstName"
-                        label="Meno"
+                      <FormikTextField
                         name="firstName"
-                        value={values.firstName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.firstName && Boolean(errors.firstName)}
-                        helperText={touched.firstName && errors.firstName}
-                      ></TextField>
+                        label="Krstné meno"
+                        color="white"
+                      ></FormikTextField>
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        id="lastName"
-                        label="Priezvisko"
+                      <FormikTextField
                         name="lastName"
-                        value={values.lastName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.lastName && Boolean(errors.lastName)}
-                        helperText={touched.lastName && errors.lastName}
-                      ></TextField>
+                        label="Priezvisko"
+                        color="white"
+                      ></FormikTextField>
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email"
-                        name="email"
-                        value={values.email}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                      ></TextField>
+                      <EmailField name="email" label="Email"></EmailField>
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        id="elo"
-                        label="Elo"
+                      <FormikTextField
                         name="elo"
-                        value={values.elo}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.elo && Boolean(errors.elo)}
-                        helperText={touched.elo && errors.elo}
-                      ></TextField>
+                        label="ELO"
+                        color="white"
+                      ></FormikTextField>
                     </Grid>
                   </Grid>
                   <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <Button
+                      color="sunglow"
                       variant="contained"
-                      sx={{ marginTop: "1rem" }}
+                      sx={{ marginBlock: "1rem" }}
                       startIcon={<EditOutlinedIcon />}
                       type="submit"
                     >
