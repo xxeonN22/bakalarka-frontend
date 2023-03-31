@@ -10,7 +10,9 @@ import {
   Alert,
   Typography,
   Paper,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const NewPlayerData = (props) => {
   const {
@@ -22,6 +24,8 @@ export const NewPlayerData = (props) => {
     handleSinglePlayerChange,
     handleMultiplePlayersChange,
     handleFileChange,
+    handleClose,
+    handleCloseModal,
   } = props;
 
   const [groups, setGroups] = useState([]);
@@ -59,6 +63,15 @@ export const NewPlayerData = (props) => {
           {stepperMessage.playersCredentialsMessage}
         </Alert>
       )}
+      <IconButton
+        onClick={() => {
+          handleCloseModal();
+          handleClose();
+        }}
+        sx={{ position: "absolute", top: 0, right: 0 }}
+      >
+        <CloseIcon color="primary"></CloseIcon>
+      </IconButton>
       {selectedStyle === "add-single-player" && (
         <Grid container columnSpacing={2}>
           <Grid item xs={12} md={6}>
@@ -197,10 +210,29 @@ export const NewPlayerData = (props) => {
               ))}
             </Grid>
           </Grid>
-          <Typography textAlign="center" sx={{ marginBottom: "0.5rem" }}>
+          <Typography
+            textAlign="center"
+            sx={{
+              marginBottom: "1rem",
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+              padding: "0.5rem",
+              borderRadius: "4px",
+            }}
+          >
             Každý hráč musí byť zadaný v nasledujúcom tvare:
           </Typography>
-          <Typography textAlign="center" sx={{ marginBottom: "0.5rem" }}>
+          <Typography
+            textAlign="center"
+            sx={{
+              marginBottom: "1rem",
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+              padding: "0.5rem",
+              borderRadius: "4px",
+              letterSpacing: "0.07rem",
+            }}
+          >
             Meno, Priezvisko, email, SKUPINA - ?, elo;
           </Typography>
           <TextField
@@ -263,10 +295,29 @@ export const NewPlayerData = (props) => {
               ))}
             </Grid>
           </Grid>
-          <Typography textAlign="center" sx={{ marginBottom: "0.5rem" }}>
+          <Typography
+            textAlign="center"
+            sx={{
+              marginBottom: "1rem",
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+              padding: "0.5rem",
+              borderRadius: "4px",
+            }}
+          >
             Každý riadok v súbore .csv musí byť v tvare:
           </Typography>
-          <Typography textAlign="center" sx={{ marginBottom: "0.5rem" }}>
+          <Typography
+            textAlign="center"
+            sx={{
+              marginBottom: "1rem",
+              backgroundColor: appTheme.palette.primary.main,
+              color: "white",
+              padding: "0.5rem",
+              borderRadius: "4px",
+              letterSpacing: "0.04rem",
+            }}
+          >
             Meno, Priezvisko, email, SKUPINA - ?, elo kde každá hodnota je jedna
             bunka
           </Typography>

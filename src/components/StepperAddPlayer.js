@@ -151,6 +151,8 @@ export const StepperAddPlayer = (props) => {
               handleSinglePlayerChange={handleSinglePlayerChange}
               handleMultiplePlayersChange={handleMultiplePlayersChange}
               handleFileChange={handleFileChange}
+              handleClose={handleClose}
+              handleCloseModal={handleCloseModal}
             ></NewPlayerData>
           </>
         );
