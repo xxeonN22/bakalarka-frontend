@@ -121,7 +121,10 @@ export const Navbar = ({ screen, setResponseMessage }) => {
         >
           <IconButton
             sx={{ position: "absolute", top: 0, right: 0 }}
-            onClick={handleDialogClose}
+            onClick={() => {
+              handleDialogClose();
+              handleClose();
+            }}
           >
             <CloseIcon></CloseIcon>
           </IconButton>

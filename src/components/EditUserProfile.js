@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { api } from "../axios/axios";
-import { Grid, TextField, Box, Button } from "@mui/material";
+import { Grid, TextField, Box, Button, Typography } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { schema } from "../validationSchemas/EditUserProfile/validationSchema";
+import { appTheme } from "../themes/appTheme";
 const validationSchema = schema;
 
 export const EditUserProfile = (props) => {
@@ -70,6 +71,11 @@ export const EditUserProfile = (props) => {
             <Form>
               <Grid container spacing={2} sx={{ marginBlock: "1rem" }}>
                 <Grid item xs={12}>
+                  <Typography textAlign="center" variant="h2" fontSize="1.5rem">
+                    Vaše údaje
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
@@ -114,6 +120,7 @@ export const EditUserProfile = (props) => {
               </Grid>
               <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Button
+                  color="sunglow"
                   type="submit"
                   variant="contained"
                   endIcon={<EditOutlinedIcon />}

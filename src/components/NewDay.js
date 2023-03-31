@@ -80,8 +80,9 @@ export const NewDay = (props) => {
                 <IconButton
                   aria-label="odstranit-turnaj"
                   onClick={() => handleRemoveGameDay(gameDay.id)}
+                  sx={{ marginBlock: "0.5rem" }}
                 >
-                  <DeleteIcon />
+                  <DeleteIcon color="error" />
                 </IconButton>
 
                 <Autocomplete
@@ -165,7 +166,7 @@ export const NewDay = (props) => {
       <Box
         sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
       >
-        <Button variant="contained" onClick={handleAddGameDay}>
+        <Button color="sunglow" variant="contained" onClick={handleAddGameDay}>
           Pridať hrací deň
         </Button>
       </Box>

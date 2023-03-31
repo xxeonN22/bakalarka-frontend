@@ -234,7 +234,24 @@ export const StepperCreateTournament = ({
       <Stepper
         activeStep={activeStep - 1}
         alternativeLabel
-        sx={{ marginBlock: "1rem" }}
+        sx={{
+          marginBlock: "1rem",
+          "& .MuiStepIcon-root": {
+            color: appTheme.palette.primary.dark,
+          },
+          "& .MuiStepIcon-active": {
+            color: appTheme.palette.sunglow.main,
+          },
+          "& .MuiStepLabel-label": {
+            color: appTheme.palette.primary.main,
+          },
+          "& .MuiStepLabel-active": {
+            color: appTheme.palette.primary.main,
+          },
+          "& .MuiStepIcon-root.Mui-active": {
+            color: appTheme.palette.sunglow.main,
+          },
+        }}
       >
         {createTournamentSteps.map((label, index) => (
           <Step key={index}>
@@ -252,6 +269,7 @@ export const StepperCreateTournament = ({
           }}
         >
           <Button
+            color="sunglow"
             variant="contained"
             disabled={activeStep === 1}
             onClick={handleBack}
@@ -260,6 +278,7 @@ export const StepperCreateTournament = ({
             Späť
           </Button>
           <Button
+            color={activeStep === numberOfSteps ? "success" : "sunglow"}
             endIcon={
               activeStep === numberOfSteps ? (
                 <DoneIcon />
