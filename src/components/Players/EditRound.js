@@ -1,3 +1,4 @@
+import { appTheme } from "../../themes/appTheme";
 import { useState, useEffect } from "react";
 import { api } from "../../axios/axios";
 import { useNavigate } from "react-router-dom";
@@ -106,6 +107,7 @@ export const EditRound = (props) => {
             }}
           >
             <Button
+              color="sunglow"
               onClick={() => {
                 console.log(editRoundId);
                 handleEditGameDay(editGamedayId, editRoundId, gameDayData);
@@ -147,7 +149,23 @@ export const EditRound = (props) => {
                   (selected) => selected === option
                 )
               }
-              sx={{ width: "100%", marginBottom: "1rem" }}
+              sx={{
+                width: "100%",
+                marginBottom: "1rem",
+                "& .MuiChip-root": {
+                  color: "white",
+                  backgroundColor: appTheme.palette.primary.main,
+                  "& .MuiChip-deleteIcon": {
+                    color: "white",
+                    ":hover": {
+                      color: "white",
+                    },
+                  },
+                },
+                "& .MuiAutocomplete-clearIndicator": {
+                  color: appTheme.palette.primary.main,
+                },
+              }}
             />
 
             <Autocomplete
@@ -165,7 +183,13 @@ export const EditRound = (props) => {
               renderInput={(params) => (
                 <TextField {...params} label="Vyberte kolo" />
               )}
-              sx={{ width: "100%", marginBottom: "1rem" }}
+              sx={{
+                width: "100%",
+                marginBottom: "1rem",
+                "& .MuiAutocomplete-clearIndicator": {
+                  color: appTheme.palette.primary.main,
+                },
+              }}
             />
 
             <LocalizationProvider

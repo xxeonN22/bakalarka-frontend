@@ -68,7 +68,7 @@ export const ChooseRoundCreateRound = (props) => {
             sx={{ position: "absolute", top: 0, right: 0 }}
             onClick={() => handleDialogClose("editGameDay")}
           >
-            <CloseIcon></CloseIcon>
+            <CloseIcon color="primary"></CloseIcon>
           </IconButton>
           <EditRound
             tournamentId={tournamentId}
@@ -107,7 +107,7 @@ export const ChooseRoundCreateRound = (props) => {
             sx={{ position: "absolute", top: 0, right: 0 }}
             onClick={() => handleDialogClose("newGameDay")}
           >
-            <CloseIcon></CloseIcon>
+            <CloseIcon color="primary"></CloseIcon>
           </IconButton>
           <NewGameDay
             tournamentId={tournamentId}

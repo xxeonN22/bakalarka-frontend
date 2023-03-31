@@ -24,6 +24,9 @@ export const GameDaysTabs = (props) => {
           scrollButtons
           aria-label="visible arrows tabs example"
           sx={{
+            "& .MuiTabs-indicator": {
+              backgroundColor: appTheme.palette.sunglow.dark,
+            },
             [`& .${tabsClasses.scrollButtons}`]: {
               "&.Mui-disabled": { opacity: 0.3 },
             },

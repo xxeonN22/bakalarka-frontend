@@ -1,13 +1,5 @@
-import {
-  Button,
-  Paper,
-  IconButton,
-  TextField,
-  Box,
-  Grid,
-  Autocomplete,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { appTheme } from "../../themes/appTheme";
+import { Button, Paper, TextField, Box, Autocomplete } from "@mui/material";
 
 import { LocalizationProvider, csCZ, DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -102,7 +94,23 @@ export const NewGameDay = ({
             getOptionDisabled={(option) =>
               newGameDay.selectedGroups.some((selected) => selected === option)
             }
-            sx={{ width: "100%", marginBottom: "1rem" }}
+            sx={{
+              width: "100%",
+              marginBottom: "1rem",
+              "& .MuiChip-root": {
+                color: "white",
+                backgroundColor: appTheme.palette.primary.main,
+                "& .MuiChip-deleteIcon": {
+                  color: "white",
+                  ":hover": {
+                    color: "white",
+                  },
+                },
+              },
+              "& .MuiAutocomplete-clearIndicator": {
+                color: appTheme.palette.primary.main,
+              },
+            }}
           />
 
           <Autocomplete
@@ -119,7 +127,13 @@ export const NewGameDay = ({
               });
             }}
             value={newGameDay?.selectedRound}
-            sx={{ width: "100%", marginBottom: "1rem" }}
+            sx={{
+              width: "100%",
+              marginBottom: "1rem",
+              "& .MuiAutocomplete-clearIndicator": {
+                color: appTheme.palette.primary.main,
+              },
+            }}
           />
           <LocalizationProvider
             dateAdapter={AdapterDayjs}
@@ -169,6 +183,7 @@ export const NewGameDay = ({
         sx={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
       >
         <Button
+          color="sunglow"
           onClick={() => {
             handleNewGameDay(newGameDay);
             handleCloseModal();
