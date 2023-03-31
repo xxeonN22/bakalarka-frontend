@@ -101,7 +101,7 @@ export const EditTournamentSettings = ({
         }}
         sx={{ position: "absolute", top: 0, right: 0 }}
       >
-        <CloseIcon></CloseIcon>
+        <CloseIcon color="primary"></CloseIcon>
       </IconButton>
       <Typography
         variant="h2"

@@ -134,6 +134,8 @@ export const StepperAddPlayer = (props) => {
               handleStyleChange={handleStyleChange}
               stepperMessage={stepperMessage}
               setStepperMessage={setStepperMessage}
+              handleClose={handleClose}
+              handleCloseModal={handleCloseModal}
             ></ChooseAddingStyle>
           </>
         );

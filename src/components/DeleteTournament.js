@@ -52,7 +52,7 @@ export const DeleteTournament = (props) => {
         }}
         sx={{ position: "absolute", top: 0, right: 0 }}
       >
-        <CloseIcon></CloseIcon>
+        <CloseIcon color="primary"></CloseIcon>
       </IconButton>
     </>
   );
