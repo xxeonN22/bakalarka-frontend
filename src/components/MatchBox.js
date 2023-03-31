@@ -27,7 +27,7 @@ export const MatchBox = (props) => {
           justifyContent: "space-between",
           alignItems: "center",
           padding: "1rem",
-          backgroundColor: "#303A53",
+          backgroundColor: appTheme.palette.primary.main,
           color: "white",
           borderRadius: "4px",
           [appTheme.breakpoints.down("md")]: {
@@ -36,7 +36,7 @@ export const MatchBox = (props) => {
         }}
       >
         <Checkbox
-          sx={{ padding: "0", color: "white", flex: 1 }}
+          sx={{ padding: "0", flex: 1 }}
           onClick={() => handleCheckboxClick(matchId)}
         ></Checkbox>
         <Typography
@@ -78,6 +78,7 @@ export const MatchBox = (props) => {
           {firstPlayer}
         </Typography>
         <Button
+          color="sunglow"
           variant="contained"
           sx={{ flex: 1 }}
           onClick={(event) =>

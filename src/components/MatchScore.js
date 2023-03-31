@@ -3,6 +3,7 @@ import { DialogWindow } from "./DialogWindow";
 
 import { Grid, Box, Button, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 
 export const MatchScore = (props) => {
   const {
@@ -25,7 +26,7 @@ export const MatchScore = (props) => {
         sx={{ position: "absolute", top: 0, right: 0 }}
         onClick={() => handleDialogClose()}
       >
-        <CloseIcon></CloseIcon>
+        <CloseIcon color="primary"></CloseIcon>
       </IconButton>
       <Box>
         <Grid container>
@@ -74,7 +75,9 @@ export const MatchScore = (props) => {
             }}
           >
             <Button
+              color="sunglow"
               variant="contained"
+              endIcon={<CheckIcon />}
               onClick={() => {
                 handleSetScore();
                 handleDialogClose();
