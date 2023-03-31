@@ -37,9 +37,14 @@ export const ChooseGroup = (props) => {
           sx={{ position: "absolute", top: 0, right: 0 }}
           onClick={handleDialogClose}
         >
-          <CloseIcon></CloseIcon>
+          <CloseIcon color="primary"></CloseIcon>
         </IconButton>
-        <Typography sx={{ marginBottom: "2rem", marginTop: "1rem" }}>
+        <Typography
+          variant="h2"
+          fontSize="1.4rem"
+          textAlign="center"
+          sx={{ marginBottom: "2rem", marginTop: "1rem" }}
+        >
           Vyberte skupinu, do ktorej sa majú presunúť hráči
         </Typography>
         <SelectGroup

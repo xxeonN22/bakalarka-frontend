@@ -70,7 +70,7 @@ export const EmailSettings = (props) => {
           sx={{ position: "absolute", top: 0, right: 0 }}
           onClick={handleDialogClose}
         >
-          <CloseIcon></CloseIcon>
+          <CloseIcon color="primary"></CloseIcon>
         </IconButton>
 
         <Formik
@@ -88,9 +88,7 @@ export const EmailSettings = (props) => {
                   <Typography
                     variant="h2"
                     sx={{
-                      fontSize: "1.5rem",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.2rem",
+                      fontSize: "1.4rem",
                       textAlign: "center",
                       marginBottom: "1.5rem",
                       [appTheme.breakpoints.down("md")]: {
@@ -131,6 +129,7 @@ export const EmailSettings = (props) => {
                 </Grid>
                 <Grid item>
                   <Button
+                    color="sunglow"
                     type="submit"
                     variant="contained"
                     sx={{ marginTop: "2rem" }}
