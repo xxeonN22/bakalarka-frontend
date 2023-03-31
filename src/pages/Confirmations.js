@@ -14,6 +14,8 @@ const paperElementStyle = {
   width: "60%",
   paddingBlock: "1rem",
   paddingInline: "2rem",
+  backgroundColor: appTheme.palette.primary.main,
+  color: "white",
   [appTheme.breakpoints.down("md")]: { width: "90%" },
 };
 

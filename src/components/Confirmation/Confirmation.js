@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { appTheme } from "../../themes/appTheme";
 import { Grid, Button, Box, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
@@ -8,7 +8,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { ConfirmationChanges } from "../ConfirmationChanges.js";
 
 const confirmationBoxStyle = {
-  backgroundColor: "#1f2736",
+  backgroundColor: appTheme.palette.primary.dark,
   width: "100%",
   color: "white",
   borderRadius: "4px",
@@ -87,12 +87,23 @@ export const Confirmation = (props) => {
                 </Typography>
                 <Box>
                   {confirmation.status === "nie" ? (
-                    <CloseIcon sx={{ color: "red", fontSize: "3rem" }} />
+                    <CloseIcon
+                      sx={{
+                        color: appTheme.palette.error.main,
+                        fontSize: "3rem",
+                      }}
+                    />
                   ) : (
-                    <CheckIcon sx={{ color: "green", fontSize: "3rem" }} />
+                    <CheckIcon
+                      sx={{
+                        color: appTheme.palette.success.main,
+                        fontSize: "3rem",
+                      }}
+                    />
                   )}
                 </Box>
                 <InfoOutlinedIcon
+                  color="sunglow"
                   onClick={(e) => {
                     handleInfoClick(confirmation.id_game_day, e);
                     handleClickInfoIcon(e);
