@@ -33,7 +33,7 @@ export const PlayerProfileMatchBox = (props) => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: "#303a53",
+        backgroundColor: appTheme.palette.primary.main,
         padding: "1rem",
         color: "white",
         position: "relative",
@@ -57,6 +57,7 @@ export const PlayerProfileMatchBox = (props) => {
         {match.firstPlayerData[0].last_name}
       </Typography>
       <Button
+        color="sunglow"
         variant="contained"
         onClick={() => {
           handleDialogOpen();
@@ -71,7 +72,7 @@ export const PlayerProfileMatchBox = (props) => {
           sx={{ position: "absolute", top: 0, right: 0 }}
           onClick={handleDialogClose}
         >
-          <CloseIcon></CloseIcon>
+          <CloseIcon color="primary"></CloseIcon>
         </IconButton>
         <PlayerProfileMatchScore
           matchId={match.matchId}

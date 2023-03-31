@@ -55,6 +55,7 @@ export const PlayerProfileAttendance = (props) => {
                       position: "relative",
                       backgroundColor: appTheme.palette.primary.dark,
                       color: "white",
+                      border: `1px solid ${appTheme.palette.sunglow.main}`,
                     }}
                   >
                     <Typography>

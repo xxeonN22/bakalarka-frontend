@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { PlayerProfileSetsToRender } from "./PlayerProfileSetsToRender";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { appTheme } from "../themes/appTheme";
+import EditIcon from "@mui/icons-material/Edit";
 
 export const PlayerProfileMatchScore = ({
   matchId,
@@ -155,11 +156,13 @@ export const PlayerProfileMatchScore = ({
             >
               {status !== "notLoggedIn" && (
                 <Button
+                  color="sunglow"
                   onClick={() => {
                     handleEditScore(matchData.matchId, matchData);
                     handleDialogClose();
                   }}
                   variant="contained"
+                  endIcon={<EditIcon />}
                 >
                   Upraviť výsledok
                 </Button>
