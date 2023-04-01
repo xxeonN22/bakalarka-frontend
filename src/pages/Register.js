@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { appTheme } from "../themes/appTheme";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { api } from "../axios/axios";
@@ -20,7 +21,6 @@ import {
 } from "../components/Register/registerStyles";
 
 import { schema } from "../validationSchemas/Register/validationSchema";
-import { appTheme } from "../themes/appTheme";
 const validationSchema = schema;
 
 export const Register = () => {

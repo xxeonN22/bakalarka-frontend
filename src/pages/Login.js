@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { api } from "../axios/axios";
 
+import { Grid, Button, Container, Paper } from "@mui/material";
+
 import { ContentNotLogged } from "../components/ContentNotLogged";
 import { AuthenticationPageLink } from "../components/AuthenticationPageLink";
 import { AlertMessage } from "../components/Alert/AlertMessage.js";
@@ -10,9 +12,6 @@ import { LoginTypography } from "../components/Typography/LoginTypography.js";
 import { EmailField } from "../components/Authentication/EmailField.js";
 import { PasswordField } from "../components/Authentication/PasswordField.js";
 import { Rememberme } from "../components/Authentication/Rememberme.js";
-
-import { Grid, Button, Container, Paper } from "@mui/material";
-
 import {
   containerStyles,
   gridContainerStyle,
