@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/search?word=user
 function UserIcon(props) {
   return (
     <svg

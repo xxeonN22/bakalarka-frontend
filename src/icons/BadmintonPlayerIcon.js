@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/badminton-equipment_2387317?term=badminton&page=1&position=11&origin=search&related_id=2387317
 function BadmintonPlayerIcon(props) {
   return (
     <svg

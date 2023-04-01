@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/logout_992680?term=logout&page=1&position=4&origin=search&related_id=992680
 function LogoutIcon(props) {
   return (
     <svg

@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/badminton_1633893?term=badminton&page=1&position=3&origin=search&related_id=1633893
 function BadmintonSportIcon(props) {
   return (
     <svg

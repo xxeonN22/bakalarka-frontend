@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/import_151901?term=import+file&page=1&position=2&origin=search&related_id=151901
 function ImportPlayersIcon(props) {
   return (
     <svg

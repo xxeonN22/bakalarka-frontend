@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/table-tennis_2500356?term=table+tennis&page=1&position=3&origin=search&related_id=2500356
 function TableTenisSportIcon(props) {
   return (
     <svg

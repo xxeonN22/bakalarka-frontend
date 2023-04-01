@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/tennis_2414900?term=squash&page=1&position=19&origin=search&related_id=2414900
 function SquashIcon(props) {
   return (
     <svg

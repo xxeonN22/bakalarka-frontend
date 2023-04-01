@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/user_1077114?term=user&page=1&position=3&origin=search&related_id=1077114
 function AddOnePlayerIcon(props) {
   return (
     <svg

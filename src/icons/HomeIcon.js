@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/search?word=home
 function HomeIcon(props) {
   return (
     <svg

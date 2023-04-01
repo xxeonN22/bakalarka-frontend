@@ -1,3 +1,4 @@
+// Ikona prevzata zo stranky https://www.flaticon.com/free-icon/multiple-users-silhouette_33308?term=multiple+users&page=1&position=1&origin=search&related_id=33308
 function AddMultiplePlayersIcon(props) {
   return (
     <svg

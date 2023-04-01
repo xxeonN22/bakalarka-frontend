@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/versus_4569269?term=vs&page=1&position=47&origin=search&related_id=4569269
 function MatchesIcon(props) {
   return (
     <svg

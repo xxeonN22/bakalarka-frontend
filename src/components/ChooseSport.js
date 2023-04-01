@@ -4,8 +4,6 @@ import { Grid, Paper, Alert } from "@mui/material";
 import BadmintonSportIcon from "../icons/BadmintonSportIcon";
 import TenisSportIcon from "../icons/TenisSportIcon";
 import TableTenisSportIcon from "../icons/TableTenisSportIcon";
-import VolleyballSportIcon from "../icons/VolleyballSportIcon";
-import FootballSportIcon from "../icons/FootballSportIcon";
 import SquashIcon from "../icons/SquashIcon";
 
 export const ChooseSport = (props) => {

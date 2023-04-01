@@ -1,3 +1,4 @@
+// Ikona prevzata z https://www.flaticon.com/free-icon/enter_1828395?term=login&page=1&position=9&origin=search&related_id=1828395
 function LoginIcon(props) {
   return (
     <svg
