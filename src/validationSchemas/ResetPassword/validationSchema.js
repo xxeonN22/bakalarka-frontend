@@ -1,5 +1,6 @@
 import * as yup from "yup";
 
+// Schema pouzita pre overenie spravnosti emailu na stranke kde uzivatel zada email pre obnovu hesla
 export const schema = yup.object({
   email: yup
     .string()

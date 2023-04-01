@@ -1,5 +1,6 @@
 import * as yup from "yup";
 
+// Schema pouzita pri overenie spravnosti vstupu od uzivatela pri uprave udajov o hracovi
 export const schema = yup.object({
   firstName: yup.string().required("Meno musí byť zadané"),
   lastName: yup.string().required("Priezvisko musí byť zadané"),

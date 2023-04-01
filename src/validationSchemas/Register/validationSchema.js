@@ -1,5 +1,6 @@
 import * as yup from "yup";
 
+// Schema pouzita pre overenie spravnosti vstupov od uzivatela pri registracii
 export const schema = yup.object({
   firstName: yup
     .string()

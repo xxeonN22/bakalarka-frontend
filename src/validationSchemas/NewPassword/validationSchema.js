@@ -1,5 +1,6 @@
 import * as yup from "yup";
 
+// Schema pouzita pri overeni spravnosti noveho hesla pouzita na stranke pre nastavenie noveho hesla
 export const schema = yup.object({
   password: yup
     .string()

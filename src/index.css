@@ -17,17 +17,20 @@ code {
     monospace;
 }
 
+/* "Odstranenie" scrollbaru */
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
   background-color: transparent;
 }
 
+/* Nastavenie pre autofill - napriklad ak uzivatel zvoli moznost emailu pri registracii */
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 50px #1F2736 inset;
   -webkit-text-fill-color: white;
 }
 
+/* Nastavenie pre autofill - napriklad ak uzivatel zvoli moznost emailu pri registracii */
 input:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
   caret-color: white;

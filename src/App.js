@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+// Import temy, ktora je pouzita v ramci celej aplikacii - componenty maju pristup vdaka ThemeProvideru
 import { ThemeProvider } from "@mui/material/styles";
 import { appTheme } from "./themes/appTheme";
+// Import jednotlivych stranok aplikacie
 import { Matches } from "./pages/Matches";
 import { Players } from "./pages/Players";
 import { Tournaments } from "./pages/Tournaments";
