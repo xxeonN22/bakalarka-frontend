@@ -3,7 +3,8 @@ import { appTheme } from "../themes/appTheme";
 import { useNavigate } from "react-router-dom";
 import { api } from "../axios/axios";
 
-import { Grid, Fab, IconButton } from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { ContentLayout } from "../components/ContentLayout";
 import { CreateTournament } from "../components/Tournaments/CreateTournament";
@@ -13,8 +14,7 @@ import { TournamentSearchBar } from "../components/Tournaments/TournamentSearchB
 import { TournamentsTypography } from "../components/Typography/TournamentsTypography";
 import { DialogWindow } from "../components/DialogWindow";
 import { EditUserProfile } from "../components/EditUserProfile";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import CloseIcon from "@mui/icons-material/Close";
+import { FloatingActionButton } from "../components/FloatingActionButton";
 
 const gridContainerStyle = {
   rowGap: "5rem",
@@ -81,7 +81,6 @@ export const Tournaments = () => {
             setSearchText={setSearchText}
           ></TournamentSearchBar>
         </Grid>
-
         {responseMessage && (
           <AlertMessage
             typeOfResponse={responseMessage.type}
@@ -89,33 +88,15 @@ export const Tournaments = () => {
             setResponseMessage={setResponseMessage}
           ></AlertMessage>
         )}
-
         <TournamentData
           filteredData={filteredData}
           setTournamentData={setTournamentData}
           tournamentData={tournamentData}
           setResponseMessage={setResponseMessage}
         ></TournamentData>
-        <Fab
-          color="primary"
-          aria-label="settings"
-          size="small"
-          onClick={() => handleDialogOpen()}
-          sx={{
-            backgroundColor: "#FCCE36",
-            color: "#1f2736",
-            "&:hover": {
-              backgroundColor: "#1f2736",
-              color: "#FCCE36",
-            },
-            position: "fixed",
-            bottom: 10,
-            right: 5,
-            [appTheme.breakpoints.down("md")]: { display: "none" },
-          }}
-        >
-          <SettingsOutlinedIcon />
-        </Fab>
+        <FloatingActionButton
+          handleDialogOpen={handleDialogOpen}
+        ></FloatingActionButton>
         <DialogWindow open={dialogState} handleCloseModal={handleDialogClose}>
           <IconButton
             sx={{ position: "absolute", top: 0, right: 0 }}
